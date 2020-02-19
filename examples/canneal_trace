@@ -1,0 +1,21 @@
+sim_type=workload;
+workload=netrace({/home/ivan/Projects/Booksim/booksim2/src/netrace/testraces/blackscholes_64c_simsmall.tra.bz2});
+// Topology
+//mesh
+topology = torus;
+k = 8;
+n = 2;
+// Routing
+router = iq;
+routing_function = dor_dateline;
+// Flow control
+num_vcs = 2;
+vc_buf_size = 6;
+//time
+sample_period = 1000;
+max_samples = 300;
+
+injected_flits_out = canneal_1000_injected_flits_out.flits;
+received_flits_out = canneal_1000_received_flits_out.flits;
+sent_flits_out = canneal_1000_sent_flits_out.flits;
+ejected_flits_out = canneal_1000_ejected_flits_out.flits;

@@ -1,0 +1,40 @@
+{
+    "name"          : "test",
+    "booksim_bin"   : "bin/booksim_27_Apr_2017",
+    "config_file"   : "configs/launcher_template.cfg",
+    "output_dir"    : "results/test",
+
+    "params" : {
+        "topology"            : "mesh",
+        "k"                   : "8",
+        "n"                   : "2",
+        "routing_function"    : "dim_order",
+        "router"              : "swift",
+        "num_vcs"             : "8",
+        "vc_buf_size"         : "5",
+        "routing_delay"       : "0",
+        "noq"                 : "0",
+        "sw_allocator"        : "select",
+        "packet_size"         : "5"
+    },
+
+    "injection_rate"  : ["0.001","0.07","0.005"],
+
+    "variables" : {
+        "traffic"             : ["uniform","tornado","transpose","bitrev"],
+        "num_vcs"              : ["2","4","6"]
+    },
+
+    "plots" : {
+        "type"     : "double_yaxis",
+        "subplots" : "traffic",
+        "lines"    : "num_vcs",
+        "xaxis"    : "load",
+        "yaxis1"   : "avg_plat",
+        "yaxis2"   : "avg_nlat",
+        "xlabel"   : "Injection rate (packets/cycle/node)",
+        "ylabel1"  : "Average packet latency (cycles)",
+        "ymax1"    : "100"
+    }
+
+}

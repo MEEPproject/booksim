@@ -1,0 +1,67 @@
+{
+    "plots" : {
+        "type"     : "custom-multiclass",
+        "simulation_files" :    [
+			"/home/ivan/ATC/Tools/booksim-unican/scripts/booksim_launcher/results/2019/2019_05_15/smart_8x8_mesh_bimodal_8_2p/smart_8x8_mesh_bimodal_smart_dimensions_oneD_num_vcs_1_smart_type_classic_smart_max_hops_8_vc_buf_size_10_smart_priority_local_traffic_uniform.csv",
+			"/home/ivan/ATC/Tools/booksim-unican/scripts/booksim_launcher/results/2019/2019_05_15/smart_8x8_mesh_bimodal_8_2p/smart_8x8_mesh_bimodal_smart_dimensions_oneD_num_vcs_2_smart_type_classic_smart_max_hops_8_vc_buf_size_10_smart_priority_local_traffic_uniform.csv",
+			"/home/ivan/ATC/Tools/booksim-unican/scripts/booksim_launcher/results/2019/2019_05_15/smart_8x8_mesh_bimodal_8_2p/smart_8x8_mesh_bimodal_smart_dimensions_oneD_num_vcs_4_smart_type_classic_smart_max_hops_8_vc_buf_size_10_smart_priority_local_traffic_uniform.csv",
+			"/home/ivan/ATC/Tools/booksim-unican/scripts/booksim_launcher/results/2019/2019_05_15/smart_8x8_mesh_bimodal_8_2p/smart_8x8_mesh_bimodal_smart_dimensions_oneD_num_vcs_8_smart_type_classic_smart_max_hops_8_vc_buf_size_10_smart_priority_local_traffic_uniform.csv",
+			"/home/ivan/ATC/Tools/booksim-unican/scripts/booksim_launcher/results/2019/2019_05_15/smart_8x8_mesh_bimodal_8_2p/smart_8x8_mesh_bimodal_smart_dimensions_oneD_num_vcs_1_smart_type_nebb_vct_opt_smart_max_hops_8_vc_buf_size_10_smart_priority_local_traffic_uniform.csv",
+			"/home/ivan/ATC/Tools/booksim-unican/scripts/booksim_launcher/results/2019/2019_05_15/smart_8x8_mesh_bimodal_8_2p/smart_8x8_mesh_bimodal_smart_dimensions_oneD_num_vcs_2_smart_type_nebb_vct_opt_smart_max_hops_8_vc_buf_size_10_smart_priority_local_traffic_uniform.csv",
+			"/home/ivan/ATC/Tools/booksim-unican/scripts/booksim_launcher/results/2019/2019_05_15/smart_8x8_mesh_bimodal_8_2p/smart_8x8_mesh_bimodal_smart_dimensions_oneD_num_vcs_4_smart_type_nebb_vct_opt_smart_max_hops_8_vc_buf_size_10_smart_priority_local_traffic_uniform.csv",
+			"/home/ivan/ATC/Tools/booksim-unican/scripts/booksim_launcher/results/2019/2019_05_15/smart_8x8_mesh_bimodal_8_2p/smart_8x8_mesh_bimodal_smart_dimensions_oneD_num_vcs_8_smart_type_nebb_vct_opt_smart_max_hops_8_vc_buf_size_10_smart_priority_local_traffic_uniform.csv"
+        ],
+        "legend"    : [
+	    "SMART   - 1x5 slots",
+	    "SMART   - 2x5 slots",
+	    "SMART   - 4x5 slots",
+	    "SMART   - 8x5 slots",
+	    "SMART++ - 1x10 slots",
+	    "SMART++ - 2x10 slots",
+	    "SMART++ - 4x10 slots",
+	    "SMART++ - 8x10 slots"
+        ],
+        "disable_legend" : "0",
+        "colors"    : [
+            "'black'",
+            "'darkgray'",
+	    	"'gray'",
+            "'lightgray'",
+            "colormap[0]",
+            "colormap[1]",
+            "colormap[2]",
+            "colormap[3]"
+        ],
+        "linestyle" : [
+            "-",
+            "-",
+            "-",
+            "-",
+            "-",
+            "-",
+            "-",
+            "-"
+        ],
+        "markers"   : [
+            "o",
+            "o",
+            "o",
+            "o",
+            "*",
+            "*",
+            "*",
+            "*"
+        ],
+        "legend_outside" : "0",
+		"title"	   : "8x8 Mesh\nHPCMax: 8, Bimodal traffic, Random Uniform",
+        "x-axis"   : "load",
+        "y-axis"   : "eval($(avg_plat)-3)",
+        "x-label"  : "Offered load (%)",
+        "y-label"  : "Avg. packet latency (cycles)",
+        "y-min"    : "0",
+        "y-max"    : "40",
+        "x-min"    : "0.0",
+        "x-max"    : "50",
+		"figsize"  : "(7,6)"
+    }
+}

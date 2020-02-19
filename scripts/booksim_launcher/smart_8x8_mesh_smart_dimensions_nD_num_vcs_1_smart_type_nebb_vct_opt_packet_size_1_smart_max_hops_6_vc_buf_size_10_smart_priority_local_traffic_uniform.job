@@ -1,0 +1,22 @@
+#!/bin/bash
+export BookSim=/home/iperez/ATC/Tools/booksim/booksim-unican/scripts/booksim_launcher
+cd $BookSim
+
+first="TRUE"
+classes="1"
+INJECTION_RATES=( 0.001 0.0125 0.025 0.0375 0.05 0.0625 0.075 0.0875 0.1 0.1125 0.125 0.1375 0.15 0.1625 0.175 0.1875 0.2 0.2125 0.225 0.2375 0.25 0.2625 0.275 0.2875 0.3 0.3125 0.325 0.3375 0.35 0.3625 0.375 0.3875 0.4 0.4125 0.425 0.4375 0.45 0.4625 0.475 0.4875 0.5  )
+
+mkdir -p results/2020/2020_01_07/smart_8x8_mesh
+
+for inj_rate in ${INJECTION_RATES[@]};
+do
+    if [ ${first} = "TRUE" ];
+    then
+        { bin/booksim_2020_01_07 configs/launcher_template.cfg c="{1,1}" sw_allocator=select routing_function=dim_order k="{8,8}" injection_rate_uses_flits=1 n=2 routing_delay=0 smart_priority=local sim_count=1 router=smart sample_period=500 noq=0 topology=smartcmesh smart_dimensions=nD num_vcs=1 smart_type=nebb_vct_opt packet_size=1 smart_max_hops=6 vc_buf_size=10 smart_priority=local traffic=uniform injection_rate=${inj_rate} write_config_file=results/2020/2020_01_07/smart_8x8_mesh/smart_8x8_mesh_smart_dimensions_nD_num_vcs_1_smart_type_nebb_vct_opt_packet_size_1_smart_max_hops_6_vc_buf_size_10_smart_priority_local_traffic_uniform.cfg | tail -$(($classes+1)); } >results/2020/2020_01_07/smart_8x8_mesh/smart_8x8_mesh_smart_dimensions_nD_num_vcs_1_smart_type_nebb_vct_opt_packet_size_1_smart_max_hops_6_vc_buf_size_10_smart_priority_local_traffic_uniform.csv 2>results/2020/2020_01_07/smart_8x8_mesh/smart_8x8_mesh_smart_dimensions_nD_num_vcs_1_smart_type_nebb_vct_opt_packet_size_1_smart_max_hops_6_vc_buf_size_10_smart_priority_local_traffic_uniform.err
+        first="FALSE"
+    else
+        { bin/booksim_2020_01_07 configs/launcher_template.cfg c="{1,1}" sw_allocator=select routing_function=dim_order k="{8,8}" injection_rate_uses_flits=1 n=2 routing_delay=0 smart_priority=local sim_count=1 router=smart sample_period=500 noq=0 topology=smartcmesh smart_dimensions=nD num_vcs=1 smart_type=nebb_vct_opt packet_size=1 smart_max_hops=6 vc_buf_size=10 smart_priority=local traffic=uniform injection_rate=${inj_rate} | tail -$classes; } >>results/2020/2020_01_07/smart_8x8_mesh/smart_8x8_mesh_smart_dimensions_nD_num_vcs_1_smart_type_nebb_vct_opt_packet_size_1_smart_max_hops_6_vc_buf_size_10_smart_priority_local_traffic_uniform.csv 2>>results/2020/2020_01_07/smart_8x8_mesh/smart_8x8_mesh_smart_dimensions_nD_num_vcs_1_smart_type_nebb_vct_opt_packet_size_1_smart_max_hops_6_vc_buf_size_10_smart_priority_local_traffic_uniform.err
+    fi
+done
+
+

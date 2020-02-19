@@ -1,0 +1,53 @@
+{
+    "name"          : "iq_mesh_4x4_priorities",
+    "booksim_bin"   : "bin/booksim_28_Mar_2017",
+    "config_file"   : "configs/launcher_template.cfg",
+    "output_dir"    : "results/iq_mesh_4x4_priorities",
+
+    "params" : {
+        "topology"                  : "mesh",
+        "k"                         : "4",
+        "n"                         : "2",
+        "routing_function"          : "dor",
+        "router"                    : "iq",
+        "num_vcs"                   : "6",
+        "vc_buf_size"               : "5",
+        "routing_delay"             : "0",
+        "vc_allocator"              : "wavefront",
+        "sw_allocator"              : "wavefront",
+        "vc_busy_when_full"         : "1",
+        "vc_prioritize_empty"       : "1",
+        "vc_priority_donation"      : "1",
+        "vc_shuffle_requests"       : "1",
+        "priority"                  : "class",
+        "classes"                   : "6",
+        "start_vc"                  : "{0,0,2,2,4,4}",
+        "end_vc"                    : "{0,1,2,3,4,5}",
+        "packet_size"               : "{1,1,5,5,1,1}",
+        "reply_class"               : "{2,3,4,5,-1,-1}",
+        "class_priority"            : "{0,11,0,11,0,11}",
+        "injection_rate_uses_flits" : "1"
+    },
+
+    "injection_rate"  : ["0.001","0.3","0.02"],
+
+    "variables" : {
+        "traffic"             : ["uniform","tornado","transpose","bitrev"]
+    },
+
+    "plots" : {
+        "type"     : "single_yaxis_single_line_multi_class",
+        "subplots" : "traffic",
+        "lines"    : "num_vcs",
+        "xaxis"    : "load",
+        "yaxis1"   : "avg_plat",
+        "xlabel"   : "Injection rate (packets/cycle/node)",
+        "ylabel1"  : "Average packet latency (cycles)",
+        "ymin1"    : "0",
+        "ymax1"    : "100",
+        "xmin"     : "0",
+        "xmax"     : "0.5"
+
+    }
+
+}

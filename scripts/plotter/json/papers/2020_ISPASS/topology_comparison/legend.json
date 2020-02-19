@@ -1,0 +1,55 @@
+{
+    "plots" : {
+        "type"     : "legend",
+        "simulation_files" :    [
+			"iq_8x8_mesh/iq_8x8_mesh_num_vcs_1_traffic_uniform_vc_buf_size_20_packet_size_5.csv",
+			"hybrid_8x8_mesh/hybrid_8x8_mesh_num_vcs_1_traffic_uniform_vc_buf_size_20_packet_size_5.csv",
+			"smart_8x8_mesh/smart_8x8_mesh_smart_dimensions_oneD_num_vcs_1_smart_type_nebb_vct_opt_packet_size_5_smart_max_hops_8_vc_buf_size_20_smart_priority_local_traffic_uniform.csv"
+        ],
+        "legend"    : [
+			"Mesh - IQ",
+			"Mesh - NEBB-Hybrid",
+			"Mesh - SMART++",
+			"Torus - IQ",
+			"Torus - NEBB-Hybrid",
+			"Torus - SMART++"
+        ],
+		"legend_columns" : "3",
+        "disable_legend" : "0",
+        "colors"    : [
+            "'black'",
+            "'gray'",
+            "colormap[0]",
+            "colormap[1]",
+            "colormap[4]",
+            "colormap[5]"
+        ],
+        "linestyle" : [
+            "-",
+            "-",
+            "-",
+            "-",
+            "-",
+            "-"
+        ],
+        "markers"   : [
+            "o",
+            "o",
+            "^",
+            "^",
+            "*",
+            "*"
+        ],
+        "legend_outside" : "0",
+		"title_old"	   : "6x6 Mesh, Buffer Size: 1\nHPCMax: 6, Single-flit traffic, Random Uniform",
+        "x-axis"   : "load",
+        "y-axis"   : "avg_plat",
+        "x-label"  : "Offered load (%)",
+        "y-label"  : "Packet latency (Cycles)",
+        "y-min"    : "0",
+        "y-max"    : "25",
+        "x-min"    : "0.0",
+        "x-max"    : "100",
+		"figsize"  : "(7,6)"
+    }
+}

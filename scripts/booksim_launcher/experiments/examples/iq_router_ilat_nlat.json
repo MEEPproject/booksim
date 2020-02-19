@@ -1,0 +1,38 @@
+{
+    "name"          : "iq_router_ilat_nlat",
+    "booksim_bin"   : "bin/booksim_16_Feb_2017",
+    "config_file"   : "configs/launcher_template.cfg",
+    "output_dir"    : "results/",
+
+    "params" : {
+        "topology"            : "mesh",
+        "k"                   : "8",
+        "n"                   : "2",
+        "routing_function"    : "dim_order",
+        "router"              : "iq",
+        "num_vcs"             : "2",
+        "vc_buf_size"         : "10",
+        "packet_size"         : "5"
+    },
+
+    "injection_rate"  : ["0.001","0.1","0.005"],
+
+    "variables" : {
+        "traffic"             : ["uniform","tornado","transpose","bitrev"],
+        "num_vcs"              : ["2","4","6"]
+    },
+
+    "plots" : {
+        "subplots" : "traffic",
+        "type"     : "double_yaxis",
+        "lines"    : "num_vcs",
+        "xaxis"    : "load",
+        "yaxis1"   : "avg_plat",
+        "yaxis2"   : "avg_nlat",
+        "xlabel"   : "Injection rate (packets/cycle/node)",
+        "ylabel1"  : "Average packet latency (cycles)",
+        "ymax1"    : "500",
+        "ymin1"    : "0"
+    }
+
+}

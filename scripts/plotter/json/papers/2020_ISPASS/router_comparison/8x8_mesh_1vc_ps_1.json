@@ -1,0 +1,49 @@
+{
+    "plots" : {
+        "type"     : "custom",
+        "simulation_dir"   : "/home/ivan/ATC/Tools/booksim-unican/scripts/booksim_launcher/results/2019/ISPASS/2019_09_05/",
+        "simulation_files" :    [
+			"iq_8x8_mesh/iq_8x8_mesh_num_vcs_1_traffic_uniform_vc_buf_size_20_packet_size_1.csv",
+			"iq_opt_8x8_mesh/iq_opt_8x8_mesh_num_vcs_1_traffic_uniform_vc_buf_size_20_packet_size_1.csv",
+			"hybrid_8x8_mesh/hybrid_8x8_mesh_num_vcs_1_traffic_uniform_vc_buf_size_20_packet_size_1.csv",
+			"smart_8x8_mesh/smart_8x8_mesh_smart_dimensions_oneD_num_vcs_1_smart_type_nebb_vct_opt_packet_size_1_smart_max_hops_8_vc_buf_size_20_smart_priority_local_traffic_uniform.csv"
+        ],
+        "legend"    : [
+			"5-stage - 1x20 slots",
+			"4-stage (LA-R + VA Spec) - 1x20 slots",
+			"NEBB-Hybrid - 1x20 slots",
+			"SMART++ - 1x20 slots (HPCmax=8)"
+        ],
+        "disable_legend" : "1",
+        "colors"    : [
+            "'black'",
+            "'gray'",
+            "colormap[0]",
+            "colormap[1]"
+        ],
+        "linestyle" : [
+            "-",
+            "-",
+            "-",
+            "-"
+        ],
+        "markers"   : [
+            "o",
+            ".",
+            "^",
+            "*"
+        ],
+        "legend_outside" : "0",
+        "markevery" : "2",
+		"title_old"	   : "8x8 Mesh\n, 5-flit packets, Random Uniform",
+        "x-axis"   : "load",
+        "y-axis"   : "avg_plat",
+        "x-label"  : "Offered load (%)",
+        "y-label"  : "Packet latency (cycles)",
+        "y-min"    : "0",
+        "y-max"    : "60",
+        "x-min"    : "0.0",
+        "x-max"    : "50",
+		"figsize"  : "(3.2,2)"
+    }
+}

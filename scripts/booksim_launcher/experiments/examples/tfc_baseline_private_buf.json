@@ -1,0 +1,40 @@
+{
+    "name"          : "tfc_baseline",
+    "booksim_bin"   : "bin/booksim_20_Mar_2017",
+    "config_file"   : "configs/launcher_template.cfg",
+    "output_dir"    : "results/tfc_baseline_private_buf",
+
+    "params" : {
+        "topology"            : "mesh",
+        "k"                   : "8",
+        "n"                   : "2",
+        "routing_function"    : "dim_order",
+        "router"              : "swift",
+        "num_vcs"             : "2",
+        "routing_delay"       : "0",
+        "noq"                 : "0",
+        "sw_allocator"        : "select",
+        "buf_size"            : "6",
+        "packet_size"         : "5"
+    },
+
+    "injection_rate"  : ["0.001","0.1","0.01"],
+
+    "variables" : {
+        "traffic"             : ["uniform","tornado","transpose","bitrev"],
+        "num_vcs"              : ["2","4","6"]
+    },
+
+    "plots" : {
+        "type"     : "double_yaxis_single_line",
+        "subplots" : "traffic",
+        "xaxis"    : "load",
+        "yaxis1"   : "avg_plat",
+        "yaxis2"   : "avg_nlat",
+        "xlabel"   : "Injection rate (packets/cycle/node)",
+        "ylabel1"  : "Average packet latency (cycles)",
+        "ymax1"    : "100",
+        "ymin1"    : "0"
+    }
+
+}

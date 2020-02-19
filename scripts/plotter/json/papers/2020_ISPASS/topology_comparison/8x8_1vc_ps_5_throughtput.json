@@ -1,0 +1,59 @@
+{
+    "plots" : {
+        "type"     : "custom",
+        "simulation_dir"   : "/home/ivan/ATC/Tools/booksim-unican/scripts/booksim_launcher/results/2019/ISPASS/",
+        "simulation_files" :    [
+			"2019_09_05/iq_8x8_mesh/iq_8x8_mesh_num_vcs_1_traffic_uniform_vc_buf_size_20_packet_size_5.csv",
+			"2019_09_05/hybrid_8x8_mesh/hybrid_8x8_mesh_num_vcs_1_traffic_uniform_vc_buf_size_20_packet_size_5.csv",
+			"2019_09_05/smart_8x8_mesh/smart_8x8_mesh_smart_dimensions_oneD_num_vcs_1_smart_type_nebb_vct_opt_packet_size_5_smart_max_hops_8_vc_buf_size_20_smart_priority_local_traffic_uniform.csv",
+			"2019_09_11/iq_8x8_torus/iq_8x8_torus_traffic_uniform_num_vcs_1_vc_buf_size_20_packet_size_5.csv",
+            "2019_09_11/hybrid_8x8_torus/hybrid_8x8_torus_traffic_uniform_num_vcs_1_vc_buf_size_20_packet_size_5.csv",
+			"2019_09_11/smart_8x8_torus/smart_8x8_torus_traffic_uniform_smart_max_hops_8_num_vcs_2_vc_buf_size_10_smart_priority_local_smart_dimensions_oneD_smart_type_nebb_vct_opt_packet_size_5.csv"
+        ],
+        "inj_load_uses_flits" : "1",
+        "legend"    : [
+			"Mesh - IQ - 1x20 slots",
+			"Mesh - NEBB-Hybrid - 1x20 slots",
+			"Mesh - SMART++ - 1x20 slots (HPCmax=8)",
+			"Torus - IQ - 1x20 slots",
+			"Torus - NEBB-Hybrid - 1x20 slots",
+			"Torus - SMART++ - 1x10 slots (HPCmax=8)"
+        ],
+        "disable_legend" : "1",
+        "colors"    : [
+            "'black'",
+            "colormap[0]",
+            "colormap[4]",
+            "'gray'",
+            "colormap[1]",
+            "colormap[5]"
+        ],
+        "linestyle" : [
+            "-",
+            "-",
+            "-",
+            "-",
+            "-",
+            "-"
+        ],
+        "markers"   : [
+            "o",
+            "^",
+            "*",
+            "o",
+            "^",
+            "*"
+        ],
+        "legend_outside" : "0",
+		"title_old"	   : "5-flit packets, Random Uniform",
+        "x-axis"   : "load",
+        "y-axis"   : "avg_accepted_flits",
+        "x-label"  : "Offered load (%)",
+        "y-label"  : "Accepted load",
+        "y-min"    : "0",
+        "y-max"    : "1.0",
+        "x-min"    : "0.0",
+        "x-max"    : "100",
+		"figsize"  : "(4,2.5)"
+    }
+}

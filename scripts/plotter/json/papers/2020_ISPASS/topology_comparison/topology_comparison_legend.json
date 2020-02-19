@@ -1,0 +1,49 @@
+{
+    "plots" : {
+        "type"     : "legend",
+        "simulation_files" :    [
+            "2019_09_11/iq_8x8_flatfly/iq_8x8_flatfly_traffic_uniform_num_vcs_1_vc_buf_size_20_packet_size_1.csv",
+            "2019_09_11/hybrid_8x8_torus/hybrid_8x8_torus_traffic_uniform_num_vcs_1_vc_buf_size_20_packet_size_1.csv",
+			"2019_09_05/smart_8x8_mesh/smart_8x8_mesh_smart_dimensions_oneD_num_vcs_1_smart_type_nebb_vct_opt_packet_size_1_smart_max_hops_8_vc_buf_size_20_smart_priority_local_traffic_uniform.csv",
+            "2019_09_11/hybrid_8x8_flatfly/hybrid_8x8_flatfly_traffic_uniform_num_vcs_1_vc_buf_size_20_packet_size_1.csv"
+        ],
+        "legend"    : [
+			"FBFLY - 5s-router",
+			"Torus - NEBB-Hybrid",
+			"Mesh - SMART++",
+			"FBFLY - NEBB-Hybrid"
+        ],
+        "disable_legend" : "1",
+        "colors"    : [
+            "'black'",
+            "colormap[0]",
+            "colormap[2]",
+            "colormap[4]"
+        ],
+        "linestyle" : [
+            "-",
+            "-",
+            "-",
+            "-"
+        ],
+        "markers"   : [
+            "o",
+            "^",
+            "*",
+            "+"
+        ],
+		"legend_columns" : "4",
+        "disable_legend" : "0",
+        "legend_outside" : "0",
+		"title_old"	   : "1-flit packets, Random Uniform",
+        "x-axis"   : "load",
+        "y-axis"   : "avg_plat",
+        "x-label"  : "Offered load (%)",
+        "y-label"  : "Avg. packet latency (cycles)",
+        "y-min"    : "0",
+        "y-max"    : "60",
+        "x-min"    : "0.0",
+        "x-max"    : "100",
+		"figsize"  : "(4,2.5)"
+    }
+}

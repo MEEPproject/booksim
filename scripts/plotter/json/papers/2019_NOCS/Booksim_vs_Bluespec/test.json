@@ -1,0 +1,131 @@
+{
+    "plots" : {
+        "type"     : "throughput-baseline",
+        "simulation_files" :    [
+				[
+					"/home/ivan/ATC/Tools/booksim-unican/scripts/booksim_launcher/results/2019/2019_05_15/smart_4x4_mesh/smart_4x4_mesh_smart_dimensions_oneD_num_vcs_1_smart_type_nebb_vct_opt_packet_size_1_smart_max_hops_4_vc_buf_size_1_smart_priority_local_traffic_uniform.csv",
+					"/home/ivan/ATC/Tools/booksim-unican/scripts/booksim_launcher/results/2019/2019_05_15/smart_4x4_mesh/smart_4x4_mesh_smart_dimensions_oneD_num_vcs_2_smart_type_nebb_vct_opt_packet_size_1_smart_max_hops_4_vc_buf_size_1_smart_priority_local_traffic_uniform.csv",
+					"/home/ivan/ATC/Tools/booksim-unican/scripts/booksim_launcher/results/2019/2019_05_15/smart_4x4_mesh/smart_4x4_mesh_smart_dimensions_oneD_num_vcs_4_smart_type_nebb_vct_opt_packet_size_1_smart_max_hops_4_vc_buf_size_1_smart_priority_local_traffic_uniform.csv",
+					"/home/ivan/ATC/Tools/booksim-unican/scripts/booksim_launcher/results/2019/2019_05_15/smart_4x4_mesh/smart_4x4_mesh_smart_dimensions_oneD_num_vcs_8_smart_type_nebb_vct_opt_packet_size_1_smart_max_hops_4_vc_buf_size_1_smart_priority_local_traffic_uniform.csv"
+				],
+				[
+					"/home/ivan/ATC/Tools/booksim-unican/scripts/booksim_launcher/results/2019/2019_05_15/smart_4x4_mesh/smart_4x4_mesh_smart_dimensions_oneD_num_vcs_1_smart_type_nebb_vct_opt_packet_size_1_smart_max_hops_4_vc_buf_size_1_smart_priority_local_traffic_uniform.csv",
+					"/home/ivan/ATC/Tools/booksim-unican/scripts/booksim_launcher/results/2019/2019_05_15/smart_4x4_mesh/smart_4x4_mesh_smart_dimensions_oneD_num_vcs_1_smart_type_nebb_vct_opt_packet_size_1_smart_max_hops_4_vc_buf_size_2_smart_priority_local_traffic_uniform.csv",
+					"/home/ivan/ATC/Tools/booksim-unican/scripts/booksim_launcher/results/2019/2019_05_15/smart_4x4_mesh/smart_4x4_mesh_smart_dimensions_oneD_num_vcs_1_smart_type_nebb_vct_opt_packet_size_1_smart_max_hops_4_vc_buf_size_4_smart_priority_local_traffic_uniform.csv",
+					"/home/ivan/ATC/Tools/booksim-unican/scripts/booksim_launcher/results/2019/2019_05_15/smart_4x4_mesh/smart_4x4_mesh_smart_dimensions_oneD_num_vcs_1_smart_type_nebb_vct_opt_packet_size_1_smart_max_hops_4_vc_buf_size_8_smart_priority_local_traffic_uniform.csv"
+				],
+				[
+					"/home/ivan/ATC/Tools/booksim-unican/scripts/booksim_launcher/results/2019/2019_05_15/smart_4x4_mesh/smart_4x4_mesh_smart_dimensions_oneD_num_vcs_2_smart_type_nebb_vct_opt_packet_size_1_smart_max_hops_4_vc_buf_size_1_smart_priority_local_traffic_uniform.csv",
+					"/home/ivan/ATC/Tools/booksim-unican/scripts/booksim_launcher/results/2019/2019_05_15/smart_4x4_mesh/smart_4x4_mesh_smart_dimensions_oneD_num_vcs_2_smart_type_nebb_vct_opt_packet_size_1_smart_max_hops_4_vc_buf_size_2_smart_priority_local_traffic_uniform.csv",
+					"/home/ivan/ATC/Tools/booksim-unican/scripts/booksim_launcher/results/2019/2019_05_15/smart_4x4_mesh/smart_4x4_mesh_smart_dimensions_oneD_num_vcs_2_smart_type_nebb_vct_opt_packet_size_1_smart_max_hops_4_vc_buf_size_4_smart_priority_local_traffic_uniform.csv",
+					"/home/ivan/ATC/Tools/booksim-unican/scripts/booksim_launcher/results/2019/2019_05_15/smart_4x4_mesh/smart_4x4_mesh_smart_dimensions_oneD_num_vcs_2_smart_type_nebb_vct_opt_packet_size_1_smart_max_hops_4_vc_buf_size_8_smart_priority_local_traffic_uniform.csv"
+				],
+				[
+					"/home/ivan/ATC/Tools/booksim-unican/scripts/booksim_launcher/results/2019/2019_05_15/smart_4x4_mesh/smart_4x4_mesh_smart_dimensions_oneD_num_vcs_4_smart_type_nebb_vct_opt_packet_size_1_smart_max_hops_4_vc_buf_size_1_smart_priority_local_traffic_uniform.csv",
+					"/home/ivan/ATC/Tools/booksim-unican/scripts/booksim_launcher/results/2019/2019_05_15/smart_4x4_mesh/smart_4x4_mesh_smart_dimensions_oneD_num_vcs_4_smart_type_nebb_vct_opt_packet_size_1_smart_max_hops_4_vc_buf_size_2_smart_priority_local_traffic_uniform.csv",
+					"/home/ivan/ATC/Tools/booksim-unican/scripts/booksim_launcher/results/2019/2019_05_15/smart_4x4_mesh/smart_4x4_mesh_smart_dimensions_oneD_num_vcs_4_smart_type_nebb_vct_opt_packet_size_1_smart_max_hops_4_vc_buf_size_4_smart_priority_local_traffic_uniform.csv",
+					"/home/ivan/ATC/Tools/booksim-unican/scripts/booksim_launcher/results/2019/2019_05_15/smart_4x4_mesh/smart_4x4_mesh_smart_dimensions_oneD_num_vcs_4_smart_type_nebb_vct_opt_packet_size_1_smart_max_hops_4_vc_buf_size_8_smart_priority_local_traffic_uniform.csv"
+				],
+				[
+					"/home/ivan/ATC/Tools/booksim-unican/scripts/booksim_launcher/results/2019/2019_05_15/smart_4x4_mesh/smart_4x4_mesh_smart_dimensions_oneD_num_vcs_8_smart_type_nebb_vct_opt_packet_size_1_smart_max_hops_4_vc_buf_size_1_smart_priority_local_traffic_uniform.csv",
+					"/home/ivan/ATC/Tools/booksim-unican/scripts/booksim_launcher/results/2019/2019_05_15/smart_4x4_mesh/smart_4x4_mesh_smart_dimensions_oneD_num_vcs_8_smart_type_nebb_vct_opt_packet_size_1_smart_max_hops_4_vc_buf_size_2_smart_priority_local_traffic_uniform.csv",
+					"/home/ivan/ATC/Tools/booksim-unican/scripts/booksim_launcher/results/2019/2019_05_15/smart_4x4_mesh/smart_4x4_mesh_smart_dimensions_oneD_num_vcs_8_smart_type_nebb_vct_opt_packet_size_1_smart_max_hops_4_vc_buf_size_4_smart_priority_local_traffic_uniform.csv",
+					"/home/ivan/ATC/Tools/booksim-unican/scripts/booksim_launcher/results/2019/2019_05_15/smart_4x4_mesh/smart_4x4_mesh_smart_dimensions_oneD_num_vcs_8_smart_type_nebb_vct_opt_packet_size_1_smart_max_hops_4_vc_buf_size_8_smart_priority_local_traffic_uniform.csv"
+				]
+        ],
+        "legend"    : [
+			"1x1",
+			"2x1",
+			"4x1",
+			"8x1",
+			"1x1",
+			"1x2",
+			"1x4",
+			"1x8",
+			"2x1",
+			"2x2",
+			"2x4",
+			"2x8",
+			"4x1",
+			"4x2",
+			"4x4",
+			"4x8",
+			"8x1",
+			"8x2",
+			"8x4",
+			"8x8"
+        ],
+        "legend_old"    : [
+			"SMART++ (Bluspec) - 1 VC",
+			"SMART++ (Bluspec) - 2 VC",
+			"",
+			"SMART++ (Bluspec) - 4 VC",
+			"SMART++ (Bluspec) - 8 VC",
+			"",
+			"SMART++ (BookSim) - 1 VC",
+			"SMART++ (BookSim) - 2 VC",
+			"",
+			"SMART++ (BookSim) - 4 VC",
+			"SMART++ (BookSim) - 8 VC"
+        ],
+        "disable_legend" : "1",
+		"configurations" : [
+			"SMART",
+			"SMART++ (1VC)",
+			"SMART++ (2VCs)",
+			"SMART++ (4VCs)",
+			"SMART++ (8VCs)"
+		],
+        "colors"    : [
+            "'black'",
+            "colormap[0]",
+            "colormap[1]",
+            "colormap[2]",
+            "colormap[3]",
+            "'darkgray'",
+	    	"'gray'",
+            "'lightgray'"
+        ],
+        "colors_old"    : [
+            "'black'",
+            "'darkgray'",
+	    	"'gray'",
+            "'lightgray'",
+            "colormap[0]",
+            "colormap[1]",
+            "colormap[2]",
+            "colormap[3]"
+        ],
+        "linestyle" : [
+            "-",
+            "-",
+            "-",
+            "-",
+            "-",
+            "-",
+            "-",
+            "-"
+        ],
+        "markers"   : [
+            "o",
+            "o",
+            "o",
+            "o",
+            "*",
+            "*",
+            "*",
+            "*"
+        ],
+        "legend_outside" : "0",
+		"title_old"	   : "4x4 Mesh, Buffer Size: 1\nHPCMax: 4, Single-flit traffic, Random Uniform",
+        "x-axis"   : "load",
+        "y-axis"   : "avg_accepted_flits",
+        "x-label"  : "# VCs x Buffer size",
+        "y-label"  : "Max. Throughput (flits/cycle/node)",
+        "y-min"    : "0",
+        "y-max"    : "0.9",
+        "x-min"    : "0.0",
+        "x-max"    : "100",
+		"figsize"  : "(6,4)"
+    }
+}

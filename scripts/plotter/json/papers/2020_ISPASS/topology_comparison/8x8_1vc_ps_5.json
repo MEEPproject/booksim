@@ -1,0 +1,58 @@
+{
+    "plots" : {
+        "type"     : "custom",
+        "simulation_dir"   : "/home/ivan/ATC/Tools/booksim-unican/scripts/booksim_launcher/results/2019/ISPASS/",
+        "simulation_files" :    [
+			"2019_09_05/iq_opt_8x8_mesh/iq_opt_8x8_mesh_num_vcs_1_traffic_uniform_vc_buf_size_20_packet_size_5.csv",
+			"2019_09_05/hybrid_8x8_mesh/hybrid_8x8_mesh_num_vcs_1_traffic_uniform_vc_buf_size_20_packet_size_5.csv",
+			"2019_09_05/smart_8x8_mesh/smart_8x8_mesh_smart_dimensions_oneD_num_vcs_1_smart_type_nebb_vct_opt_packet_size_5_smart_max_hops_8_vc_buf_size_20_smart_priority_local_traffic_uniform.csv",
+            "2019_09_11/iq_opt_8x8_torus/iq_opt_8x8_torus_num_vcs_1_traffic_uniform_vc_buf_size_20_packet_size_5.csv",
+            "2019_09_11/hybrid_8x8_torus/hybrid_8x8_torus_num_vcs_1_traffic_uniform_vc_buf_size_20_packet_size_5.csv",
+            "2019_09_11/smart_8x8_torus/smart_8x8_torus_smart_dimensions_oneD_num_vcs_4_smart_type_nebb_vct_opt_packet_size_5_smart_max_hops_8_vc_buf_size_5_smart_priority_local_traffic_uniform.csv"
+        ],
+        "legend"    : [
+			"Mesh - IQ - 1x20 slots",
+			"Mesh - NEBB-Hybrid - 1x20 slots",
+			"Mesh - SMART++ - 1x20 slots (HPCmax=8)",
+			"Torus - IQ - 1x20 slots",
+			"Torus - NEBB-Hybrid - 1x20 slots",
+			"Torus - SMART++ - 4x5 slots (HPCmax=8)"
+        ],
+        "disable_legend" : "1",
+        "colors"    : [
+            "'black'",
+            "colormap[0]",
+            "colormap[4]",
+            "'gray'",
+            "colormap[1]",
+            "colormap[5]"
+        ],
+        "linestyle" : [
+            "-",
+            "-",
+            "-",
+            "-",
+            "-",
+            "-"
+        ],
+        "markers"   : [
+            "o",
+            "^",
+            "*",
+            "o",
+            "^",
+            "*"
+        ],
+        "legend_outside" : "0",
+		"title_old"	   : "1-flit packets, Random Uniform",
+        "x-axis"   : "load",
+        "y-axis"   : "avg_plat",
+        "x-label"  : "Offered load (%)",
+        "y-label"  : "Packet latency (cycles)",
+        "y-min"    : "0",
+        "y-max"    : "40",
+        "x-min"    : "0.0",
+        "x-max"    : "100",
+		"figsize"  : "(3.2,2)"
+    }
+}
