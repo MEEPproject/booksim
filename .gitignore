@@ -1,0 +1,6 @@
+*.job
+*.log
+*.pyc
+*.swp
+.*.swp
+*.o
