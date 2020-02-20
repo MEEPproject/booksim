@@ -4,9 +4,10 @@ BookSim is a cycle-accurate interconnection network simulator originally
 developed and introduced with the Principles and Practices of Interconnection
 Networks book.
 This BookSim version extends the funcionallity of BookSim 2.0 availiable
-[here](https://github.com/booksim/booksim2) and is part of the BST Tools
+[here](https://github.com/booksim/booksim2) and is part of BST,
 published in ISPASS-2020 (bibtex reference below).
 The main contributions of this version are:
+
 1. Low latency single- and multi-hop bypass routers. The later are more commonly know as SMART.
 2. An API to easily interconnect BookSim with other simulation environments such as gem5.
 3. A set of scripts to launch large sets of simulations, generate plots, debug, etc.
