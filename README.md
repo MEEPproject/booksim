@@ -23,16 +23,15 @@ The main contributions of this version are:
 
 ---
 ## Table of contents
-1. [Quick start](#quick-start)
-2. [Usage instructions](#usage-instructions)
-3. [Directory structure](#directory-structure)
-4. [BookSim API: Integration in other systems](#api)
-5. [Notes](#notes)
+1. [Quick start](#markdown-header-quick-start)
+2. [Directory structure](#markdown-header-directory-structure)
+3. [BookSim API](#markdown-header-booksim-api)
+4. [Notes](#markdown-header-notes)
 
 
 ---
 
-### Quick start <a name='quick-start'></a>
+### Quick start
 
 In order to compile BookSim you need bison and flex. 
 You can use the following commands to install them in a Debian Linux distro:
@@ -62,7 +61,7 @@ Total run time 19.7239
 This CSV output is required by the launch script hosted in `scripts/booksim_launcher/launcher.py`
 
 ---
-### Directory structure <a name='directory-structure'></a>
+### Directory structure
 
 The project is organized as follows:
 
@@ -83,7 +82,7 @@ booksim-unican/
 ```
 
 ---
-### BookSim API: Integration in other systems <a name='api'></a>
+### BookSim API
 
 The API to use BookSim as a library in other simulations is composed of the
 following structure and functions (see [booksim2/booksim_wrapper.hpp](booksim2/booksim_wrapper.hpp)):
@@ -149,7 +148,7 @@ void UpdateSimTime(int cycles);
 ```
 
 ---
-### Notes <a name='notes'></a>
+### Notes
 
 > Parts of code to improve in the future:
 >
