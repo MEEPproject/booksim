@@ -60,6 +60,7 @@
 #include "bypass_router/smart_router.hpp" // SMART
 #include "bypass_router/smart_nebb/smart_not_empty_realocation_router.hpp" //???
 #include "bypass_router/smart_nebb/smart_nebb_wh_router.hpp" // SMART (NEBB-WH)
+#include "bypass_router/smart_nebb/smart_nebb_wh_fbfcl_router.hpp"
 #include "bypass_router/smart_nebb/smart_nebb_vct_router.hpp" // SMART (NEBB-VCT)
 #include "bypass_router/smart_nebb/smart_nebb_vct_opt_router.hpp" // SMART++
 #include "bypass_router/smart_nebb/smart_nebb_vct_opt_bubble_router.hpp"//Torus
