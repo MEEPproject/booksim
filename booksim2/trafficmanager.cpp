@@ -303,8 +303,10 @@ namespace Booksim
         ostringstream header_subnet_input;
         header_subnet_input << "time,class,subnet";
         for(int router = 0; router < _routers; ++router) {
-            for(int input = 0; input < _router[0][router]->GetInputsNumber(); ++input ) {
-                header_subnet_input << ",r_" << router << "_i_" << input;
+            if(_router[0][router]){
+                for(int input = 0; input < _router[0][router]->GetInputsNumber(); ++input ) {
+                    header_subnet_input << ",r_" << router << "_i_" << input;
+                }
             }
         }
         header_subnet_input << "\n";
@@ -1776,6 +1778,9 @@ namespace Booksim
 
                 for(int router = 0; router < _routers; ++router) {
                     Router * const r = _router[subnet][router];
+                    if(!r){
+                        continue;
+                    }
                     char trail_char = (router == _routers - 1) ? '\n' : ',';
 #ifdef TRACK_FLOWS
                     if(_received_flits_out) *_received_flits_out << r->GetReceivedFlits(c) << trail_char;
@@ -1783,7 +1788,6 @@ namespace Booksim
                     if(_sent_flits_out) *_sent_flits_out << r->GetSentFlits(c) << trail_char;
                     if(_outstanding_credits_out) *_outstanding_credits_out << r->GetOutstandingCredits(c) << trail_char;
                     if(_active_packets_out) *_active_packets_out << r->GetActivePackets(c) << trail_char;
-
                     int const router_inputs = r->GetInputsNumber();
                     vector<int> const stored_flits = r->GetStoredFlits(c);
                     vector<int> const received_flits = r->GetReceivedFlits(c);

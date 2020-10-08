@@ -53,6 +53,7 @@
 #include "dragonfly.hpp"
 #include "../NetworkInterface.h"
 #include "../routers/bypass_router/smart_router.hpp"
+#include "testnet.hpp"
 
 namespace Booksim
 {
@@ -149,6 +150,9 @@ namespace Booksim
         } else if (topo == "dragonflynew"){
             DragonFlyNew::RegisterRoutingFunctions() ;
             n = new DragonFlyNew(config, name);
+		} else if ( topo == "testnet"){
+    TestNet::RegisterRoutingFunctions() ;
+    n = new TestNet(config, name);
         } else {
             cerr << "Unknown topology: " << topo << endl;
         }
