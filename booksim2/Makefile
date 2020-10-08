@@ -41,10 +41,10 @@ DEFINE += -DDEADLOCK_ABORT=1
 INCPATH = -I. -Iarbiters -Iallocators -Irouters -Inetworks -Ipower
 CPPFLAGS += -Wall $(INCPATH) $(DEFINE)
 # @FIXME: remove -fpermissive 
-#CPPFLAGS += -O3 -std=c++11
-CPPFLAGS += -std=c++11 -fno-inline-functions -O0 -fpermissive
-CPPFLAGS += -g
-#CPPFLAGS += -fPIC
+CPPFLAGS += -O3 -std=c++11
+#CPPFLAGS += -std=c++11 -fno-inline-functions -O0 -fpermissive
+#CPPFLAGS += -g
+CPPFLAGS += -fPIC
 LFLAGS +=
 
 PROG := booksim
