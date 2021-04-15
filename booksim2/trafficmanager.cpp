@@ -785,8 +785,9 @@ namespace Booksim
                     << "node" << dest << " | "
                     << "Retiring packet " << head->pid 
                     << " (plat = " << f->atime - head->ctime
-                    << " f->atime = " << f->atime
-                    << " head->ctime = " << head->ctime
+                    << ", f->atime = " << f->atime
+                    << ", f->itime = " << f->itime
+                    << ", head->ctime = " << head->ctime
                     << ", nlat = " << f->atime - head->itime
                     << ", frag = " << (f->atime - head->atime) - (f->id - head->id) // NB: In the spirit of solving problems using ugly hacks, we compute the packet length by taking advantage of the fact that the IDs of flits within a packet are contiguous.
                     << ", src = " << head->src 
