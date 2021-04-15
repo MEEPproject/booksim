@@ -48,6 +48,8 @@ CPPFLAGS += -fPIC
 LFLAGS +=
 
 PROG := booksim
+LIBDYN := libbooksim.so
+LIBSTA := libbooksim.a
 
 # simulator source files
 CPP_SRCS = $(wildcard *.cpp) $(wildcard */*.cpp) $(wildcard */*/*.cpp) $(wildcard */*/*/*.cpp)
@@ -102,7 +104,7 @@ lib: $(OBJS)
 
 lib_static: $(OBJS)
 	echo $(subst main.o, ,$(OBJS))
-	ar rvs libbooksim.a test.o
+	ar rvs libbooksim.a $(subst main.o, ,$(OBJS))
 
 #TODO: pipeline_debug
 #TODO: track flags
@@ -113,6 +115,8 @@ clean:
 	rm -f $(CPP_DEPS)
 	rm -f $(OBJS)
 	rm -f $(PROG)
+	rm -f $(LIBDYN)
+	rm -f $(LIBSTA)
 
 distclean: clean
 	rm -f *~ */*~ */*/*~

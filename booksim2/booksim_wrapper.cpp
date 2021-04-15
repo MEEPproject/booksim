@@ -148,8 +148,9 @@ namespace Booksim
     }
 
     // XXX: carefull, we are not taking packets from the ejection queues.
+    // Safe call with a value of 1 for cycles parameter
     void
-    BooksimWrapper::RunCycles(unsigned int cycles)
+    BooksimWrapper::RunCycles(const unsigned int cycles)
     {
         _traffic_manager->RunCycles(cycles);
     }
@@ -182,10 +183,10 @@ namespace Booksim
     }
 
     // XXX: when calling _Step() _time is increased by 1.
-    void
+    /*void
     BooksimWrapper::UpdateSimTime(int cycles)
     {
         //TODO: Implement it
         //_time += cycles; should work but not tested
-    }
+    }*/
 } // namespace Booksim

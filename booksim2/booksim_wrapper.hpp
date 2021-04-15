@@ -69,7 +69,7 @@ namespace Booksim
                                long time);
 
             //! Run "cycles" internal cycles
-            void RunCycles(unsigned int cycles);
+            void RunCycles(const unsigned int cycles);
 
             //! Check if there are packets in the ejection queue.
             //! Get first packet in the consumption queue
@@ -83,7 +83,7 @@ namespace Booksim
             //between simulators. This is usefull if you want to plot the 
             //evolution of a metric regards execution time.
             //It is not used in this version.
-            void UpdateSimTime(int cycles);
+            //void UpdateSimTime(int cycles);
     };
 } // namespace Booksim
 #endif
