@@ -165,6 +165,8 @@ namespace Booksim
         Flit head = rp.first;
         Flit tail = rp.second;
         RetiredPacket p = {head.pid,
+                            head.src,
+                            head.dest,
                             head.cl,
                             head.packet_size,
                             (int)(tail.atime-head.ctime),

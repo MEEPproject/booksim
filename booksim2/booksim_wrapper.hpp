@@ -47,6 +47,8 @@ namespace Booksim
             // grows considerably, consider the creation of a STATS structure.
             struct RetiredPacket {
                 int pid; // packet ID
+                int src; // source
+                int dst; // destination
                 int c; // packet class
                 int ps; // packet size
                 int plat; // packet latency
