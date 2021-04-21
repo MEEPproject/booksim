@@ -170,4 +170,16 @@ namespace Booksim
 
         return in_flight_packets;
     }
+
+    void
+    TrafficManagerWrapper::ClearStats()
+    {
+        TrafficManager::_ClearStats();
+    }
+
+    void
+    TrafficManagerWrapper::UpdateSimTime(int cycles)
+    {
+        _time += cycles;
+    }
 } // namespace Booksim

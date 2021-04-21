@@ -1552,7 +1552,7 @@ namespace Booksim
     {
         for ( int c = 0; c < _classes; ++c ) {
             if(_measure_stats[c]) {
-                cout << "====== Traffic class " << c << " ======" << endl;
+                os << "====== Traffic class " << c << " ======" << endl;
                 _DisplayOverallClassStats(c, os);
             }
         }

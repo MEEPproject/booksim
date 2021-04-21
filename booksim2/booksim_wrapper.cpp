@@ -184,11 +184,24 @@ namespace Booksim
         return _traffic_manager->CheckInFlightPackets();
     }
 
-    // XXX: when calling _Step() _time is increased by 1.
-    /*void
+    // when calling _Step() _time is increased by 1.
+    void
     BooksimWrapper::UpdateSimTime(int cycles)
     {
-        //TODO: Implement it
-        //_time += cycles; should work but not tested
-    }*/
+        assert(!CheckInFlightPackets());
+        _traffic_manager->UpdateSimTime(cycles);
+    }
+
+    void
+    BooksimWrapper::PrintStats(std::ostream & os)
+    {
+        _traffic_manager->UpdateStats();
+        _traffic_manager->DisplayStats(os);
+    }
+
+    void
+    BooksimWrapper::ResetStats()
+    {
+        _traffic_manager->ClearStats();
+    }
 } // namespace Booksim

@@ -84,8 +84,13 @@ namespace Booksim
             //Note: use this function if you want to synchonize the timestamps
             //between simulators. This is usefull if you want to plot the 
             //evolution of a metric regards execution time.
-            //It is not used in this version.
-            //void UpdateSimTime(int cycles);
+            void UpdateSimTime(int cycles);
+
+            //! Print statistics. This function updates the statistics up to this cycle and prints them.
+            void PrintStats(std::ostream & os);
+
+            //! Reset statistics
+            void ResetStats();
     };
 } // namespace Booksim
 #endif

@@ -70,6 +70,8 @@ namespace Booksim
             pair<Flit,Flit> RetirePacket();
             void RunCycles(int cycles);
             bool CheckInFlightPackets();
+            void ClearStats();
+            void UpdateSimTime(int cycles);
     };
 } // namespace Booksim
 
