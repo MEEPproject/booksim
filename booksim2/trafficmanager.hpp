@@ -98,6 +98,9 @@ namespace Booksim
 
       // ============ Injection queues ============ 
 
+      //BSMOD: Define the number of injection queues
+      int _injection_queues;
+
       vector<vector<list<Flit *> > > _partial_packets;
 
       vector<map<int, Flit *> > _total_in_flight_flits;

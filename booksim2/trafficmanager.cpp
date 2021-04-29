@@ -196,13 +196,23 @@ namespace Booksim
 #endif
 
         // ============ Injection queues ============ 
+        //BSMOD: Retrieve and check the number of injection queues
+        _injection_queues = config.GetInt("injection_queues");
+        // The number of injection queues can be 1 or equal to the number of classes
+        assert(_injection_queues == 1 || _injection_queues == _classes);
 
-        _partial_packets.resize(_classes);
+        //BSMOD: _partial_packets.resize(_classes);
+        _partial_packets.resize(_injection_queues);
         _packet_seq_no.resize(_classes);
         _requests_outstanding.resize(_classes);
 
+        //BSMOD: new loop to initialize injection queues
+        for ( int iq = 0; iq < _injection_queues; ++iq ) {
+            _partial_packets[iq].resize(_nodes);
+        }
+
         for ( int c = 0; c < _classes; ++c ) {
-            _partial_packets[c].resize(_nodes);
+            //BSMOD: _partial_packets[c].resize(_nodes);
             _packet_seq_no[c].resize(_nodes);
             _requests_outstanding[c].resize(_nodes);
         }
@@ -845,10 +855,16 @@ namespace Booksim
     int TrafficManager::_GeneratePacket( int source, int dest, int size, int cl, 
             long time )
     {
-        //FIMXE
-        //if(_partial_packets[cl][source].size() >= _inj_size) {
-        if(_partial_packets[0][source].size() >= _inj_size) {
-            return -1;
+        //BSMOD: Evaluation of the number of injection queues is added
+        if(_injection_queues == 1) {
+            if(_partial_packets[0][source].size() >= _inj_size) {
+                return -1;
+            }
+        } else {
+            //BSMOD: original code without outer if-else
+            if(_partial_packets[cl][source].size() >= _inj_size) {
+                return -1;
+            }
         }
         assert(size > 0);
         if(dest == -1)
@@ -939,9 +955,13 @@ namespace Booksim
                     << "." << endl;
             }
 
-            // FIXME: Hardcoding only one queue for all the classes
-            //_partial_packets[cl][source].push_back(f);
-            _partial_packets[0][source].push_back(f);
+            //BSMOD: evaluation of the number of injectino queues is added
+            if(_injection_queues == 1) {
+                _partial_packets[0][source].push_back(f);
+            } else {
+                //BSMOD: original code without outer if-else
+                _partial_packets[cl][source].push_back(f);
+            }
         }
         return pid;
     }
@@ -1021,9 +1041,7 @@ namespace Booksim
 
                 BufferState * const dest_buf = _buf_states[n][subnet];
 
-                // FIXME: Hardcoding only one queue for all the classes
                 int const last_class = _last_class[n][subnet];
-                //int const last_class = 0;
 
                 int class_limit = _classes;
 
@@ -1046,9 +1064,8 @@ namespace Booksim
                 if((!f && _bypass_router) || !_bypass_router) {
                     for(int i = 1; i <= class_limit; ++i) {
 
-                        // FIXME: Hardcoding only one queue for all the classes
-                        //int const c = (last_class + i) % _classes;
-                        int const c = 0;
+                        //BSMOD: int const c = (last_class + i) % _classes;
+                        int const c = (last_class + i) % _injection_queues;
 
                         if(_subnet[c] != subnet) {
                             continue;
@@ -1062,8 +1079,11 @@ namespace Booksim
 
                         Flit * const cf = pp.front();
                         assert(cf);
-                        // FIXME: Hardcoding only one queue for all the classes
-                        //assert(cf->cl == c);
+
+                        if(_injection_queues == 1)
+                            assert(c == 0);
+                        else //BSMOD: original BookSim code was this without outer if-else
+                            assert(cf->cl == c);
 
                         if(f && (f->pri >= cf->pri)) {
                             continue;
@@ -1189,10 +1209,7 @@ namespace Booksim
 
 
                 if(f) {
-
-                    // FIXME: Hardcoding only one queue for all the classes
                     int const c = f->cl;
-                    //int const c = 0;
 
                     if(f->head) {
                         if (_lookahead_routing) {
@@ -1224,9 +1241,10 @@ namespace Booksim
 
                     _last_class[n][subnet] = c;
 
-                    // FIXME: Hardcoding only one queue for all the classes
-                    //_partial_packets[c][n].pop_front();
-                    _partial_packets[0][n].pop_front();
+                    if(_injection_queues == 1)
+                        _partial_packets[0][n].pop_front();
+                    else //BSMOD: original code without outer if-else
+                        _partial_packets[c][n].pop_front();
 
 #ifdef TRACK_FLOWS
                     ++_outstanding_credits[c][subnet][n];
@@ -1257,17 +1275,18 @@ namespace Booksim
                     f->itime = _time;
 
                     // Pass VC "back"
-                    // FIXME: Hardcoding only one queue for all the classes
-                    //if(!_partial_packets[c][n].empty() && !f->tail) {
-                    if(!_partial_packets[0][n].empty() && !f->tail) {
-                        //Flit * const nf = _partial_packets[c][n].front();
-                        Flit * const nf = _partial_packets[0][n].front();
-                        nf->vc = f->vc;
+                    if(_injection_queues == 1) {
+                        if(!_partial_packets[0][n].empty() && !f->tail) {
+                            
+                            Flit * const nf = _partial_packets[0][n].front();
+                            nf->vc = f->vc;
+                        }
+                    } else { //BSMOD: original code without outer if-else
+                        if(!_partial_packets[c][n].empty() && !f->tail) {
+                            Flit * const nf = _partial_packets[c][n].front();
+                            nf->vc = f->vc;
+                        }
                     }
-                    //if(!_partial_packets[0][n].empty() && !f->tail) {
-                    //    Flit * const nf = _partial_packets[0][n].front();
-                    //    nf->vc = f->vc;
-                    //}
 
                     if((_sim_state == warming_up) || (_sim_state == running)) {
                         ++_sent_flits[c][n];
