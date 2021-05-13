@@ -41,6 +41,14 @@ namespace Booksim
         {
             _ejection_queue[cl].resize(_nodes);
         }
+
+        // Stats printing
+        _last_print = 0;
+        _sample_period = config.GetInt( "sample_period" );
+        _sim_state = running;
+
+        //BSMOD: Retrieve and check the number of injection queues
+        _injection_queues = config.GetInt("injection_queues");
     }
 
 
@@ -80,8 +88,9 @@ namespace Booksim
     // instead of set the size of the queue I'm going to print a warning message
     // when exceeding the defined size.
     void
-    TrafficManagerWrapper::_RetirePacket(Flit * head, Flit * tail)
+    TrafficManagerWrapper::_RetirePacket(Flit * head, Flit * tail) 
     {
+        TrafficManager::_RetirePacket(head, tail);
         assert(head);
         assert(tail);
         assert(head->pid == tail->pid);
@@ -141,6 +150,28 @@ namespace Booksim
         {
             _Step();
         }
+        if(_print_csv_results && _sample_period < GetSimTime() - _last_print)
+        {
+            std::cout << " Cur PID: " << _cur_pid << std::endl;
+            UpdateStats();
+            _UpdateOverallStats();
+            //DisplayStats();
+            DisplayOverallStats();
+            _ClearStats();
+
+#ifdef TRACK_FLOWS
+            for(int subnet = 0; subnet < _subnets; ++subnet) {
+                for(int router = 0; router < _routers; ++router) {
+                    Router * const r = _router[subnet][router];
+                    for(int c = 0; c < _classes; ++c) {
+                        r->ResetFlowStats(c);
+                    }
+                }
+            }
+#endif // TRACK_FLOWS
+
+            _last_print = GetSimTime();
+        }
     }
 
 
@@ -181,5 +212,18 @@ namespace Booksim
     TrafficManagerWrapper::UpdateSimTime(int cycles)
     {
         _time += cycles;
+    }
+    
+    int
+    TrafficManagerWrapper::CheckInjectionQueue(int source, int cl)
+    {
+        int cur_occupancy;
+        //BSMOD: Evaluation of the number of injection queues is added
+        if(_injection_queues == 1) {
+            cur_occupancy = _partial_packets[0][source].size();
+        } else {
+            cur_occupancy = _partial_packets[cl][source].size();
+        }
+        return _inj_size - cur_occupancy;
     }
 } // namespace Booksim

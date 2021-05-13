@@ -1,0 +1,26 @@
+{
+    "name"          : "bypass_router_torus_hybrid",
+    "booksim_bin"   : "bin/booksim_2018_Feb_13",
+    "config_file"   : "configs/launcher_template.cfg",
+    "output_dir"    : "results/2018/bypass_router/bypass_router_torus_hybrid",
+
+    "params" : {
+        "topology"            : "torus",
+        "n"                   : "2",
+        "routing_function"    : "dim_order_dateline",
+        "router"              : "hybrid",
+        "routing_delay"       : "0",
+        "noq"                 : "0",
+        "sim_count"           : "5"
+    },
+
+    "injection_rate"  : ["0.001","1.0","0.01"],
+
+    "variables" : {
+        "traffic"             : ["uniform","tornado","transpose","bitrev"],
+        "num_vcs"             : ["2","4","6"],
+        "vc_buf_size"         : ["3","6","12"],
+        "k"                   : ["8","16"],
+        "packet_size"         : ["1","5"]
+    }
+}

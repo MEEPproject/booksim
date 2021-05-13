@@ -31,6 +31,7 @@
 #include <set>
 #include <stack>
 #include <string>
+#include <sstream>
 
 namespace Booksim
 {
@@ -54,25 +55,16 @@ namespace Booksim
       static void FreeAll();
       static int OutStanding();
 
-      string print() {
-        string str;
-        str.append("Credit id: ");
-        str.append(std::to_string(id));
-        str.append(" Head: ");
-        str.append(std::to_string(head));
-        str.append(" Tail: ");
-        str.append(std::to_string(tail));
-        str.append(" Packet size: ");
-        str.append(std::to_string(packet_size));
-        str.append(" VCs:");
+      void print(std::ostream& out) const {
+        out << " Credit ID: " << id << " Head: " << head << " Tail: " << tail
+            << " Packet size: " << packet_size << " VC: ";
         for (auto it : vc)
         {
-            str.append(" ");
-            str.append(std::to_string(it));
+            out << it << " ";
         }
-        return str;
       }
-      
+
+
     private:
 
       static stack<Credit *> _all;
@@ -82,6 +74,7 @@ namespace Booksim
       ~Credit() {}
 
     };
+
 } // namespace Booksim
 
 #endif

@@ -1,0 +1,34 @@
+{
+    "name"          : "smart_ps_1",
+    "booksim_bin"   : "bin/booksim_2020_12_30",
+    "config_file"   : "configs/launcher_template.cfg",
+    "output_dir"    : "results/thesis/5_smar/2_smar_with_vcs/",
+
+    "params" : {
+        "topology"                  : "mesh",
+        "n"                         : "2",
+        "k"                         : "8",
+        "routing_function"          : "dim_order",
+        "router"                    : "smart",
+        "smart_type"                : "classic",
+        "smart_dimensions"          : "oneD",
+        "smart_priority"            : "local",
+        "routing_delay"             : "0",
+        "noq"                       : "0",
+        "sw_allocator"              : "select",
+    	"injection_rate_uses_flits" : "1",
+        "smart_priority"            : "local",
+        "smart_max_hops"            : "7",
+        "sample_period"             : "1000",
+        "traffic"                   : "uniform",
+        "packet_size"	            : "1",
+        "vc_buf_size"               : "1",
+       	"sim_count"		    : "1"
+    },
+
+    "injection_rate"  : ["0.001","0.50","0.0125"],
+
+    "variables" : {
+        "num_vcs"                   : ["1","2","4","8"]
+    }
+}

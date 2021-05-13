@@ -1,0 +1,29 @@
+{
+    "name"          : "bypass_router_shared_buf_mesh_hybrid_optimized",
+    "booksim_bin"   : "bin/booksim_2018_Feb_22",
+    "config_file"   : "configs/launcher_template.cfg",
+    "output_dir"    : "results/2018/bypass_router_shared_buf/bypass_router_shared_buf_mesh_hybrid_optimized",
+
+    "params" : {
+        "topology"            : "mesh",
+        "n"                   : "2",
+        "routing_function"    : "dim_order",
+        "router"              : "hybrid_optimized",
+        "routing_delay"       : "0",
+        "buffer_policy"       : "shared",
+        "private_bufs"        : "-1",
+        "private_buf_size"    : "1",
+        "noq"                 : "0",
+        "sim_count"           : "5"
+    },
+
+    "injection_rate"  : ["0.001","1.0","0.01"],
+    
+    "variables" : {
+        "traffic"             : ["uniform","tornado","transpose","bitrev"],
+        "num_vcs"             : ["2","4","6"],
+        "buf_size"            : ["6"],
+        "k"                   : ["8","16"],
+        "packet_size"         : ["1","5"]
+    }
+}

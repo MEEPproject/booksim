@@ -1,0 +1,60 @@
+{
+    "plots" : {
+        "type"     : "legend",
+        "simulation_dir"   : "/home/iperez/ATC/Tools/booksim-unican/scripts/booksim_launcher/results/thesis/4_nebb/2_nebb_sing_flit_pack/",
+        "simulation_files" :    [
+            "baseline_arb_min_buf_buf_size_2.csv",
+            "baseline_arb_min_buf_buf_size_3.csv",
+            "baseline_arb_min_buf_buf_size_4.csv",
+            "hybrid_min_buf_buf_size_2.csv",
+            "hybrid_min_buf_buf_size_3.csv",
+            "hybrid_min_buf_buf_size_4.csv"
+        ],
+        "legend"    : [
+            "Baseline | 2",
+            "NEBB | 2",
+            "Baseline | 3",
+            "NEBB | 3",
+            "Baseline | 4",
+            "NEBB | 4"
+        ],
+        "disable_legend" : "1",
+        "colors"    : [
+            "'black'",
+            "colormap[0]",
+            "'grey'",
+            "colormap[1]",
+            "'silver'",
+            "colormap[2]"
+        ],
+        "linestyle" : [
+            "-",
+            "-",
+            "-",
+            "-",
+            "-",
+            "-"
+        ],
+        "markers"   : [
+            "o",
+            "*",
+            "o",
+            "*",
+            "o",
+            "*"
+        ],
+        "legend_columns" : "3",
+        "markevery" : "2",
+        "markersize" : "6",
+        "legend_title" : "Bypass mechanism | Buffer size",
+        "x-axis"   : "load",
+        "y-axis"   : "avg_plat",
+        "x-label"  : "Offered load (%)",
+        "y-label"  : "Packet lat. (Cycles)",
+        "y-min"    : "0",
+        "y-max"    : "40",
+        "x-min"    : "0.0",
+        "x-max"    : "31",
+        "figsize"  : "2.5,1.75"
+    }
+}

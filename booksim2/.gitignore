@@ -9,3 +9,5 @@ lex.yy.c
 y.tab.c
 y.tab.h
 tags
+*.zip
+*.out

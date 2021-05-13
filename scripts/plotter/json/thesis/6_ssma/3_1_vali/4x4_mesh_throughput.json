@@ -1,0 +1,103 @@
+{
+    "plots" : {
+        "type"     : "throughput",
+        "simulation_dir": "../booksim_launcher/results/papers/2020-TC/MR/3_1_vali/",
+        "simulation_files" :    [
+            [
+                "OpenSMART/smart_nebb_4x4_hpcmax_1_vc_1_buf_size_1.out",
+                "OpenSMART/smart_nebb_4x4_hpcmax_1_vc_1_buf_size_2.out",
+                "OpenSMART/smart_nebb_4x4_hpcmax_1_vc_1_buf_size_4.out",
+                "OpenSMART/smart_nebb_4x4_hpcmax_1_vc_1_buf_size_8.out",
+                "EMPTY_COLUMN",
+                "OpenSMART/smart_nebb_4x4_hpcmax_1_vc_2_buf_size_1.out",
+                "OpenSMART/smart_nebb_4x4_hpcmax_1_vc_2_buf_size_2.out",
+                "OpenSMART/smart_nebb_4x4_hpcmax_1_vc_2_buf_size_4.out",
+                "OpenSMART/smart_nebb_4x4_hpcmax_1_vc_2_buf_size_8.out",
+                "EMPTY_COLUMN",
+                "OpenSMART/smart_nebb_4x4_hpcmax_1_vc_4_buf_size_1.out",
+                "OpenSMART/smart_nebb_4x4_hpcmax_1_vc_4_buf_size_2.out",
+                "OpenSMART/smart_nebb_4x4_hpcmax_1_vc_4_buf_size_4.out",
+                "OpenSMART/smart_nebb_4x4_hpcmax_1_vc_4_buf_size_8.out",
+                "EMPTY_COLUMN",
+                "OpenSMART/smart_nebb_4x4_hpcmax_1_vc_8_buf_size_1.out",
+                "OpenSMART/smart_nebb_4x4_hpcmax_1_vc_8_buf_size_2.out",
+                "OpenSMART/smart_nebb_4x4_hpcmax_1_vc_8_buf_size_4.out",
+                "OpenSMART/smart_nebb_4x4_hpcmax_1_vc_8_buf_size_8.out"
+            ],
+            [
+                "BookSim/ssmart++_4x4_mesh_num_vcs_1_vc_buf_size_1.csv",
+                "BookSim/ssmart++_4x4_mesh_num_vcs_1_vc_buf_size_2.csv",
+                "BookSim/ssmart++_4x4_mesh_num_vcs_1_vc_buf_size_4.csv",
+                "BookSim/ssmart++_4x4_mesh_num_vcs_1_vc_buf_size_8.csv",
+                "EMPTY_COLUMN",
+                "BookSim/ssmart++_4x4_mesh_num_vcs_2_vc_buf_size_1.csv",
+                "BookSim/ssmart++_4x4_mesh_num_vcs_2_vc_buf_size_2.csv",
+                "BookSim/ssmart++_4x4_mesh_num_vcs_2_vc_buf_size_4.csv",
+                "BookSim/ssmart++_4x4_mesh_num_vcs_2_vc_buf_size_8.csv",
+                "EMPTY_COLUMN",
+                "BookSim/ssmart++_4x4_mesh_num_vcs_4_vc_buf_size_1.csv",
+                "BookSim/ssmart++_4x4_mesh_num_vcs_4_vc_buf_size_2.csv",
+                "BookSim/ssmart++_4x4_mesh_num_vcs_4_vc_buf_size_4.csv",
+                "BookSim/ssmart++_4x4_mesh_num_vcs_4_vc_buf_size_8.csv",
+                "EMPTY_COLUMN",
+                "BookSim/ssmart++_4x4_mesh_num_vcs_8_vc_buf_size_1.csv",
+                "BookSim/ssmart++_4x4_mesh_num_vcs_8_vc_buf_size_2.csv",
+                "BookSim/ssmart++_4x4_mesh_num_vcs_8_vc_buf_size_4.csv",
+                "BookSim/ssmart++_4x4_mesh_num_vcs_8_vc_buf_size_8.csv"
+            ]
+        ],
+        "legend"    : [
+            "1x1",
+            "1x2",
+            "1x4",
+            "1x8",
+            "",
+            "2x1",
+            "2x2",
+            "2x4",
+            "2x8",
+            "",
+            "4x1",
+            "4x2",
+            "4x4",
+            "4x8",
+            "",
+            "8x1",
+            "8x2",
+            "8x4",
+            "8x8"
+        ],
+        "legend_old"    : [
+            "SMART++ (Bluspec) - 1 VC",
+            "SMART++ (Bluspec) - 2 VC",
+            "",
+            "SMART++ (Bluspec) - 4 VC",
+            "SMART++ (Bluspec) - 8 VC",
+            "",
+            "SMART++ (BookSim) - 1 VC",
+            "SMART++ (BookSim) - 2 VC",
+            "",
+            "SMART++ (BookSim) - 4 VC",
+            "SMART++ (BookSim) - 8 VC"
+        ],
+        "disable_legend" : "1",
+        "configurations" : [
+            "OpenSMART",
+            "BookSim"
+        ],
+        "colors"    : [
+            "'black'",
+            "'limegreen'"
+        ],
+        "legend_outside" : "0",
+        "x-axis"   : "load",
+        "y-axis"   : "avg_accepted_flits",
+        "x-label"  : "# VCs x Buffer size",
+        "y-label"  : "Max. Throughput\n(flits/cycle/node)",
+        "y-min"    : "0",
+        "y-max"    : "0.9",
+        "x-min"    : "0.0",
+        "x-max"    : "100",
+		"figsize"  : "7,1.75"
+    }
+}

@@ -1,0 +1,31 @@
+{
+    "name"          : "cmesh_bypass_arb_router_shared_buf",
+    "booksim_bin"   : "bin/booksim_2018_Mar_20",
+    "config_file"   : "configs/launcher_template.cfg",
+    "output_dir"    : "results/2018/2018_Mar_20/bypass_router_shared_buf/cmesh_bypass_arb_router_shared_buf",
+
+    "params" : {
+        "topology"            : "cmesh",
+        "n"                   : "2",
+        "routing_function"    : "dim_order",
+        "router"              : "bypass_arb",
+        "routing_delay"       : "0",
+        "buffer_policy"       : "shared",
+        "private_bufs"        : "-1",
+        "private_buf_size"    : "1",
+        "noq"                 : "0",
+        "sim_count"           : "5"
+    },
+
+    "injection_rate"  : ["0.001","1.0","0.01"],
+
+    "variables" : {
+        "traffic"               : ["uniform"],
+        "num_vcs"               : ["2"],
+        "buf_size"              : ["15"],
+        "k"                     : ["\\{8,8\\}"],
+        "c"                     : ["\\{2,2\\}"],
+        "lookaheads_kill_flits" : ["1"],
+        "packet_size"           : ["3"]
+    }
+}

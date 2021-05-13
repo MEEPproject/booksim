@@ -1,0 +1,66 @@
+{
+    "plots" : {
+        "type"     : "legend",
+        "simulation_dir"   : "/home/iperez/ATC/Tools/booksim-unican/scripts/booksim_launcher/results/papers/2020-TC/MR/3_4_perf_scal/",
+        "simulation_files" :    [
+            "smart_8x8_mesh_num_vcs_2.csv",
+            "smart_8x8_mesh_num_vcs_4.csv",
+            "smart_8x8_mesh_num_vcs_8.csv",
+            "ssmart++_8x8_mesh_vc_buf_size_8.csv"
+        ],
+        "legend"    : [
+            "SMART 2 VCs",
+            "SMART 4 VCs",
+            "SMART 8 VCs",
+            "S-SMART++"
+        ],
+        "disable_legend" : "1",
+        "colors"    : [
+            "'black'",
+            "'grey'",
+            "'silver'",
+            "colormap[0]"
+        ],
+        "linestyle" : [
+            "-",
+            "-",
+            "-",
+            "-",
+            "-",
+            "-",
+            "-",
+            "-"
+        ],
+        "markers"   : [
+            "o",
+            "o",
+            "o",
+            "*",
+            "*",
+            "*",
+            "*"
+        ],
+        "legend_outside" : "0",
+        "legend_columns" : "4",
+        "markevery" : "4",
+        "markersize" : "6",
+        "title_old"	   : "8x8 Mesh\n, 1-flit packets, Random Uniform",
+        "x-axis"   : ["eval(87.61*64*16*0.001*$(avg_sent_flits))",
+                      "eval(73.07*64*16*0.001*$(avg_sent_flits))",
+                      "eval(51.63*64*16*0.001*$(avg_sent_flits))",
+                      "eval(75.41*64*16*0.001*$(avg_sent_flits))"
+                     ],
+        "y-axis"   : ["eval(1/(87.61*0.001)*$(avg_plat))",
+                      "eval(1/(73.07*0.001)*$(avg_plat))",
+                      "eval(1/(51.63*0.001)*$(avg_plat))",
+                      "eval(1/(75.41*0.001)*$(avg_plat))"
+        ],
+        "x-label"  : "Offered load (GB/s)",
+        "y-label"  : "Packet lat. (ns)",
+        "y-min"    : "0",
+        "y-max"    : "400",
+        "x-min"    : "0.0",
+        "x-max"    : "35",
+        "figsize"  : "(3,2)"
+    }
+}

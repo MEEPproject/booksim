@@ -1,0 +1,29 @@
+{
+    "name"          : "hybrid_mesh",
+    "booksim_bin"   : "bin/booksim_2020_11_03",
+    "config_file"   : "configs/launcher_template.cfg",
+    "output_dir"    : "results/papers/2020-TC/MR/2_1_bypa_mech_comp",
+
+    "params" : {
+        "topology"                  : "mesh",
+        "n"                         : "2",
+        "routing_function"          : "dim_order",
+        "router"                    : "hybrid",
+        "routing_delay"             : "0",
+        "noq"                       : "0",
+        "lookaheads_kill_flits"     : "1",
+        "traffic"             	    : "uniform",
+        "num_vcs"                   : "1",
+        "vc_buf_size"               : "8",
+	"packet_size"	            : "1",
+    	"injection_rate_uses_flits" : "1",
+        "sample_period"             : "1000",
+	"sim_count"		    : "1"
+    },
+
+    "injection_rate"  : ["0.001","0.95","0.0125"],
+    
+    "variables" : {
+        "k"                   : ["4","8","16"]
+    }
+}

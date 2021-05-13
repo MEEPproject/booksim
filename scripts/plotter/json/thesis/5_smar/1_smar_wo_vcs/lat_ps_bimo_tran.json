@@ -1,0 +1,77 @@
+{
+    "plots" : {
+        "type"     : "custom-multiclass",
+        "classes"  : [
+            "2",
+            "2",
+            "2",
+            "2",
+            "2",
+            "2",
+            "2"
+        ],
+        "simulation_dir"   : "/home/iperez/ATC/Tools/booksim-unican/scripts/booksim_launcher/results/thesis/5_smar/1_smar_wo_vcs/",
+        "simulation_files" :    [
+            "smart_ps_bimo_num_vcs_1_traffic_transpose.csv",
+            "smart_ps_bimo_num_vcs_2_traffic_transpose.csv",
+            "smart_ps_bimo_num_vcs_4_traffic_transpose.csv",
+            "smart_ps_bimo_num_vcs_8_traffic_transpose.csv",
+            "smartpp_ps_bimo_vc_buf_size_5_traffic_transpose.csv",
+            "smartpp_ps_bimo_vc_buf_size_10_traffic_transpose.csv",
+            "smartpp_ps_bimo_vc_buf_size_20_traffic_transpose.csv",
+            "smartpp_ps_bimo_vc_buf_size_40_traffic_transpose.csv"
+        ],
+        "legend"    : [
+            "SMART | 1x1",
+            "SMART | 2x1",
+            "SMART | 4x1",
+            "SMART | 8x1",
+            "SMART++ | 1x1",
+            "SMART++ | 1x2",
+            "SMART++ | 1x4",
+            "SMART++ | 1x8"
+        ],
+        "disable_legend" : "1",
+        "colors"    : [
+            "'black'",
+            "'grey'",
+            "'silver'",
+            "'gainsboro'",
+            "colormap[0]",
+            "colormap[1]",
+            "colormap[2]",
+            "colormap[3]"
+        ],
+        "linestyle" : [
+            "-",
+            "-",
+            "-",
+            "-",
+            "-",
+            "-",
+            "-",
+            "-"
+        ],
+        "markers"   : [
+            "o",
+            "o",
+            "o",
+            "o",
+            "*",
+            "*",
+            "*",
+            "*"
+        ],
+        "markevery" : "1",
+        "markersize" : "6",
+        "x-axis"   : "load",
+        "y-axis"   : "avg_plat",
+        "x-label"  : "Offered load (%)",
+        "y-label"  : "Packet Lat. (Cycles)",
+        "y-min"    : "0",
+        "y-max"    : "55",
+        "x-min"    : "0.0",
+        "x-max"    : "16",
+        "figsize"  : "2,1.75"
+    }
+}

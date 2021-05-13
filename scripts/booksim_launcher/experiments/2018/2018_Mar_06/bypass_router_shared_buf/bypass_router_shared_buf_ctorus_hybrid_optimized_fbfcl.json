@@ -1,0 +1,30 @@
+{
+    "name"          : "bypass_router_shared_buf_ctorus_hybrid_optimized_fbfcl",
+    "booksim_bin"   : "bin/booksim_2018_Feb_22",
+    "config_file"   : "configs/launcher_template.cfg",
+    "output_dir"    : "results/2018/bypass_router_shared_buf/bypass_router_shared_buf_ctorus_hybrid_optimized_fbfcl",
+
+    "params" : {
+        "topology"            : "ctorus",
+        "n"                   : "2",
+        "routing_function"    : "dim_order",
+        "router"              : "hybrid_optimized_fbfcl",
+        "routing_delay"       : "0",
+        "buffer_policy"       : "shared",
+        "private_bufs"        : "-1",
+        "private_buf_size"    : "1",
+        "sim_count"           : "5",
+        "noq"                 : "0"
+    },
+
+    "injection_rate"  : ["0.001","1.0","0.01"],
+    
+    "variables" : {
+        "traffic"             : ["uniform","tornado","transpose","bitrev"],
+        "num_vcs"             : ["2"],
+        "buf_size"            : ["7"],
+        "k"                   : ["\\{4,4\\}","\\{8,8\\}"],
+        "c"                   : ["\\{2,1\\}","\\{2,2\\}"],
+        "packet_size"         : ["1","5"]
+    }
+}

@@ -1,0 +1,90 @@
+{
+    "plots" : {
+        "type"     : "custom-multiclass",
+        "classes"  : [
+            "2",
+            "2",
+            "2",
+            "2",
+            "2",
+            "2",
+            "2",
+            "2",
+            "2"
+        ],
+        "simulation_dir"   : "/home/iperez/ATC/Tools/booksim-unican/scripts/booksim_launcher/results/thesis/4_nebb/1_empt_vc_vs_flow_cont/",
+        "simulation_files" :    [
+            "empty_vc_forwarding_priv_vc_buf_size_5_num_vcs_1.csv",
+            "empty_vc_forwarding_priv_vc_buf_size_5_num_vcs_2.csv",
+            "empty_vc_forwarding_priv_vc_buf_size_5_num_vcs_4.csv",
+            "empty_vc_forwarding_priv_vc_buf_size_5_num_vcs_8.csv",
+            "empty_vc_forwarding_priv_vc_buf_size_5_num_vcs_16.csv",
+            "empty_buffer_bypass_priv_vc_buf_size_5_num_vcs_1.csv",
+            "empty_buffer_bypass_priv_vc_buf_size_5_num_vcs_2.csv",
+            "empty_buffer_bypass_priv_vc_buf_size_5_num_vcs_4.csv",
+            "empty_buffer_bypass_priv_vc_buf_size_5_num_vcs_8.csv",
+            "empty_buffer_bypass_priv_vc_buf_size_5_num_vcs_16.csv"
+        ],
+        "legend"    : [
+            "EVCF | 1",
+            "EVCF | 2",
+            "EVCF | 4",
+            "EVCF | 8",
+            "EVCF | 16",
+            "EBP | 1",
+            "EBP | 2",
+            "EBP | 4",
+            "EBP | 8",
+            "EBP | 16"
+        ],
+        "disable_legend" : "1",
+        "colors"    : [
+            "'black'",
+            "'grey'",
+            "'silver'",
+            "'gainsboro'",
+            "'whitesmoke'",
+            "colormap[0]",
+            "colormap[1]",
+            "colormap[2]",
+            "colormap[3]",
+            "colormap[4]"
+        ],
+        "linestyle" : [
+            "-",
+            "-",
+            "-",
+            "-",
+            "-",
+            "-",
+            "-",
+            "-",
+            "-",
+            "-"
+        ],
+        "markers"   : [
+            "o",
+            "o",
+            "o",
+            "o",
+            "o",
+            "*",
+            "*",
+            "*",
+            "*",
+            "*"
+        ],
+        "markevery" : "2",
+        "markersize" : "6",
+        "x-axis"   : "load",
+        "y-axis"   : "avg_plat",
+        "y-axis_bypa"   : "eval((1-${bypassed_flits})*100)",
+        "x-label"  : "Offered load (%)",
+        "y-label"  : "Packet Lat. (Cycles)",
+        "y-min"    : "0",
+        "y-max"    : "40",
+        "x-min"    : "0.0",
+        "x-max"    : "40",
+        "figsize"  : "4,1.75"
+    }
+}

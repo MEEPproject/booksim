@@ -1,0 +1,36 @@
+{
+    "name"          : "hybrid_8x8_mesh",
+    "booksim_bin"   : "bin/booksim_2020_07_24",
+    "config_file"   : "configs/launcher_template.cfg",
+    "output_dir"    : "results/2020/2020_07_24/hybrid_8x8_mesh",
+
+    "params" : {
+        "topology"                  : "mesh",
+        "n"                         : "2",
+        "routing_function"          : "dim_order",
+        "router"                    : "hybrid",
+        "routing_delay"             : "0",
+        "noq"                       : "0",
+        "lookaheads_kill_flits"     : "1",
+    	"injection_rate_uses_flits" : "1",
+        "sample_period"     :   "500",
+	    "sim_count"		    : "1"
+    },
+
+    "injection_rate"  : ["0.001","0.95","0.0125"],
+    
+    "variables_old" : {
+        "k"                   : ["4","8","16"],
+        "traffic"             : ["uniform"],
+        "num_vcs"             : ["1"],
+        "vc_buf_size"         : ["5"],
+	    "packet_size"	      : ["1"]
+    },
+    "variables" : {
+        "k"                   : ["4","8","16"],
+        "traffic"             : ["uniform"],
+        "num_vcs"             : ["1"],
+        "vc_buf_size"         : ["8"],
+	    "packet_size"	      : ["1"]
+    }
+}

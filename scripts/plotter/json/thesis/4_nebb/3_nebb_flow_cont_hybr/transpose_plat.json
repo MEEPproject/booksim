@@ -1,0 +1,63 @@
+{
+    "plots" : {
+        "type"     : "custom-multiclass",
+        "classes"  : [
+            "2",
+            "2",
+            "2",
+            "2",
+            "2",
+            "2",
+            "2"
+        ],
+        "simulation_dir"   : "/home/iperez/ATC/Tools/booksim-unican/scripts/booksim_launcher/results/thesis/4_nebb/3_nebb_flow_cont_hybr/",
+        "simulation_files" :    [
+            "baseline_no_arb_traffic_transpose.csv",
+            "baseline_arb_traffic_transpose.csv",
+            "nebb_wh_traffic_transpose.csv",
+            "nebb_vct_traffic_transpose.csv",
+            "nebb_hybrid_traffic_transpose.csv"
+        ],
+        "legend"    : [
+            "Baseline w/o Arb",
+            "Baseline",
+            "NEBB-WH",
+            "NEBB-VCT",
+            "NEBB-Hybrid"
+        ],
+        "disable_legend" : "1",
+        "colors"    : [
+            "'black'",
+            "'grey'",
+            "colormap[2]",
+            "colormap[1]",
+            "colormap[0]"
+        ],
+        "linestyle" : [
+            "-",
+            "-",
+            "-",
+            "-",
+            "-"
+        ],
+        "markers"   : [
+            "o",
+            "*",
+            "^",
+            "<",
+            ">"
+        ],
+        "markevery" : "2",
+        "markersize" : "6",
+        "x-axis"   : "load",
+        "y-axis"   : "avg_plat",
+        "y-axis_bypa"   : "eval((1-${bypassed_flits})*100)",
+        "x-label"  : "Offered load (%)",
+        "y-label"  : "Buffered flits (%)",
+        "y-min"    : "0",
+        "y-max"    : "40",
+        "x-min"    : "0.0",
+        "x-max"    : "40",
+        "figsize"  : "(3,1.5)"
+    }
+}

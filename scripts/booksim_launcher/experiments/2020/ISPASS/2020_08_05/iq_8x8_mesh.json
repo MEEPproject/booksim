@@ -1,0 +1,24 @@
+{
+    "name"          : "iq_8x8_mesh",
+    "booksim_bin"   : "bin/booksim_2020_07_24",
+    "config_file"   : "configs/launcher_template.cfg",
+    "output_dir"    : "/tmp/results/iq_8x8_mesh",
+
+    "params" : {
+        "topology"                  : "mesh",
+        "n"                         : "2",
+        "k"                         : "8",
+        "routing_function"          : "dim_order",
+        "router"                    : "iq",
+        "injection_rate_uses_flits" : "1",
+        "packet_size"               : "5",
+        "traffic"                   : "uniform"
+    },
+
+    "injection_rate"  : ["0.001","0.5","0.0125"],
+
+    "variables" : {
+        "num_vcs"             : ["1","4"],
+        "vc_buf_size"         : ["5","20"]
+    }
+}

@@ -1,0 +1,59 @@
+{
+    "plots" : {
+        "type"     : "custom-multiclass",
+        "classes"  : [
+            "2",
+            "2",
+            "2",
+            "2",
+            "2",
+            "2",
+            "2"
+        ],
+        "simulation_dir"   : "/home/iperez/ATC/Tools/booksim-unican/scripts/booksim_launcher/results/thesis/4_nebb/6_sens_anal_cros_prio/",
+        "simulation_files" :    [
+            "baseline_no_arb_lookaheads_kill_flits_1.csv",
+            "baseline_arb_lookaheads_kill_flits_1.csv",
+            "hybrid_lookaheads_kill_flits_1.csv"
+        ],
+        "legend"    : [
+            "Baseline w/o Arb",
+            "Baseline",
+            "Hybrid"
+        ],
+        "disable_legend" : "1",
+        "colors"    : [
+            "'black'",
+            "'grey'",
+            "colormap[0]"
+        ],
+        "linestyle" : [
+            "-",
+            "-",
+            "-",
+            "-",
+            "-",
+            "-",
+            "-",
+            "-",
+            "-",
+            "-"
+        ],
+        "markers"   : [
+            "o",
+            "^",
+            "*"
+        ],
+        "markevery" : "2",
+        "markersize" : "6",
+        "x-axis"   : "load",
+        "y-axis"   : "eval((1-${bypassed_flits})*100)",
+        "x-label"  : "Offered load (%)",
+        "y-label"  : "Buffered flits (%)",
+        "y-min"    : "0",
+        "y-max"    : "60",
+        "x-min"    : "0.0",
+        "x-max"    : "50",
+        "figsize"  : "2.5,1.75"
+    }
+}

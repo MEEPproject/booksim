@@ -1,0 +1,82 @@
+{
+    "plots" : {
+        "type"     : "legend",
+        "simulation_dir"   : "",
+        "simulation_files" :    [
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            "",
+            ""
+        ],
+        "legend"    : [
+            "SMART | 1",
+            "SMART | 2",
+            "SMART | 4",
+            "SMART | 7",
+            "SMART | 15",
+            "S-SMART++ | 1",
+            "S-SMART++ | 2",
+            "S-SMART++ | 4",
+            "S-SMART++ | 7",
+            "S-SMART++ | 15"
+        ],
+        "disable_legend" : "0",
+        "colors"    : [
+            "'black'",
+            "'grey'",
+            "'silver'",
+            "'gainsboro'",
+            "'whitesmoke'",
+            "colormap[0]",
+            "colormap[1]",
+            "colormap[2]",
+            "colormap[3]",
+            "colormap[4]"
+        ],
+        "linestyle" : [
+            "-",
+            "-",
+            "-",
+            "-",
+            "-",
+            "-",
+            "-",
+            "-",
+            "-",
+            "-"
+        ],
+        "markers"   : [
+            "o",
+            "o",
+            "o",
+            "o",
+            "o",
+            "*",
+            "*",
+            "*",
+            "*",
+            "*"
+        ],
+        "legend_outside" : "0",
+        "legend_columns" : "2",
+        "markevery" : "4",
+        "markersize" : "6",
+        "legend_title" : "SMART$_{Type}$ | HPC$_{Max}$",
+        "title_old"	   : "8x8 Mesh\n, 1-flit packets, Random Uniform",
+        "x-axis"   : "load",
+        "y-axis"   : "avg_plat",
+        "x-label"  : "Offered load (%)",
+        "y-label"  : "Packet lat. (cycles)",
+        "y-min"    : "0",
+        "y-max"    : "45",
+        "x-min"    : "0.0",
+        "x-max"    : "25",
+        "figsize"  : "(3,1.5)"
+    }
+}

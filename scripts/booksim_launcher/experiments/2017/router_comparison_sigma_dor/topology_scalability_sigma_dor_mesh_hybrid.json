@@ -1,0 +1,25 @@
+{
+    "name"          : "topology_scalability_sigma_dor_mesh_hybrid",
+    "booksim_bin"   : "bin/booksim_13_Jul_2017",
+    "config_file"   : "configs/launcher_template.cfg",
+    "output_dir"    : "results/router_comparison/topology_scalability_sigma_dor_mesh_hybrid",
+
+    "params" : {
+        "topology"            : "mesh",
+        "n"                   : "2",
+        "routing_function"    : "sigma_dor",
+        "router"              : "hybrid",
+        "routing_delay"       : "0",
+        "noq"                 : "0"
+    },
+
+    "injection_rate"  : ["0.001","1.0","0.01"],
+
+    "variables" : {
+        "traffic"             : ["uniform","tornado","transpose","bitrev","hotspot\\(0\\)","one_to_many"],
+        "num_vcs"             : ["2"],
+        "vc_buf_size"         : ["1","3","6","12"],
+        "k"                   : ["8"],
+        "packet_size"         : ["1","5"]
+    }
+}

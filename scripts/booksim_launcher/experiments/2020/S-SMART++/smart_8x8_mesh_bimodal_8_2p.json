@@ -1,0 +1,45 @@
+{
+    "name"          : "smart_8x8_mesh_bimodal",
+    "booksim_bin"   : "bin/booksim_2020_07_24",
+    "config_file"   : "configs/launcher_template.cfg",
+    "output_dir"    : "results/2020/2020_07_24/smart_8x8_mesh_bimodal_8_2p",
+
+    "params" : {
+        "topology"                  : "smartcmesh",
+        "n"                         : "2",
+        "k"                         : "\"{8,8}\"",
+        "c"                          : "\"{1,1}\"",
+        "routing_function"          : "dim_order",
+        "router"                    : "smart",
+        "smart_priority"            : "local",
+        "routing_delay"             : "0",
+        "noq"                       : "0",
+        "sw_allocator"              : "select",
+    	"injection_rate_uses_flits" : "0",
+        "classes"             : "2",
+        "packet_size"         : "\\{1,5\\}",
+        "sample_period"     : "500",
+	    "sim_count"		    : "1"
+    },
+
+   "injection_rate_classes"  : ["0.001","0.5","0.0125",["0.8","0.2"]],
+    
+   "variables_old" : {
+        "traffic"             : ["uniform"],
+        "smart_max_hops"      : ["4","8"],
+        "num_vcs"             : ["1","2","4","8","20"],
+        "vc_buf_size"         : ["5","10","15","20","40"],
+    	"smart_priority"      : ["local"],
+	    "smart_dimensions"    : ["oneD"],
+        "smart_type"          : ["classic","not_empty_realocation","nebb_wh","nebb_vct_opt"]
+    },
+   "variables" : {
+        "traffic"             : ["uniform"],
+        "smart_max_hops"      : ["8"],
+        "num_vcs"             : ["1"],
+        "vc_buf_size"         : ["5","10","20","40"],
+    	"smart_priority"      : ["local"],
+	    "smart_dimensions"    : ["oneD"],
+        "smart_type"          : ["nebb_vct_opt"]
+    }
+}

@@ -1,0 +1,44 @@
+{
+    "name"          : "smart_8x8_c4_mesh_bimodal",
+    "booksim_bin"   : "bin/booksim_02_Dec_2018",
+    "config_file"   : "configs/launcher_template.cfg",
+    "output_dir"    : "results/2018_dec_02/smart_8x8_c4_mesh_bi_8-2",
+
+    "params" : {
+        "topology"                  : "smartcmesh",
+        "k"                         : "\"{8,8}\"",
+        "n"                         : "2",
+        "c"                          : "\"{2,2}\"",
+        "routing_function"          : "dim_order",
+        "router"                    : "smart",
+        "smart_priority"            : "local",
+        "vc_buf_size"               : "10",
+        "routing_delay"             : "0",
+        "noq"                       : "0",
+        "sw_allocator"              : "select",
+	"injection_rate_uses_flits" : "1",
+	"sim_count"	            : "5",
+        "classes"             : "2",
+        "packet_size"         : "\\{1,5\\}"
+    },
+
+   "injection_rate_classes"  : ["0.001","0.2","0.01",["0.8","0.2"]],
+    
+   "variables" : {
+        "traffic"             : ["uniform"],
+        "smart_max_hops"      : ["1"],
+        "num_vcs"             : ["1","2","3","4","8","12"],
+	"smart_priority"      : ["bypass"],
+	"smart_dimensions"    : ["oneD","n"],
+        "smart_type"          : ["classic","nebb_wh"]
+    },
+   "variables_full" : {
+        "traffic"             : ["uniform"],
+        "smart_max_hops"      : ["4","8","16"],
+        "num_vcs"             : ["1","2","3","4","8","12"],
+	"smart_priority"      : ["bypass"],
+	"smart_dimensions"    : ["oneD","n"],
+        "smart_type"          : ["classic","nebb_wh"]
+    }
+
+}

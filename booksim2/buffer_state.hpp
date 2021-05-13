@@ -277,12 +277,9 @@ namespace Booksim
 
       inline bool IsEmptyFor(int vc = 0) const {
         assert((vc >= 0) && (vc < _vcs));
-        //Display();
-        //std::cout << "IsEmptyFor vc: " << vc << " vc occupancy " << _vc_occupancy[vc] << std::endl;
         return (_vc_occupancy[vc] == 0);
       }
       inline bool IsAvailableFor( int vc = 0 ) const {
-        //std::cout << "NAME: " << FullName() << " vc " << vc << " _vcs " << _vcs << std::endl;
         assert( ( vc >= 0 ) && ( vc < _vcs ) );
         return _in_use_by[vc] < 0;
       }
@@ -290,7 +287,7 @@ namespace Booksim
         assert( ( vc >= 0 ) && ( vc < _vcs ) );
         return _in_use_by[vc];
       }
-        
+
       inline int Occupancy() const {
         return _occupancy;
       }

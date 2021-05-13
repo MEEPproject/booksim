@@ -1,0 +1,1 @@
+begin; set file /tmp/packet.log; grep "ST+LT (Spec-Bypass)" $file |  wc -l > /tmp/asd1; set a (cat /tmp/asd1); grep "ST+LT (Local)" $file | wc -l > /tmp/asd2; set b (cat /tmp/asd2); echo $a $b (math $a/$b); end

@@ -79,8 +79,62 @@ done
 #XXX: Slurm example. Set values between <>
 class Server(Host):
 
+<<<<<<< HEAD
+
+#class Arvei(Host):
+#    hostname=['fabre','gaudi','safont','florensa','arvei-72','arvei-69']
+#    name='Arvei'
+#
+#    @staticmethod
+#    def run_simulation(simulation):
+#        conf = config.get_config()
+#        batchcode=r"""#!/bin/bash
+## Launch script for clusters using gridengine
+##
+## Job name
+##$ -N %(name)s
+## Specify a shell
+##$ -S /bin/bash
+## Job standard output
+##$ -o %(name)s.out
+## Job standard error
+##$ -e %(name)s.err
+#
+## Define directories
+## Define environment variables
+#export M5_PATH=%(m5_path)s
+#export GEM5=%(gem5)s
+#
+#cd $GEM5
+#echo "Arvei running -> %(code)s"
+#{ %(code)s ; } >%(sim_out)s/%(name)s.out 2>%(sim_out)s/%(name)s.err
+#
+#"""%{"user"    : "ecastillo",
+#     "code"    : simulation.get_cmd_line(),
+#     "name"    : simulation.get_name(),
+#     "m5_path" : conf['M5_PATH'],
+#     "gem5"    : conf['GEM5'],
+#     "sim_out" : conf['SIM_OUT']}
+#
+#        f=open('gem5.job', 'w')
+#        f.write(batchcode)
+#        f.close()
+#
+#        os.system("""
+#sleep 0.5
+#qsub -l huge,node2014=1  gem5.job""")
+##qsub -l huge gem5.job""")
+##qsub  gem5.job""")
+
+
+class Altamira(Host):
+
+    hostname=['login1', 'altamira1.ifca.es']
+    name='Altamira'
+=======
     hostname=['<hostname>', '<hosname.domain>']
     name='<Name>'
+>>>>>>> d6ff6330777787563d3e728baec22a6e02f344e3
 
     @staticmethod
     def run_simulation(simulation):

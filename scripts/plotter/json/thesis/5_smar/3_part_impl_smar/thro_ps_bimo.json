@@ -1,0 +1,54 @@
+{
+    "plots" : {
+        "type"     : "custom-multiclass",
+        "classes"  : [
+            "2",
+            "2",
+            "2",
+            "2"
+        ],
+        "simulation_dir"   : "/home/iperez/ATC/Tools/booksim-unican/scripts/booksim_launcher/results/thesis/5_smar/3_part_impl_smar/",
+        "simulation_files" :    [
+            "smart_ps_bimo_num_vcs_2.csv",
+            "smart_mpb_ps_bimo_num_vcs_1_vc_buf_size_10.csv",
+            "smart_mpb_nebb_ps_bimo_num_vcs_1_vc_buf_size_10.csv",
+            "smartpp_ps_bimo_num_vcs_1_vc_buf_size_10.csv"
+        ],
+        "legend"    : [
+            "SMART | 2x1",
+            "SMART+MPB | 1x2",
+            "SMART+MPB+NEBB | 1x2",
+            "SMART++ | 1x2"
+        ],
+        "disable_legend" : "1",
+        "colors"    : [
+            "'black'",
+            "colormap[2]",
+            "colormap[1]",
+            "colormap[0]"
+        ],
+        "linestyle" : [
+            "-",
+            "-",
+            "-",
+            "-"
+        ],
+        "markers"   : [
+            "o",
+            "^",
+            "v",
+            "*"
+        ],
+        "markevery" : "4",
+        "markersize" : "6",
+        "x-axis"   : "load",
+        "y-axis"   : "eval(100*${avg_sent_flits})",
+        "x-label"  : "Offered load (%)",
+        "y-label"  : "Accepted load (%)",
+        "y-min"    : "0",
+        "y-max"    : "42",
+        "x-min"    : "0.0",
+        "x-max"    : "50",
+        "figsize"  : "3.5,1.75"
+    }
+}

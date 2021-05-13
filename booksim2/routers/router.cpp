@@ -60,10 +60,13 @@
 #include "bypass_router/smart_router.hpp" // SMART
 #include "bypass_router/smart_nebb/smart_not_empty_realocation_router.hpp" //???
 #include "bypass_router/smart_nebb/smart_nebb_wh_router.hpp" // SMART (NEBB-WH)
-#include "bypass_router/smart_nebb/smart_nebb_wh_fbfcl_router.hpp"
 #include "bypass_router/smart_nebb/smart_nebb_vct_router.hpp" // SMART (NEBB-VCT)
 #include "bypass_router/smart_nebb/smart_nebb_vct_opt_router.hpp" // SMART++
 #include "bypass_router/smart_nebb/smart_nebb_vct_opt_bubble_router.hpp"//Torus
+#include "bypass_router/smart_nebb/smart_la_router.hpp" // S-SMART
+#include "bypass_router/smart_nebb/smart_nebb_vct_la_router.hpp" // S-SMART++
+#include "bypass_router/smart_nebb/smart_nebb_vct_la_bubble_router.hpp" // S-SMART++ Torus
+#include "bypass_router/smart_nebb/smart_nebb_wh_fbfcl_router.hpp"
 #include "bypass_router/hybrid_fbfcl_router.hpp"
 ///////////////////////////////////////////////////////
 
@@ -242,6 +245,12 @@ namespace Booksim
             r = new SMARTNEBBVCTOPTRouter(config, parent, name, id, inputs, outputs);
           } else if(smart_type == "nebb_vct_opt_bubble"){
             r = new SMARTNEBBVCTOPTBubbleRouter(config, parent, name, id, inputs, outputs);
+          } else if(smart_type == "s-smart"){ // S-SMART++ 
+            r = new SMARTLARouter(config, parent, name, id, inputs, outputs);
+          } else if(smart_type == "nebb_vct_la"){ // S-SMART++ 
+            r = new SMARTNEBBVCTLARouter(config, parent, name, id, inputs, outputs);
+          } else if(smart_type == "nebb_vct_la_bubble"){ // S-SMART++ torus
+            r = new SMARTNEBBVCTLABubbleRouter(config, parent, name, id, inputs, outputs);
           }
         } else {
             cerr << "Unknown router type: " << type << endl;

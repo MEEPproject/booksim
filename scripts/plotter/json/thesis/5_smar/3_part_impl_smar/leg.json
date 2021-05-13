@@ -1,0 +1,55 @@
+{
+    "plots" : {
+        "type"     : "legend",
+        "classes"  : [
+            "2",
+            "2",
+            "2",
+            "2"
+        ],
+        "simulation_dir"   : "/home/iperez/ATC/Tools/booksim-unican/scripts/booksim_launcher/results/thesis/5_smar/3_part_impl_smar/",
+        "simulation_files" :    [
+            "smart_ps_bimo_num_vcs_2.csv",
+            "smart_mpb_ps_bimo_num_vcs_1_vc_buf_size_10.csv",
+            "smart_mpb_nebb_ps_bimo_num_vcs_1_vc_buf_size_10.csv",
+            "smartpp_ps_bimo_num_vcs_1_vc_buf_size_10.csv"
+        ],
+        "legend"    : [
+            "SMART | 2x5",
+            "SMART+MPB | 1x10",
+            "SMART+MPB+NEBB | 1x10",
+            "SMART++ | 1x10"
+        ],
+        "disable_legend" : "1",
+        "colors"    : [
+            "'black'",
+            "colormap[2]",
+            "colormap[1]",
+            "colormap[0]"
+        ],
+        "linestyle" : [
+            "-",
+            "-",
+            "-",
+            "-"
+        ],
+        "markers"   : [
+            "o",
+            "^",
+            "v",
+            "*"
+        ],
+        "legend_title" : "Mechanism | #VCs x Buffer size (flits)",
+        "markevery" : "4",
+        "markersize" : "6",
+        "x-axis"   : "load",
+        "y-axis"   : "eval(100*(1-${bypassed_flits}))",
+        "x-label"  : "Offered load (%)",
+        "y-label"  : "Accepted load (%)",
+        "y-min"    : "0",
+        "y-max"    : "55",
+        "x-min"    : "0.0",
+        "x-max"    : "50",
+        "figsize"  : "(3,1.5)"
+    }
+}

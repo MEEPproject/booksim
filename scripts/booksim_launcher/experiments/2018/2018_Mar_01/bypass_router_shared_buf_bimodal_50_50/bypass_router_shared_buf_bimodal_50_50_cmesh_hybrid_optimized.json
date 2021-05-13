@@ -1,0 +1,31 @@
+{
+    "name"          : "bypass_router_shared_buf_bimodal_50_50_cmesh_hybrid_optimized",
+    "booksim_bin"   : "bin/booksim_2018_Feb_22",
+    "config_file"   : "configs/launcher_template.cfg",
+    "output_dir"    : "results/2018/bypass_router_shared_buf_bimodal_50_50/bypass_router_shared_buf_bimodal_50_50_cmesh_hybrid_optimized",
+
+    "params" : {
+        "topology"            : "cmesh",
+        "n"                   : "2",
+        "routing_function"    : "dim_order",
+        "router"              : "hybrid_optimized",
+        "routing_delay"       : "0",
+        "buffer_policy"       : "shared",
+        "private_bufs"        : "-1",
+        "private_buf_size"    : "1",
+        "sim_count"           : "5",
+        "classes"             : "2",
+        "packet_size"         : "\\{1,5\\}",
+        "noq"                 : "0"
+    },
+
+   "injection_rate_classes"  : ["0.001","1.0","0.01",["0.5","0.5"]],
+    
+    "variables" : {
+        "traffic"             : ["uniform","tornado","transpose","bitrev"],
+        "num_vcs"             : ["2","4","6"],
+        "buf_size"            : ["5","10","15"],
+        "k"                   : ["\\{4,4\\}","\\{8,8\\}","\\{16,16\\}"],
+        "c"                   : ["\\{2,1\\}","\\{2,2\\}"]
+    }
+}

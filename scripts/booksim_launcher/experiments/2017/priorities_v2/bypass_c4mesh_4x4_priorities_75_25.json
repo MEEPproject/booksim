@@ -1,0 +1,49 @@
+{
+    "name"          : "bypass_c4mesh_4x4_priorities_75_25",
+    "booksim_bin"   : "bin/booksim_08_Jun_2017",
+    "config_file"   : "configs/launcher_template.cfg",
+    "output_dir"    : "results/bypass_c4mesh_4x4_priorities_v2",
+
+    "params" : {
+        "topology"                  : "cmesh",
+        "k"                         : "\"{4,4}\"",
+        "c"                         : "\"{2,2}\"",
+        "n"                         : "2",
+        "routing_function"          : "dor",
+        "router"                    : "bypass",
+        "num_vcs"                   : "6",
+        "vc_buf_size"               : "5",
+        "routing_delay"             : "0",
+        "noq"                       : "0",
+        "hold_switch_for_packet"    : "1",
+        "priority"                  : "class",
+        "classes"                   : "2",
+        "start_vc"                  : "\"{0,3}\"",
+        "end_vc"                    : "\"{2,5}\"",
+        "packet_size"               : "\"{5,5}\"",
+        "injection_rate_uses_flits" : "1",
+        "class_priority"            : "\"{0,100}\""
+    },
+
+    "injection_rate_classes"  : ["0.005","0.9","0.02",["0.75","0.25"]],
+
+    "variables" : {
+        "traffic"             : ["uniform"]
+    },
+
+    "plots" : {
+        "type"     : "single_yaxis_single_line_multi_class",
+        "classes"  : "2",
+        "subplots" : "traffic",
+        "lines"    : "num_vcs",
+        "xaxis"    : "avg_sent_flits",
+        "yaxis1"   : "avg_plat",
+        "xlabel"   : "Injection rate (flits/cycle/node)",
+        "ylabel1"  : "Average packet latency (cycles)",
+        "ymin1"    : "0",
+        "ymax1"    : "80",
+        "title"    : "4x4 C4-Mesh - Traffic: ",
+        "legend"   : ["Low priority packets", "High priority packets"]
+    }
+
+}

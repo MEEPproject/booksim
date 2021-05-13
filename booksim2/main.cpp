@@ -66,7 +66,7 @@ namespace Booksim
      /* the current traffic manager instance */
     TrafficManager * trafficManager = NULL;
 
-    int GetSimTime() {
+    long GetSimTime() {
       return trafficManager->getTime();
     }
 

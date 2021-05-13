@@ -164,7 +164,7 @@ namespace Booksim
         _credit_buffer.resize(_inputs); 
         _smart_credit_buffer.resize(_inputs); 
 
-        _destination_credit.resize(_outputs, -1);
+        //_destination_credit.resize(_outputs, -1);
         _destination_queue_credits.resize(_outputs);
 
         // @FIXME: this flag is intended to reduce the number of instructions
@@ -216,7 +216,7 @@ namespace Booksim
             }
             //_bypass_path[input] = false;
         }
-        
+
         for (int input = 0; input < _inputs; input++) {
             if(!_flits_to_BW[input].empty()) {
                 pair<long, Flit *> elem = _flits_to_BW[input].front();
@@ -226,11 +226,11 @@ namespace Booksim
                 }
             }
         }
-        
+
         for (int output = 0; output < _outputs; output++) {
             if (!_destination_queue_credits[output].empty()) { 
                 pair<long, Credit *> elem = _destination_queue_credits[output].front();
-                if (elem.first != GetSimTime()){
+                if (elem.first >= GetSimTime()){
                     continue;
                 }
 
@@ -250,7 +250,6 @@ namespace Booksim
                 }
 
                 _destination_queue_credits[output].pop();
-            
             }
         }
 
@@ -271,13 +270,13 @@ namespace Booksim
             }
 
             // FIXME: Chapuza para emular a bluespec
-            if (_destination_credit[output] > -1)
-            {
-                Credit * c = Credit::New();
-                c->vc.insert(_destination_credit[output]);
-                _destination_queue_credits[output].push(make_pair(GetSimTime()+1, c));
-                _destination_credit[output] = -1;
-            }
+            //if (_destination_credit[output] > -1)
+            //{
+            //    Credit * c = Credit::New();
+            //    c->vc.insert(_destination_credit[output]);
+            //    _destination_queue_credits[output].push(make_pair(GetSimTime()+1, c));
+            //    _destination_credit[output] = -1;
+            //}
 
 #ifdef PIPELINE_DEBUG
             *gWatchOut  << GetSimTime() << " | " << FullName() << " | Credit availability | Output " 
@@ -286,15 +285,15 @@ namespace Booksim
 
         }
         // ST first
-        if(_active > 0){
+        //if(_active > 0){
             SwitchTraversal();
-        }
+        //}
     }
 
     void SMARTRouter::WriteOutputs() {
-        if(_active > 0) {
+        //if(_active > 0) {
             SwitchAllocationLocal();
-        }
+        //}
         _OutputQueuing();
         _SendCredits();
     }
@@ -363,7 +362,7 @@ namespace Booksim
                 TransferFlit(input, output, f);
 #if defined(FLIT_DEBUG) || defined(PIPELINE_DEBUG)
                 if (f->watch) {
-                    *gWatchOut  << GetSimTime() << " | " << FullName() << " | ST+LT | Flit " << f->id
+                    *gWatchOut  << GetSimTime() << " | " << FullName() << " | ST+LT (Local) | Flit " << f->id
                                 << " | Input " <<  input << " | Output " << output << " | L | PID " << f-> pid
                                 << " VC: " << f->vc << std::endl;
                 }
@@ -444,7 +443,11 @@ namespace Booksim
                     //FIXME: chapuza para imitar a bluespec
                     if (output >= _outputs - gC)
                     {
-                        _destination_credit[output] = f->vc;
+                        //_destination_credit[output] = f->vc;
+                        Credit * c = Credit::New();
+                        c->id = f->id;
+                        c->vc.insert(f->vc);
+                        _destination_queue_credits[output].push(make_pair(GetSimTime()+1, c));
                     }
                 }
 
@@ -769,12 +772,12 @@ namespace Booksim
                 }
 
 #if defined(FLIT_DEBUG) || defined(PIPELINE_DEBUG)
-            if (sr.f && sr.f->watch) {
-                *gWatchOut  << GetSimTime() << " | " << FullName() << " | Starting SAG 1 | Flit " << sr.f->id
-                            << " | Input " <<  sr.input_port << " | Output " << sr.output_port << " | PID " << sr.f->pid
-                            << " Free VC: " << (FreeDestVC(sr.input_port, sr.output_port, gBeginVCs[sr.f->cl], gEndVCs[sr.f->cl], sr.f, sr.distance) > -1)
-                            << std::endl;
-            }
+                if (sr.f && sr.f->watch) {
+                    *gWatchOut  << GetSimTime() << " | " << FullName() << " | Starting SAG 1 | Flit " << sr.f->id
+                        << " | Input " <<  sr.input_port << " | Output " << sr.output_port << " | PID " << sr.f->pid
+                        << " Free VC: " << (FreeDestVC(sr.input_port, sr.output_port, gBeginVCs[sr.f->cl], gEndVCs[sr.f->cl], sr.f, sr.distance) > -1)
+                        << std::endl;
+                }
 #endif 
 
                 bool premat_stop = false;
@@ -789,14 +792,13 @@ namespace Booksim
                 }
 
 #if defined(FLIT_DEBUG) || defined(PIPELINE_DEBUG)
-            if (sr.f && sr.f->watch) {
-                *gWatchOut  << GetSimTime() << " | " << FullName() << " | Starting SAG 2 | Flit " << sr.f->id
-                            << " | Input " <<  sr.input_port << " | Output " << sr.output_port << " | PID " << sr.f->pid
-                            << " Free VC: " << (FreeDestVC(sr.input_port, sr.output_port, gBeginVCs[sr.f->cl], gEndVCs[sr.f->cl], sr.f, sr.distance) > -1)
-                            << std::endl;
-            }
+                if (sr.f && sr.f->watch) {
+                    *gWatchOut  << GetSimTime() << " | " << FullName() << " | Starting SAG 2 | Flit " << sr.f->id
+                                << " | Input " <<  sr.input_port << " | Output " << sr.output_port << " | PID " << sr.f->pid
+                                << " Free VC: " << (FreeDestVC(sr.input_port, sr.output_port, gBeginVCs[sr.f->cl], gEndVCs[sr.f->cl], sr.f, sr.distance) > -1)
+                                << std::endl;
+                }
 #endif 
-
 
                 int priority = sr.distance == 0 ? 2 : 0;
                 priority = !sr.f->head ? priority*2 : priority;
@@ -804,7 +806,6 @@ namespace Booksim
             }
         }
 
-        
         // Setup crossbar, bypass path, bw selector, send flits, send credits...
         for (int output = 0; output < _outputs; output++) {
             int expanded_input = _sag_arbiters[output]->Arbitrate();
@@ -887,7 +888,6 @@ namespace Booksim
         }
         // else if (_smart_dimensions == "n" && sr.distance > 0) // includes destination optimization: do nothing
 
-        
         int expanded_input = sr.distance == 0 ? sr.input_port * 2 : sr.input_port * 2 + 1;
 
         // Implementation of local priority
@@ -896,18 +896,31 @@ namespace Booksim
         {
             _sag_requestors[expanded_input] = sr;
         }
-        
-        
+
         return false;
     }
 
 
-    int SMARTRouter::FreeDestVC(int input, int output, int vc_start, int vc_end, Flit * f, int distance) {
 
-        for (int vc=vc_start; vc <= vc_end; vc++) {
+    int SMARTRouter::FreeDestVC(int input, int output, int vc_start, int vc_end, Flit * f, int distance) {
+        // TODO: to support dateline, which limits the range of VCs available I call to the routing funtion.
+        //       Therefore, vc_start and vc_end are ignored.
+        OutputSet nos;
+        _rf(this, f, input, &nos, false);
+        set<OutputSet::sSetElement> const route = nos.GetSet();
+        // FIXME: pick last route's output port. With adaptive algorithms this
+        // doesn't work.
+        int r_vc_start = -1;
+        int r_vc_end   = -1;
+        for (auto iter : route) {
+            r_vc_start = iter.vc_start;
+            r_vc_end   = iter.vc_end;
+        }
+
+        for (int vc=r_vc_start; vc <= r_vc_end; vc++) {
             if (f->head) {
                 if (_next_buf[output]->IsAvailableFor (vc)) {
-                    if (_next_buf[output]->AvailableFor (vc) == _next_buf[output]->LimitFor (vc)) {
+                    if (_next_buf[output]->AvailableFor (vc) == _next_buf[output]->LimitFor(vc)) {
                         return vc;
                     }
                 }
@@ -998,13 +1011,13 @@ namespace Booksim
 
                 // Iterate through all the posible routes (output ports and destinations VCs)
                 distance++;
-                for (auto iter : route) {                
+                for (auto iter : route) {
                     next_output_port = iter.output_port;
                 }
                 int next_vc_start = gBeginVCs[f->cl];
                 int next_vc_end = gEndVCs[f->cl];
                 assert(next_vc_start > -1 && next_vc_end > -1);
-                
+
                 SMARTRequest sr = {router, f, input_port, output_port, 
                                    in_channel, f->vc,
                                    next_output_port, next_vc_start,
@@ -1098,7 +1111,11 @@ namespace Booksim
             _next_buf[output]->SendingFlit(f);
             if (output >= _outputs - gC)
             {
-                _destination_credit[output] = f->vc;
+                //_destination_credit[output] = f->vc;
+                Credit * c = Credit::New();
+                c->id = f->id;
+                c->vc.insert(f->vc);
+                _destination_queue_credits[output].push(make_pair(GetSimTime()+1, c));
             }
         }
     }
@@ -1142,6 +1159,10 @@ namespace Booksim
         if ( !_credit_buffer[input].empty( ) ) {
           Credit * const c = _credit_buffer[input].front( );
           assert(c);
+#if defined(PIPELINE_DEBUG)
+          *gWatchOut  << GetSimTime() << " | " << FullName() << " | Credit Send (Local) | Flit " << c->id
+              << " | Input " <<  input << " Packet size: " << c->packet_size << std::endl;
+#endif 
           _credit_buffer[input].pop( );
           _input_credits[input]->Send( c );
           _input_credits[input]->ReadInputs();
@@ -1149,12 +1170,15 @@ namespace Booksim
         } else if (!_smart_credit_buffer[input].empty())
         {
           Credit * const c = _smart_credit_buffer[input].front( );
+#if defined(PIPELINE_DEBUG)
+          *gWatchOut  << GetSimTime() << " | " << FullName() << " | Credit Send (SMART) | Flit " << c->id
+              << " | Input " <<  input << " Packet size: " << c->packet_size << std::endl;
+#endif 
           assert(c);
           _smart_credit_buffer[input].pop( );
           _input_credits[input]->Send( c );
           _input_credits[input]->ReadInputs();
           _input_credits[input]->WriteOutputs();
-        
         }
       }
     }

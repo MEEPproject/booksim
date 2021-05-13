@@ -1,0 +1,28 @@
+{
+    "name"          : "topology_scalability_cmesh_hybrid",
+    "booksim_bin"   : "bin/booksim_09_Feb_2018",
+    "config_file"   : "configs/launcher_template.cfg",
+    "output_dir"    : "results/2018_Feb_12/router_comparison/topology_scalability_cmesh_hybrid",
+
+    "params" : {
+        "topology"            : "cmesh",
+        "n"                   : "2",
+        "routing_function"    : "dor",
+        "router"              : "hybrid",
+        "routing_delay"       : "0",
+        "noq"                 : "0",
+        "sw_allocator"        : "select",
+        "sim_count"           : "5"
+    },
+
+    "injection_rate"  : ["0.001","1.0","0.01"],
+
+    "variables" : {
+        "traffic"             : ["uniform","tornado","transpose","bitrev","hotspot\\(0\\)","one_to_many"],
+        "num_vcs"             : ["1","2","3","6"],
+        "vc_buf_size"         : ["6","12","18"],
+        "k"                   : ["4","8"],
+        "c"                   : ["2","4"],
+        "packet_size"         : ["1","5"]
+    }
+}

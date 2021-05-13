@@ -79,6 +79,9 @@ namespace Booksim
 
             //! Checks if there are flits inside the network
             bool CheckInFlightPackets();
+            
+	    //! Checks if there are flits inside the network
+            int CheckInjectionQueue(int source, int cl);
 
             //! Updates the cycle counter
             //Note: use this function if you want to synchonize the timestamps

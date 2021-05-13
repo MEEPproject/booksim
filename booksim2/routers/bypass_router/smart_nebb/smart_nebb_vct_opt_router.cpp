@@ -58,7 +58,9 @@ namespace Booksim
         _output_port_blocked.resize(_outputs, -1);
         _input_port_blocked.resize(_outputs, -1);
 
-        _destination_credit_ps.resize(_outputs, make_pair(-1,-1));
+        _bypass_blocked.resize(_inputs, false);
+
+        //_destination_credit_ps.resize(_outputs, make_pair(-1,-1));
 
     }
 
@@ -98,7 +100,7 @@ namespace Booksim
             if (!_destination_queue_credits[output].empty()) {
                 pair<long, Credit *> elem =
                     _destination_queue_credits[output].front();
-                if (elem.first != GetSimTime()){
+                if (elem.first >= GetSimTime()){
                     continue;
                 }
 
@@ -110,7 +112,8 @@ namespace Booksim
 #if defined(PIPELINE_DEBUG)
                     *gWatchOut  << GetSimTime() << " | " << FullName()
                         << " | Credit Reception | Flit " << c->id
-                        << " | Output " <<  output << std::endl;
+                        << " | Output " <<  output << " Destination queue"
+                        << std::endl;
 #endif 
                     c->Free();
                 }
@@ -124,6 +127,11 @@ namespace Booksim
 
             if (c) {
                  // FIXME: Esto es un fix muy guarro (mirar en VCManagement)
+#if defined(PIPELINE_DEBUG)
+				*gWatchOut  << GetSimTime() << " | " << FullName()
+							<< " | Credit Reception | Flit " << c->id
+							<< " | Output " <<  output << std::endl;
+#endif 
                  if (output < _outputs - gC)
                  {
                      _next_buf[output]->ProcessCredit(c, true);
@@ -137,14 +145,15 @@ namespace Booksim
             }
 
             // FIXME: Chapuza para emular a bluespec
-            if (_destination_credit_ps[output].first > -1)
-            {
-                Credit * c = Credit::New();
-                c->vc.insert(_destination_credit_ps[output].first);
-                c->packet_size = _destination_credit_ps[output].second;
-                _destination_queue_credits[output].push(make_pair(GetSimTime()+1, c));
-                _destination_credit_ps[output] = make_pair(-1,-1);
-            }
+            //if (_destination_credit_ps[output].first > -1)
+            //{
+            //    Credit * c = Credit::New();
+            //    c->id = 777;
+            //    c->vc.insert(_destination_credit_ps[output].first);
+            //    c->packet_size = _destination_credit_ps[output].second;
+            //    _destination_queue_credits[output].push(make_pair(GetSimTime()+1, c));
+            //    _destination_credit_ps[output] = make_pair(-1,-1);
+            //}
 
 #ifdef PIPELINE_DEBUG
             *gWatchOut  << GetSimTime() << " | " << FullName()
@@ -212,7 +221,23 @@ namespace Booksim
         bool local_flit_between_sal_sag = false;
 
         bool idle_vc_for_bypass = f->head ? _buf[input]->GetState(f->vc) == VC::idle : true;
-        if (_bypass_path[input] == f->id && !premat_stop && idle_vc_for_bypass && !local_flit_between_sal_sag) {
+        bool body_flit_bypass_blocked = !f->head ? _bypass_blocked[input] : true;
+
+#if defined(FLIT_DEBUG) || defined(PIPELINE_DEBUG)
+        if (f->watch) {
+            *gWatchOut  << GetSimTime() << " | " << FullName() << " | ReadFlit | Flit " << f->id
+                << " | Input " <<  input << " | Output " << -1 << " | L | PID " << f-> pid
+                << " Input VC: " << f->vc
+                << " FreeLocalBuf: " << FreeLocalBuf(input, f->vc, f->vc)
+                << " _bypass_path: " << _bypass_path[input]
+                << " !premat_stop: " << !premat_stop
+                << " idle_vc_for_bypass: " << idle_vc_for_bypass
+                << " !local_flit_between_sal_sag: " << !local_flit_between_sal_sag
+                << " body_flit_bypass_blocked: " << body_flit_bypass_blocked
+                << std::endl;
+        }
+#endif 
+        if (_bypass_path[input] == f->pid && !premat_stop && idle_vc_for_bypass && !local_flit_between_sal_sag && body_flit_bypass_blocked) {
             {
             
                 int output = _dest_output[input];
@@ -223,53 +248,61 @@ namespace Booksim
                     if(_out_queue_smart_credits.count(input) == 0) {
                       _out_queue_smart_credits.insert(make_pair(input, Credit::New()));
                     }
+
                     _out_queue_smart_credits.find(input)->second->id = f->id;
                     _out_queue_smart_credits.find(input)->second->vc.insert(in_vc);
                     _out_queue_smart_credits.find(input)->second->packet_size = f->packet_size;
 
 
 #if defined(PIPELINE_DEBUG)
-                if (f->watch) {
-                    *gWatchOut  << GetSimTime() << " | " << FullName() << " | Credit Bypass | Flit " << f->id
-                                << " | Input " <<  input << " | vc " << in_vc << " | PID " << f-> pid << std::endl;
-                }
+                    if (f->watch) {
+                        *gWatchOut  << GetSimTime() << " | " << FullName()
+                                    << " | Credit Bypass | Flit " << f->id
+                                    << " | Input " <<  input << " | vc "
+                                    << in_vc << " | PID " << f-> pid
+                                    << " | Packet size: " << f->packet_size
+                                    << std::endl;
+                    }
 #endif 
                  }
 
 
                 if (f->head) {
                     _next_buf[output]->TakeBuffer(f->vc, f->pid);
+                    // XXX: We do this flit by flit because the credits are
+                    // inmediatelly processed in Bluespec
+                    if (output >= _outputs - gC)
+                    {
+                        //_destination_credit_ps[output] = make_pair(f->vc,1);
+                        Credit * c = Credit::New();
+                        c->id = f->id;
+                        c->packet_size = f->packet_size;
+                        c->vc.insert(f->vc);
+                        _destination_queue_credits[output].push(make_pair(GetSimTime()+1, c));
+                    }
                 }
 
                 _next_buf[output]->SendingFlit(f, true); // Activate VCT flag
-                // XXX: We do this flit by flit because the credits are
-                // inmediatelly processed in Bluespec
-                if (output >= _outputs - gC)
-                {
-                    _destination_credit_ps[output] = make_pair(f->vc,1);
-                }
                 _bypass_credit[output] = true;
 
                 TransferFlit(input, output, f);
                 // Decrement credit count and prepare backwards credit
 #if defined(FLIT_DEBUG) || defined(PIPELINE_DEBUG)
                 if (f->watch) {
-                    *gWatchOut  << GetSimTime() << " | " << FullName() << " | ST+LT | Flit " << f->id
+                    *gWatchOut  << GetSimTime() << " | " << FullName() << " | ST+LT (Bypass) | Flit " << f->id
                                 << " | Input " <<  input << " | Output " << output << " | B | PID " << f-> pid << std::endl;
                 }
 #endif 
-                _bypass_path[input] = -1;
+                if (f->head) {
+                    _bypass_blocked[input] = true;
+                }
+
+                if (f->tail) {
+                    _bypass_path[input] = -1;
+                    _bypass_blocked[input] = false;
+                }
             }
         } else {
-#if defined(FLIT_DEBUG) || defined(PIPELINE_DEBUG)
-                if (f->watch) {
-                    *gWatchOut  << GetSimTime() << " | " << FullName() << " | ReadFlit | Flit " << f->id
-                                << " | Input " <<  input << " | Output " << -1 << " | L | PID " << f-> pid
-                                << " Input VC: " << f->vc
-                                << " FreeLocalBuf: " << FreeLocalBuf(input, f->vc, f->vc)
-                                << std::endl;
-                }
-#endif 
             _flits_to_BW[input].push(make_pair(GetSimTime()+1,f));
             _prematurely_stop[input*_vcs+f->vc] = f->tail ? -1 : f->pid;
         }
@@ -383,6 +416,11 @@ namespace Booksim
                 continue;
             }
 
+            // NEBB-VCT: If the bypass is blocked ignore this SSR.
+            if (_bypass_blocked[sr.input_port] && sr.distance > 0) {
+                continue;
+            }
+
             assert(sr.f->head ? _output_port_blocked[sr.output_port] == -1 : _output_port_blocked[sr.output_port] == sr.f->pid );
 
             // The expanded input is used to differenciate between local and
@@ -390,7 +428,10 @@ namespace Booksim
             int expanded_input = sr.distance == 0 ? sr.input_port * 2 : sr.input_port * 2 + 1;
 
             if (!_sag_requestors[expanded_input].f || 
-                (_sag_requestors[expanded_input].f && _sag_requestors[expanded_input].distance > sr.distance))
+                !sr.f->head ||
+                (_sag_requestors[expanded_input].f && _sag_requestors[expanded_input].distance > sr.distance &&
+                 _sag_requestors[expanded_input].f->head)
+               )
             {
 #if defined(FLIT_DEBUG) || defined(PIPELINE_DEBUG)
                 SMARTRequest prev_sr = _sag_requestors[expanded_input];
@@ -473,13 +514,13 @@ namespace Booksim
                 if (f) {
 
 #if defined(FLIT_DEBUG) || defined(PIPELINE_DEBUG)
-                if (f->watch) {
-                    *gWatchOut  << GetSimTime() << " | " << FullName() << " | Starting SAL | Flit " << f->id
-                                << " | Input " <<  input << " | Output " << -1 << " | PID " << f-> pid
-                                << " vc: " << vc << " Active? " << (cur_buf->GetState(vc) == VC::active)
-                                << " Active PID: " << cur_buf->GetActivePID(vc)
-                                << std::endl;
-                }
+                    if (f->watch) {
+                        *gWatchOut  << GetSimTime() << " | " << FullName() << " | Starting SAL | Flit " << f->id
+                            << " | Input " <<  input << " | Output " << -1 << " | PID " << f-> pid
+                            << " vc: " << vc << " Active? " << (cur_buf->GetState(vc) == VC::active)
+                            << " Active PID: " << cur_buf->GetActivePID(vc)
+                            << std::endl;
+                    }
 #endif 
 
                     // The input VC is already sending a packet, increase VC until reaching the next body flit.
@@ -514,7 +555,13 @@ namespace Booksim
                                     << " dest_vc: " << dest_vc;
                         if (dest_vc > -1) {
                             *gWatchOut
-                                    << " In use by: " << _next_buf[output]->UsedBy(dest_vc);
+                                << " In use by: " << _next_buf[output]->UsedBy(dest_vc);
+
+                        }
+                        else {
+                            *gWatchOut << " | Credit availability | "
+                                       << _next_buf[output]->Print()
+                                       << std::endl;
                         }
                         *gWatchOut  << " Output port blocked by: " << _output_port_blocked[output] 
                                     << std::endl;
@@ -670,8 +717,11 @@ namespace Booksim
         FilterSAGRequests();
 
         // Reset Bypass flags from previous cycle
-        _bypass_path.clear();
-        _bypass_path.resize(_inputs, -1);
+        for (int input = 0; input < _inputs; input++) {
+            if (!_bypass_blocked[input]) {
+                _bypass_path[input] = -1;
+            }
+        }
 
 #ifdef TRACK_FLOWS
         bool increase_allocations = false;
@@ -813,7 +863,7 @@ namespace Booksim
             if (sr.distance > 0) {
                 _dest_vc[input] = vc;
                 _dest_output[input] = output;
-                _bypass_path[input] = sr.f->id;
+                _bypass_path[input] = sr.f->pid;
             }
             else{
                 Flit * f = _sal_to_sag[input];
@@ -952,7 +1002,12 @@ namespace Booksim
         {
             if (output >= _outputs - gC)
             {
-                _destination_credit_ps[output] = make_pair(f->vc, f->packet_size);
+                //_destination_credit_ps[output] = make_pair(f->vc, f->packet_size);
+                Credit * c = Credit::New();
+                c->id = f->id;
+                c->packet_size = f->packet_size;
+                c->vc.insert(f->vc);
+                _destination_queue_credits[output].push(make_pair(GetSimTime()+1, c));
             }
         }
     }

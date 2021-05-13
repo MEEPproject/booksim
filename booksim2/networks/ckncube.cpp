@@ -89,6 +89,8 @@ namespace Booksim
         gRoutingFunctionMap["dim_order_cmesh"] = &dim_order_cknmesh;
         gRoutingFunctionMap["dor_ctorus"] = &dim_order_ckntorus;
         gRoutingFunctionMap["dim_order_ctorus"] = &dim_order_ckntorus;
+        gRoutingFunctionMap["dor_dateline_ctorus"] = &dim_order_dateline_ckntorus;
+        gRoutingFunctionMap["dim_order_dateline_ctorus"] = &dim_order_dateline_ckntorus;
     }
 
     void CKNCube::_BuildNet( const Configuration &config )
@@ -430,9 +432,10 @@ namespace Booksim
     int CKNCube::ConcentrationOffset(int node)
     {
         vector<int> node_index = NodeIndex(node);
-        int offset = 0;
-        for(int dim=0; dim < gN; dim++){
-            offset += powi(gCvector[dim],dim)*(node_index[dim] % gCvector[dim]);
+        int offset = node_index[0] % gCvector[0];
+        for(int dim=1; dim < gN; dim++){
+            //offset += powi(gCvector[dim],dim)*(node_index[dim] % gCvector[dim]);
+            offset += gCvector[dim-1]*(node_index[dim] % gCvector[dim]);
         }
         return offset;
     }
@@ -476,7 +479,7 @@ namespace Booksim
     //void dor_next_ckntorus( int cur, int dest, int in_port,
     //        int *out_port, int *partition,
     //        bool balance = false )
-    int dor_next_ckntorus( int cur, int dest)
+    int dor_next_ckntorus(int cur, int dest)
     {
         //FIXME: dateline is not supported
         int dim_left = 0;
@@ -524,6 +527,7 @@ namespace Booksim
 
     void dim_order_cknmesh( const Router *r, const Flit *f, int in_channel, OutputSet *outputs, bool inject )
     {
+        //if (!inject) cout << "Flit ID: " << f->id << " | Current router " << r->GetID()  << " | Flit destination " <<  f->dest << endl;
         int out_port = inject ? -1 : dor_next_cknmesh( r->GetID( ), f->dest, false );
         //if (!inject) cout << "Flit ID: " << f->id << " | Current router " << r->GetID()  << " | Flit destination " <<  f->dest << " | Out port " << out_port << endl;
 
@@ -558,6 +562,67 @@ namespace Booksim
         assert(((f->vc >= vcBegin) && (f->vc <= vcEnd)) || (inject && (f->vc < 0)));
 
         if ( !inject && f->watch ) {
+            *gWatchOut << GetSimTime() << " | " << r->FullName() << " | "
+                << "Adding VC range ["
+                << vcBegin << ","
+                << vcEnd << "]"
+                << " at output port " << out_port
+                << " for flit " << f->id
+                << " (input port " << in_channel
+                << ", destination " << f->dest << ")"
+                << "." << endl;
+        }
+
+        outputs->Clear();
+
+        outputs->AddRange( out_port, vcBegin, vcEnd );
+    }
+
+    //TODO: Implementation of dateline for concetrated torus
+    void dim_order_dateline_ckntorus( const Router *r, const Flit *f, int in_channel, OutputSet *outputs, bool inject )
+    {
+        int out_port = inject ? -1 : dor_next_ckntorus(r->GetID( ), f->dest);
+
+        int vcBegin = gBeginVCs[f->cl];
+        int vcEnd = gEndVCs[f->cl];
+        assert(((f->vc >= vcBegin) && (f->vc <= vcEnd)) || (inject && (f->vc < 0)));
+
+
+        //FIXME: define cur and dest
+        if(!inject && (r->GetID() != CKNCube::NodeInRouter(f->dest))) {
+            vector<int> router_cur_index = CKNCube::RouterIndex(r->GetID());
+            int router_dest = CKNCube::NodeInRouter(f->dest);
+            vector<int> router_dest_index = CKNCube::RouterIndex(router_dest);
+            int dim = out_port / 2;
+            int dir = out_port % 2;
+
+            int cur = router_cur_index[dim];
+            int dest = router_dest_index[dim];
+
+            int const available_vcs = (vcEnd - vcBegin + 1) / 2;
+            assert(available_vcs > 0);
+
+            //TODO: calculate partition
+            // Deterministic, fixed dateline between nodes k-1 and 0
+            if(((dir == 0) && (cur > dest)) ||
+               ((dir == 1) && (dest < cur))
+            ) {
+                f->ph = 1;
+            } else {
+                f->ph = 0;
+            }
+
+            if (f->ph == 0) {
+                vcEnd -= available_vcs;
+            } else if(f->ph == 1) {
+                vcBegin += available_vcs;
+            } else {
+                std::cout << "WARINING partition: -1 => cur " << cur
+                          << " dest " << dest << std::endl;
+            }
+        }
+
+        if(!inject && f->watch) {
             *gWatchOut << GetSimTime() << " | " << r->FullName() << " | "
                 << "Adding VC range ["
                 << vcBegin << ","

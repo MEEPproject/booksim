@@ -1,0 +1,35 @@
+{
+    "name"          : "smart_8x8_mesh",
+    "booksim_bin"   : "bin/booksim_2019_12_05",
+    "config_file"   : "configs/launcher_template.cfg",
+    "output_dir"    : "results/2019/2019_12_05/smart_8x8_mesh",
+
+    "params" : {
+        "topology"                  : "smartcmesh",
+        "n"                         : "2",
+        "k"                          : "\"{8,8}\"",
+        "c"                          : "\"{1,1}\"",
+        "routing_function"          : "dim_order",
+        "router"                    : "smart",
+        "smart_priority"            : "local",
+        "routing_delay"             : "0",
+        "noq"                       : "0",
+        "sw_allocator"              : "select",
+    	"injection_rate_uses_flits" : "1",
+        "sample_period"     : "500",
+       	"sim_count"		    : "1"
+    },
+
+    "injection_rate"  : ["0.001","0.5","0.0125"],
+    
+    "variables" : {
+        "traffic"             : ["uniform","bitcomp","transpose","asymmetric"],
+        "smart_max_hops"      : ["8"],
+        "num_vcs"             : ["1"],
+        "vc_buf_size"         : ["10"],
+    	"smart_priority"      : ["local"],
+	"smart_dimensions"    : ["oneD"],
+        "smart_type"          : ["nebb_vct_opt","nebb_vct_la"],
+	"packet_size"	      : ["1","5"]
+    }
+}

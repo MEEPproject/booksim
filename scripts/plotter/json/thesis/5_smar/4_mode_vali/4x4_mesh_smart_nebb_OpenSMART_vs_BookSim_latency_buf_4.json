@@ -1,0 +1,86 @@
+{
+    "plots" : {
+        "type"     : "custom-statlist",
+        "simulation_files" :    [
+			"/home/iperez/ATC/Tools/opensmart_smart++/Backend/BSV/output/2019_05_17/smart_nebb_4x4_hpcmax_4_vc_1_buf_size_4.out",
+			"/home/iperez/ATC/Tools/opensmart_smart++/Backend/BSV/output/2019_05_17/smart_nebb_4x4_hpcmax_4_vc_2_buf_size_4.out",
+			"/home/iperez/ATC/Tools/opensmart_smart++/Backend/BSV/output/2019_05_17/smart_nebb_4x4_hpcmax_4_vc_4_buf_size_4.out",
+			"/home/iperez/ATC/Tools/opensmart_smart++/Backend/BSV/output/2019_05_17/smart_nebb_4x4_hpcmax_4_vc_8_buf_size_4.out",
+			"/home/iperez/ATC/Tools/booksim-unican/scripts/booksim_launcher/results/thesis/5_smar/4_mode_vali/smartpp_ps_1_num_vcs_1_vc_buf_size_4.csv",
+			"/home/iperez/ATC/Tools/booksim-unican/scripts/booksim_launcher/results/thesis/5_smar/4_mode_vali/smartpp_ps_1_num_vcs_2_vc_buf_size_4.csv",
+			"/home/iperez/ATC/Tools/booksim-unican/scripts/booksim_launcher/results/thesis/5_smar/4_mode_vali/smartpp_ps_1_num_vcs_4_vc_buf_size_4.csv",
+			"/home/iperez/ATC/Tools/booksim-unican/scripts/booksim_launcher/results/thesis/5_smar/4_mode_vali/smartpp_ps_1_num_vcs_8_vc_buf_size_4.csv"
+        ],
+        "legend"    : [
+			"SMART++ (Bluspec) - 1 VC",
+			"SMART++ (Bluspec) - 2 VC",
+			"SMART++ (Bluspec) - 4 VC",
+			"SMART++ (Bluspec) - 8 VC",
+			"SMART++ (BookSim) - 1 VC",
+			"SMART++ (BookSim) - 2 VC",
+			"SMART++ (BookSim) - 4 VC",
+			"SMART++ (BookSim) - 8 VC"
+        ],
+        "disable_legend" : "1",
+        "colors"    : [
+            "'black'",
+            "'darkgray'",
+	    	"'gray'",
+            "'lightgray'",
+            "colormap[0]",
+            "colormap[1]",
+            "colormap[2]",
+            "colormap[3]"
+        ],
+        "linestyle" : [
+            "-",
+            "-",
+            "-",
+            "-",
+            "-",
+            "-",
+            "-",
+            "-"
+        ],
+        "markers"   : [
+            "o",
+            "o",
+            "o",
+            "o",
+            "*",
+            "*",
+            "*",
+            "*"
+        ],
+        "legend_outside" : "0",
+        "markevery"  : "2",
+		"title_old"	   : "4x4 Mesh, Buffer Size: 4\nHPCMax: 4, Single-flit traffic, Random Uniform",
+        "x-axis"   : [
+                        "load",
+                        "load",
+                        "load",
+                        "load",
+                        "load",
+                        "load",
+                        "load",
+                        "load"
+                     ],
+        "y-axis"   : [
+						"avg_plat",
+						"avg_plat",
+						"avg_plat",
+						"avg_plat",
+						"eval($(avg_plat)-3)",
+						"eval($(avg_plat)-3)",
+						"eval($(avg_plat)-3)",
+						"eval($(avg_plat)-3)"
+					],
+        "x-label"  : "Offered load (%)",
+        "y-label"  : "Packet lat. (Cycles)",
+        "y-min"    : "0",
+        "y-max"    : "25",
+        "x-min"    : "0.0",
+        "x-max"    : "100",
+		"figsize"  : "3.5,1.75"
+    }
+}

@@ -1,0 +1,42 @@
+{
+    "name"          : "topology_scalability_c4mesh_bypass",
+    "booksim_bin"   : "bin/booksim_07_Jun_2017",
+    "config_file"   : "configs/launcher_template.cfg",
+    "output_dir"    : "results/router_comparison/topology_scalability_c4mesh_bypass",
+
+    "params" : {
+        "topology"            : "cmesh",
+        "c"                   : "\\{2,2\\}",
+        "n"                   : "2",
+        "routing_function"    : "dim_order",
+        "router"              : "bypass",
+        "routing_delay"       : "0",
+        "noq"                 : "0",
+        "sw_allocator"        : "select",
+        "packet_size"         : "5",
+        "hold_switch_for_packet" : "1"
+    },
+
+    "injection_rate"  : ["0.001","1.0","0.01"],
+
+    "variables" : {
+        "traffic"             : ["uniform"],
+        "num_vcs"             : ["2","6"],
+        "vc_buf_size"         : ["6"],
+        "k"                   : ["\\{4,4\\}"]
+    },
+
+    "plots" : {
+        "type"     : "double_yaxis",
+        "subplots" : "traffic",
+        "lines"    : "num_vcs",
+        "xaxis"    : "avg_sent_flits",
+        "yaxis1"   : "avg_plat",
+        "yaxis2"   : "avg_nlat",
+        "xlabel"   : "Injection rate (flits/cycle/node)",
+        "ylabel1"  : "Average latency (cycles)",
+        "ymax1"    : "150",
+        "ymin1"    : "0"
+    }
+
+}

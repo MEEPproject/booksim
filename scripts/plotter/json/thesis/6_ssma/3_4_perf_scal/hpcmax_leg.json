@@ -1,0 +1,74 @@
+{
+    "plots" : {
+        "type"     : "legend",
+        "simulation_dir"   : "/home/iperez/ATC/Tools/booksim-unican/scripts/booksim_launcher/results/2020/2020_06_09/smart_8x8_mesh/",
+        "simulation_files" :    [
+            "smart_8x8_mesh_traffic_uniform_smart_max_hops_2_num_vcs_1_vc_buf_size_10_smart_priority_local_smart_dimensions_oneD_smart_type_nebb_vct_opt_packet_size_1.csv",
+            "smart_8x8_mesh_traffic_uniform_smart_max_hops_4_num_vcs_1_vc_buf_size_10_smart_priority_local_smart_dimensions_oneD_smart_type_nebb_vct_opt_packet_size_1.csv",
+            "smart_8x8_mesh_traffic_uniform_smart_max_hops_7_num_vcs_1_vc_buf_size_10_smart_priority_local_smart_dimensions_oneD_smart_type_nebb_vct_opt_packet_size_1.csv",
+            "smart_8x8_mesh_traffic_uniform_smart_max_hops_2_num_vcs_1_vc_buf_size_10_smart_priority_local_smart_dimensions_oneD_smart_type_nebb_vct_la_packet_size_1.csv",
+            "smart_8x8_mesh_traffic_uniform_smart_max_hops_4_num_vcs_1_vc_buf_size_10_smart_priority_local_smart_dimensions_oneD_smart_type_nebb_vct_la_packet_size_1.csv",
+            "smart_8x8_mesh_traffic_uniform_smart_max_hops_7_num_vcs_1_vc_buf_size_10_smart_priority_local_smart_dimensions_oneD_smart_type_nebb_vct_la_packet_size_1.csv"
+        ],
+        "legend"    : [
+            "SMART++ | 2 ",
+            "S-SMART++ | 2",
+            "SMART++ | 4 ",
+            "S-SMART++ | 4",
+            "SMART++ | 8 ",
+            "S-SMART++ | 8"
+        ],
+        "disable_legend" : "1",
+        "colors"    : [
+            "'black'",
+            "colormap[0]",
+            "'grey'",
+            "colormap[1]",
+            "'silver'",
+            "colormap[2]"
+        ],
+        "linestyle" : [
+            "-",
+            "-",
+            "-",
+            "-",
+            "-",
+            "-"
+        ],
+        "markers"   : [
+            "o",
+            "*",
+            "o",
+            "*",
+            "o",
+            "*"
+        ],
+        "legend_title"   : "Mechanism | $HPC_{Max}$",
+        "legend_columns" : "3",
+        "legend_outside" : "0",
+        "markevery" : "2",
+        "markersize" : "6",
+        "title_old"	   : "8x8 Mesh\n, 1-flit packets, Random Uniform",
+        "x-axis"   : ["eval(64*16*0.09364*${avg_sent_flits})",
+                      "eval(64*16*0.09364*${avg_sent_flits})",
+                      "eval(64*16*0.09364*${avg_sent_flits})",
+                      "eval(64*16*0.07541*${avg_sent_flits})",
+                      "eval(64*16*0.07541*${avg_sent_flits})",
+                      "eval(64*16*0.07541*${avg_sent_flits})"
+                    ],
+        "y-axis"   : ["eval(1/0.09364*${avg_plat})",
+                      "eval(1/0.09364*${avg_plat})",
+                      "eval(1/0.09364*${avg_plat})",
+                      "eval(1/0.07541*${avg_plat})",
+                      "eval(1/0.07541*${avg_plat})",
+                      "eval(1/0.07541*${avg_plat})"
+                    ],
+        "x-label"  : "Offered load (GB/s)",
+        "y-label"  : "Packet latency (ns)",
+        "y-min"    : "0",
+        "y-max"    : "300",
+        "x-min"    : "0.0",
+        "x-max"    : "45",
+        "figsize"  : "(5,2)"
+    }
+}

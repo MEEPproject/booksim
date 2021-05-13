@@ -64,6 +64,12 @@ namespace Booksim
           int vc_end;
           int distance;
           int hops;
+          bool last_ssr; // used to produce speculative SSRs
+          bool dim_change; // used to produce speculative SSRs
+          bool spec; // speculative SSR or not
+          bool dest_ssr; // used to bypass destination (nebb_vct_la)
+          long sag_cycle; // used by nebb_vct_la to avoid speculation SSR creation in the same cycle
+          int agregated_dist; // used by nebb_vct_la to implement the SSR-propagation based idea
         };
 
       protected:
@@ -129,13 +135,13 @@ namespace Booksim
         vector<queue<Credit *> > _smart_credit_buffer;
         // FIXME: Hack to emulate OpenSMART consumption latency
         vector<queue<pair<long, Credit *>>> _destination_queue_credits;
-        vector<int> _destination_credit;
+        //vector<int> _destination_credit;
 
         // Avoid computation when there aren't flits in the router
         unsigned int _active;
 
-        void _OutputQueuing( );
-        void _SendCredits( );
+        virtual void _OutputQueuing( );
+        virtual void _SendCredits( );
       public:
 
         SMARTRouter( Configuration const & config,

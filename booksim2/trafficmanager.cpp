@@ -92,7 +92,13 @@ namespace Booksim
         // TODO: add more bypass routers.
         
         // Used by smart_nebb_vct_opt
-        if (_router_type == "smart" && config.GetStr("smart_type") == "nebb_vct_opt") {
+        string smart_type = config.GetStr("smart_type");
+        if (_router_type == "smart" && (
+                                        smart_type == "nebb_vct_opt" ||
+                                        smart_type == "nebb_vct_la" ||
+                                        smart_type == "nebb_vct_opt_bubble" ||
+                                        smart_type == "nebb_vct_la_bubble"
+        )){
             _vct = true;
         } else {
             _vct = false;
@@ -313,10 +319,8 @@ namespace Booksim
         ostringstream header_subnet_input;
         header_subnet_input << "time,class,subnet";
         for(int router = 0; router < _routers; ++router) {
-            if(_router[0][router]){
-                for(int input = 0; input < _router[0][router]->GetInputsNumber(); ++input ) {
-                    header_subnet_input << ",r_" << router << "_i_" << input;
-                }
+            for(int input = 0; input < _router[0][router]->GetInputsNumber(); ++input ) {
+                header_subnet_input << ",r_" << router << "_i_" << input;
             }
         }
         header_subnet_input << "\n";
@@ -494,6 +498,16 @@ namespace Booksim
             _max_credits_out = new ofstream(max_credits_out_file.c_str());
         }
 #endif
+
+#ifdef PACKET_TRACE
+        string packet_trace_out = config.GetStr("packet_trace_out");
+        if(packet_trace_out == "") {
+            _packet_trace_out = NULL;
+        } else {
+            _packet_trace_out = new ofstream(packet_trace_out.c_str());
+            *_packet_trace_out << "time;source;destination;size;class\n"; 
+        }
+#endif // PACKET_TRACE
 
         // ============ Statistics ============ 
 
@@ -855,6 +869,18 @@ namespace Booksim
     int TrafficManager::_GeneratePacket( int source, int dest, int size, int cl, 
             long time )
     {
+
+#ifdef PACKET_TRACE
+        if(_packet_trace_out) {
+            *_packet_trace_out << time << ";"
+                << source << ";"
+                << dest << ";"
+                << size << ";"
+                << cl << "\n";
+        }
+
+#endif // PACKET_TRACE
+
         //BSMOD: Evaluation of the number of injection queues is added
         if(_injection_queues == 1) {
             if(_partial_packets[0][source].size() >= _inj_size) {
@@ -968,6 +994,7 @@ namespace Booksim
 
     void TrafficManager::_Step( )
     {
+
         bool flits_in_flight = false;
         for(int c = 0; c < _classes; ++c) {
             flits_in_flight |= !_total_in_flight_flits[c].empty();
@@ -1263,6 +1290,7 @@ namespace Booksim
                             << "node" << n << " | "
                             << "Injecting flit " << f->id
                             << " into subnet " << subnet
+                            << " vc " << f->vc
                             << " at time " << _time
                             << " with priority " << f->pri
                             << " (packet " << f->pid
@@ -1798,9 +1826,6 @@ namespace Booksim
 
                 for(int router = 0; router < _routers; ++router) {
                     Router * const r = _router[subnet][router];
-                    if(!r){
-                        continue;
-                    }
                     char trail_char = (router == _routers - 1) ? '\n' : ',';
 #ifdef TRACK_FLOWS
                     if(_received_flits_out) *_received_flits_out << r->GetReceivedFlits(c) << trail_char;
@@ -1808,6 +1833,7 @@ namespace Booksim
                     if(_sent_flits_out) *_sent_flits_out << r->GetSentFlits(c) << trail_char;
                     if(_outstanding_credits_out) *_outstanding_credits_out << r->GetOutstandingCredits(c) << trail_char;
                     if(_active_packets_out) *_active_packets_out << r->GetActivePackets(c) << trail_char;
+
                     int const router_inputs = r->GetInputsNumber();
                     vector<int> const stored_flits = r->GetStoredFlits(c);
                     vector<int> const received_flits = r->GetReceivedFlits(c);
@@ -1824,8 +1850,8 @@ namespace Booksim
                     _overall_stored_flits[c] += total_stored_flits;
                     _overall_received_flits[c] += total_received_flits;
 
-                    // FIXME: this only if they are SMART routers
-                    if(c == 0){
+                    // BSMOD: this only if they are SMART routers
+                    if(_router_type == "smart"){
                       _overall_sal_allocations += r->GetSwitchAllocationLocalAllocations();
                       _overall_sag_allocations += r->GetSwitchAllocationGlobalAllocations();
                     }
@@ -1923,6 +1949,10 @@ namespace Booksim
         if(_free_credits_out) *_free_credits_out << flush;
         if(_max_credits_out) *_max_credits_out << flush;
 #endif
+
+#ifdef PACKET_TRACE
+        if(_packet_trace_out) *_packet_trace_out << flush;
+#endif // PACKET_TRACE
 
     }
 

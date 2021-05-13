@@ -1,0 +1,52 @@
+{
+    "plots" : {
+        "type"     : "custom",
+        "simulation_dir"   : "/home/iperez/ATC/Tools/booksim-unican/scripts/booksim_launcher/results/papers/2020-TC/MR/2_2_ssma_traf_patt/",
+        "simulation_files" :    [
+            "smart_8x8_mesh_ps_1_traffic_bitcomp.csv",
+            "smart_8x8_mesh_ps_5_traffic_bitcomp.csv",
+            "ssmart++_8x8_mesh_ps_1_traffic_bitcomp.csv",
+            "ssmart++_8x8_mesh_ps_5_traffic_bitcomp.csv"
+        ],
+        "legend"    : [
+            "SMART ps-1",
+            "SMART ps-5",
+            "S-SMART++ ps-1",
+            "S-SMART++ ps-5"
+        ],
+        "disable_legend" : "1",
+        "colors"    : [
+            "'black'",
+            "'grey'",
+            "colormap[0]",
+            "colormap[1]"
+        ],
+        "linestyle" : [
+            "-",
+            "-",
+            "-",
+            "-",
+            "-"
+        ],
+        "markers"   : [
+            "o",
+            "*",
+            "v",
+            "^"
+        ],
+        "legend_outside" : "0",
+        "legend_columns" : "3",
+        "markevery" : "2",
+        "markersize" : "6",
+        "title_old"	   : "8x8 Mesh\n, 1-flit packets, Random Uniform",
+        "x-axis"   : "load",
+        "y-axis"   : "avg_plat",
+        "x-label"  : "Offered load (%)",
+        "y-label"  : "Packet lat. (cycles)",
+        "y-min"    : "0",
+        "y-max"    : "20",
+        "x-min"    : "0.0",
+        "x-max"    : "25",
+        "figsize"  : "2,1.75"
+    }
+}

@@ -1,0 +1,32 @@
+{
+    "name"          : "iq_mesh_8x8_no_priorities",
+    "booksim_bin"   : "bin/booksim_17_Aug_2017",
+    "config_file"   : "configs/launcher_template.cfg",
+    "output_dir"    : "results/iq_mesh_8x8_priorities_v3",
+
+    "params" : {
+        "topology"                  : "mesh",
+        "k"                         : "8",
+        "n"                         : "2",
+        "routing_function"          : "dor",
+        "router"                    : "iq",
+        "num_vcs"                   : "6",
+        "vc_buf_size"               : "5",
+        "routing_delay"             : "0",
+        "vc_allocator"              : "wavefront",
+        "sw_allocator"              : "wavefront",
+        "vc_prioritize_empty"       : "1",
+        "vc_priority_donation"      : "1",
+        "vc_shuffle_requests"       : "1",
+        "priority"                  : "class",
+        "sim_count"                 : "5",
+        "packet_size"               : "5",
+        "injection_rate_uses_flits" : "1"
+    },
+
+    "injection_rate"  : ["0.005","0.9","0.02"],
+
+    "variables" : {
+        "traffic"             : ["uniform"]
+    }
+}

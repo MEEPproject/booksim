@@ -1,0 +1,33 @@
+{
+    "name"          : "cmesh_hybrid_simplified_router_shared_buf_bimodal_80_20",
+    "booksim_bin"   : "bin/booksim_2020_04_06",
+    "config_file"   : "configs/launcher_template.cfg",
+    "output_dir"    : "results/2020/2020_04_06/bypass_router_shared_buf_bimodal_80_20/cmesh_hybrid_simplified_router_shared_buf_bimodal_80_20",
+
+    "params" : {
+        "topology"            : "cmesh",
+        "n"                   : "2",
+        "routing_function"    : "dim_order",
+        "router"              : "hybrid_simplified",
+        "routing_delay"       : "0",
+        "buffer_policy"       : "shared",
+        "private_bufs"        : "-1",
+        "private_buf_size"    : "1",
+        "noq"                 : "0",
+        "sim_count"           : "1",
+        "classes"             : "2",
+		"use_noc_latency"     : "0",
+        "packet_size"         : "\\{1,5\\}"
+    },
+
+   "injection_rate_classes"  : ["0.001","0.2","0.01",["0.8","0.2"]],
+
+    "variables" : {
+        "traffic"               : ["uniform"],
+        "num_vcs"               : ["1","2","3"],
+        "buf_size"              : ["2","3","4","8"],
+        "k"                     : ["\\{8,8\\}"],
+        "c"                     : ["\\{2,2\\}"],
+        "lookaheads_kill_flits" : ["0","1"]
+    }
+}

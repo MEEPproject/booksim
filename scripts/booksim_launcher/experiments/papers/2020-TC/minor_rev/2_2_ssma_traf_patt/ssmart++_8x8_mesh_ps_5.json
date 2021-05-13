@@ -1,0 +1,50 @@
+{
+    "name"          : "ssmart++_8x8_mesh_ps_5",
+    "booksim_bin"   : "bin/booksim_2021_03_08",
+    "config_file"   : "configs/launcher_template.cfg",
+    "output_dir"    : "results/papers/2020-TC/minor_rev/2_2_ssma_traf_patt",
+
+    "params" : {
+        "topology"                  : "mesh",
+        "n"                         : "2",
+        "k"                         : "8",
+        "routing_function"          : "dim_order",
+        "router"                    : "smart",
+        "smart_dimensions"          : "oneD",
+        "smart_max_hops"            : "7",
+        "smart_priority"            : "local",
+        "routing_delay"             : "0",
+        "noq"                       : "0",
+        "sw_allocator"              : "select",
+        "num_vcs"                   : "1",
+        "vc_buf_size"               : "40",
+        "smart_type"                : "nebb_vct_la",
+        "smart_priority"            : "local",
+        "packet_size"	            : "5",
+        "injection_rate_uses_flits" : "1",
+        "sample_period"             : "1000",
+        "sim_count"		    : "1"
+    },
+
+    "injection_rate"  : ["0.001","0.5","0.0125"],
+    
+    "variables" : {
+        "traffic"                   : ["bitcomp",
+                                       "transpose",
+				       "bitrev",
+				       "shuffle",
+				       "randperm",
+				       "uniform",
+				       "diagonal",
+				       "asymmetric",
+				       "taper64",
+				       "tornado",
+				       "neighbor",
+                                       "badperm_yarc",
+                                       "hostpot\\(\\{\\{0,7,56,63\\},\\{10,10,10,10\\}\\}\\)",
+                                       "hostpot\\(\\{\\{28,29,36,37\\},\\{10,10,10,10\\}\\}\\)",
+                                       "hostpot_uniform\\(\\{\\{0,7,56,63\\},\\{10,10,10,10\\}\\}\\)",
+                                       "hostpot_uniform\\(\\{\\{28,29,36,37\\},\\{10,10,10,10\\}\\}\\)"
+                                       ]
+    }
+}

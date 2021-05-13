@@ -1,0 +1,27 @@
+{
+    "name"          : "topology_scalability_torus_hk_fbfcl_optimized",
+    "booksim_bin"   : "bin/booksim_16_Jan_2018",
+    "config_file"   : "configs/launcher_template.cfg",
+    "output_dir"    : "results/2018/router_comparison/topology_scalability_torus_hk_fbfcl_optimized",
+
+    "params" : {
+        "topology"            : "torus",
+        "n"                   : "2",
+        "routing_function"    : "dim_order",
+        "router"              : "wh_bypass_fbfcl",
+        "routing_delay"       : "0",
+        "noq"                 : "0",
+        "sim_count"           : "5",
+        "single_flit_optimization" : "1"
+    },
+
+    "injection_rate"  : ["0.001","1.0","0.01"],
+
+    "variables" : {
+        "traffic"             : ["uniform","tornado","transpose","bitrev","hotspot\\(0\\)","one_to_many"],
+        "num_vcs"             : ["1","2","4","6"],
+        "vc_buf_size"         : ["6","12"],
+        "k"                   : ["16"],
+        "packet_size"         : ["1","5"]
+    }
+}

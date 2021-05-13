@@ -1,0 +1,28 @@
+{
+    "name"          : "bypass_arb_8x8_c4_mesh",
+    "booksim_bin"   : "bin/booksim_11_Dec_2018",
+    "config_file"   : "configs/launcher_template.cfg",
+    "output_dir"    : "results/2018_dec_11/bypass_arb_8x8_c4_mesh",
+
+    "params" : {
+        "topology"                  : "cmesh",
+        "k"                         : "\"{8,8}\"",
+        "n"                         : "2",
+        "c"                          : "\"{2,2}\"",
+        "routing_function"          : "dim_order",
+        "router"                    : "bypass_arb",
+        "vc_buf_size"               : "5",
+        "routing_delay"             : "0",
+        "noq"                       : "0",
+	"injection_rate_uses_flits" : "1"
+    },
+
+    "injection_rate"  : ["0.001","0.3","0.005"],
+
+    "variables" : {
+        "traffic"             : ["uniform"],
+        "num_vcs"             : ["1","2","3","4","8","12"],
+	"bypass_empty_vc"     : ["0","1"],
+	"packet_size"	      : ["5"]
+    }
+}

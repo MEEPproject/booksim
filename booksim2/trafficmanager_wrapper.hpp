@@ -52,12 +52,16 @@ namespace Booksim
 
             virtual void _RetirePacket(Flit * head, Flit * tail);
 
+            long _last_print;
+
+            long _sample_period;	
+
         public:
             TrafficManagerWrapper(const Configuration &config,
                                   const vector<Network *> & net
                                   );
             ~TrafficManagerWrapper();
-      
+
             // Interface to internal methods of TrafficManager
             int GeneratePacket(int source,
                                int dest,
@@ -72,6 +76,7 @@ namespace Booksim
             bool CheckInFlightPackets();
             void ClearStats();
             void UpdateSimTime(int cycles);
+            int CheckInjectionQueue(int source, int cl);
     };
 } // namespace Booksim
 

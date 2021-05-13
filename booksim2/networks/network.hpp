@@ -76,11 +76,11 @@ namespace Booksim
       virtual void _ComputeSize(const Configuration &config) = 0;
       virtual void _BuildNet(const Configuration &config) = 0;
 
-      void _Alloc();
+      virtual void _Alloc();
 
     public:
       Network(const Configuration &config, const string & name);
-      virtual ~Network();
+      ~Network();
 
       static Network *New(const Configuration &config, const string & name);
 

@@ -1,0 +1,34 @@
+{
+    "name"          : "ssmart++_8x8_mesh",
+    "booksim_bin"   : "bin/booksim_2020_11_03",
+    "config_file"   : "configs/launcher_template.cfg",
+    "output_dir"    : "results/papers/2020-TC/MR/2_1_bypa_mech_comp",
+
+    "params" : {
+        "topology"                  : "mesh",
+        "n"                         : "2",
+        "k"                         : "8",
+        "routing_function"          : "dim_order",
+        "router"                    : "smart",
+        "smart_priority"            : "local",
+        "routing_delay"             : "0",
+        "noq"                       : "0",
+        "sw_allocator"              : "select",
+    	"injection_rate_uses_flits" : "1",
+        "smart_priority"            : "local",
+        "smart_max_hops"            : "7",
+        "sample_period"             : "1000",
+        "traffic"                   : "uniform",
+        "packet_size"	            : "1",
+        "num_vcs"                   : "1",
+        "vc_buf_size"               : "8",
+        "smart_type"                : "nebb_vct_la",
+       	"sim_count"		    : "1"
+    },
+
+    "injection_rate"  : ["0.001","0.5","0.0125"],
+
+    "variables" : {
+        "smart_dimensions"    : ["oneD"]
+    }
+}

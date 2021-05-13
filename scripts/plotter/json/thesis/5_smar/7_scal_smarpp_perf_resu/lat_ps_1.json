@@ -1,0 +1,84 @@
+{
+    "plots" : {
+        "type"     : "custom-statlist",
+        "simulation_dir"   : "/home/iperez/ATC/Tools/booksim-unican/scripts/booksim_launcher/results/thesis/5_smar/1_smar_wo_vcs/",
+        "simulation_files" :    [
+            "smart_ps_1_num_vcs_1_traffic_uniform.csv",
+            "smart_ps_1_num_vcs_2_traffic_uniform.csv",
+            "smart_ps_1_num_vcs_4_traffic_uniform.csv",
+            "smart_ps_1_num_vcs_8_traffic_uniform.csv",
+            "smartpp_ps_1_vc_buf_size_1_traffic_uniform.csv",
+            "smartpp_ps_1_vc_buf_size_2_traffic_uniform.csv",
+            "smartpp_ps_1_vc_buf_size_4_traffic_uniform.csv",
+            "smartpp_ps_1_vc_buf_size_8_traffic_uniform.csv"
+        ],
+        "legend"    : [
+            "SMART | 1x1",
+            "SMART | 2x1",
+            "SMART | 4x1",
+            "SMART | 8x1",
+            "SMART++ | 1x1",
+            "SMART++ | 1x2",
+            "SMART++ | 1x4",
+            "SMART++ | 1x8"
+        ],
+        "disable_legend" : "1",
+        "colors"    : [
+            "'black'",
+            "'grey'",
+            "'silver'",
+            "'gainsboro'",
+            "colormap[0]",
+            "colormap[1]",
+            "colormap[2]",
+            "colormap[3]"
+        ],
+        "linestyle" : [
+            "-",
+            "-",
+            "-",
+            "-",
+            "-",
+            "-",
+            "-",
+            "-"
+        ],
+        "markers"   : [
+            "o",
+            "o",
+            "o",
+            "o",
+            "*",
+            "*",
+            "*",
+            "*"
+        ],
+        "x-axis"   : ["eval(122.73*64*16*0.001*$(avg_sent_flits))",
+                      "eval(102.4*64*16*0.001*$(avg_sent_flits))",
+                      "eval(83.74*64*16*0.001*$(avg_sent_flits))",
+                      "eval(57.56*64*16*0.001*$(avg_sent_flits))",
+                      "eval(122.73*64*16*0.001*$(avg_sent_flits))",
+                      "eval(122.32*64*16*0.001*$(avg_sent_flits))",
+                      "eval(123.41*64*16*0.001*$(avg_sent_flits))",
+                      "eval(118.4*64*16*0.001*$(avg_sent_flits))"
+                     ],
+        "y-axis"   : ["eval(1/(122.73*0.001)*$(avg_plat))",
+                      "eval(1/(102.4*0.001)*$(avg_plat))",
+                      "eval(1/(83.74*0.001)*$(avg_plat))",
+                      "eval(1/(57.56*0.001)*$(avg_plat))",
+                      "eval(1/(122.73*0.001)*$(avg_plat))",
+                      "eval(1/(122.32*0.001)*$(avg_plat))",
+                      "eval(1/(123.41*0.001)*$(avg_plat))",
+                      "eval(1/(118.4*0.001)*$(avg_plat))"
+        ],
+        "markevery" : "4",
+        "markersize" : "6",
+        "x-label"  : "Offered load (GB/s)",
+        "y-label"  : "Packet lat. (ns)",
+        "y-min"    : "0",
+        "y-max"    : "350",
+        "x-min"    : "0.0",
+        "x-max"    : "55",
+        "figsize"  : "2.5,1.75"
+    }
+}

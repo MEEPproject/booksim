@@ -1,0 +1,87 @@
+{
+    "plots" : {
+        "type"     : "custom-multiclass",
+        "classes"  : [
+            "2",
+            "2",
+            "2",
+            "2",
+            "2",
+            "2",
+            "2"
+        ],
+        "simulation_dir"   : "/home/iperez/ATC/Tools/booksim-unican/scripts/booksim_launcher/results/thesis/4_nebb/5_sens_anal_buff_dept/",
+        "simulation_files" :    [
+            "baseline_arb_shared_buf_size_10_num_vcs_1.csv",
+            "baseline_arb_shared_buf_size_10_num_vcs_2.csv",
+            "baseline_arb_shared_buf_size_10_num_vcs_4.csv",
+            "baseline_arb_shared_buf_size_10_num_vcs_6.csv",
+            "baseline_arb_shared_buf_size_10_num_vcs_8.csv",
+            "hybrid_shared_buf_size_10_num_vcs_1.csv",
+            "hybrid_shared_buf_size_10_num_vcs_2.csv",
+            "hybrid_shared_buf_size_10_num_vcs_4.csv",
+            "hybrid_shared_buf_size_10_num_vcs_6.csv",
+            "hybrid_shared_buf_size_10_num_vcs_8.csv"
+        ],
+        "legend"    : [
+            "Baseline | 1",
+            "Baseline | 2",
+            "Baseline | 4",
+            "Baseline | 6",
+            "Baseline | 8",
+            "Hybrid | 1",
+            "Hybrid | 2",
+            "Hybrid | 4",
+            "Hybrid | 6",
+            "Hybrid | 8"
+        ],
+        "disable_legend" : "1",
+        "colors"    : [
+            "'black'",
+            "'grey'",
+            "'silver'",
+            "'gainsboro'",
+            "'whitesmoke'",
+            "colormap[0]",
+            "colormap[1]",
+            "colormap[2]",
+            "colormap[3]",
+            "colormap[4]"
+        ],
+        "linestyle" : [
+            "-",
+            "-",
+            "-",
+            "-",
+            "-",
+            "-",
+            "-",
+            "-",
+            "-",
+            "-"
+        ],
+        "markers"   : [
+            "o",
+            "o",
+            "o",
+            "o",
+            "o",
+            "*",
+            "*",
+            "*",
+            "*",
+            "*"
+        ],
+        "markevery" : "4",
+        "markersize" : "6",
+        "x-axis"   : "load",
+        "y-axis"   : "eval((1-${bypassed_flits})*100)",
+        "x-label"  : "Offered load (%)",
+        "y-label"  : "Buffered flits (%)",
+        "y-min"    : "0",
+        "y-max"    : "55",
+        "x-min"    : "0.0",
+        "x-max"    : "50",
+        "figsize"  : "4,1.75"
+    }
+}

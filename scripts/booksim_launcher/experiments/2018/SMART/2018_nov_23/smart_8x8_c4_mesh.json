@@ -1,0 +1,48 @@
+{
+    "name"          : "smart_8x8_c4_mesh",
+    "booksim_bin"   : "bin/booksim_23_Nov_2018",
+    "config_file"   : "configs/launcher_template.cfg",
+    "output_dir"    : "results/2018_nov_23/smart_8x8_c4_mesh",
+
+    "params" : {
+        "topology"                  : "smartcmesh",
+        "k"                         : "\"{8,8}\"",
+        "n"                         : "2",
+        "c"                          : "\"{2,2}\"",
+        "routing_function"          : "dim_order",
+        "router"                    : "smart",
+        "smart_priority"            : "local",
+        "vc_buf_size"               : "5",
+        "routing_delay"             : "0",
+        "noq"                       : "0",
+        "sw_allocator"              : "select",
+	"injection_rate_uses_flits" : "1"
+    },
+
+    "injection_rate"  : ["0.001","0.3","0.005"],
+
+    "variables" : {
+        "traffic"             : ["uniform"],
+        "smart_max_hops"      : ["4","8","16"],
+        "num_vcs"             : ["1","2","3","4","8","12"],
+	"smart_priority"      : ["local","bypass"],
+	"smart_dimensions"    : ["oneD","n"],
+        "smart_type"          : ["classic","nebb_wh"],
+	"packet_size"	      : ["1","5"]
+    },
+
+    "plots" : {
+        "type"     : "single_yaxis_single_line_multi_class",
+        "classes"  : "2",
+        "subplots" : "traffic",
+        "xaxis"    : "avg_accepted_flits",
+        "yaxis1"   : "avg_plat",
+        "xlabel"   : "Injection rate (flits/cycle/node)",
+        "ylabel1"  : "Average packet latency (cycles)",
+        "ymin1"    : "0",
+        "ymax1"    : "80",
+        "title"    : "8x8 Mesh - Traffic: ",
+        "legend"   : ["Low priority packets", "High priority packets"]
+    }
+
+}

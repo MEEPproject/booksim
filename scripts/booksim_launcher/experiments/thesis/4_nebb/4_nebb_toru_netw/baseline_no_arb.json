@@ -1,0 +1,37 @@
+{
+    "name"          : "baseline_no_arb",
+    "booksim_bin"   : "bin/booksim_2020_12_26",
+    "config_file"   : "configs/launcher_template.cfg",
+    "output_dir"    : "results/thesis/4_nebb/4_nebb_toru_netw",
+
+    "params" : {
+        "topology"              : "torus",
+        "k"                     : "8",
+        "n"                     : "2",
+        "routing_function"      : "dim_order",
+        "router"                : "bypass_no_arb_fbfcl",
+        "noq"                   : "0",
+        "routing_delay"         : "0",
+        "buffer_policy"         : "shared",
+        "private_bufs"          : "-1",
+        "private_buf_size"      : "1",
+        "lookaheads_kill_flits" : "1",
+        "bypass_empty_vc"       : "0",
+        "sim_count"             : "1",
+        "classes"               : "2",
+        "buf_size"              : "12",
+        "num_vcs"               : "2",
+        "packet_size"           : "\\{1,5\\}"
+    },
+
+    "injection_rate_classes"  : ["0.001","1.0","0.0125",["0.8","0.2"]],
+
+    "variables" : {
+        "traffic"               : ["uniform",
+                                   "bitcomp",
+                                   "transpose",
+                                   "tornado",
+                                   "hotspot\\(0,15,56,63\\)",
+                                   "asymmetric"]
+    }
+}

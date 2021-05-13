@@ -1,0 +1,29 @@
+{
+    "name"          : "baseline_arb_private",
+    "booksim_bin"   : "bin/booksim_2020_12_26",
+    "config_file"   : "configs/launcher_template.cfg",
+    "output_dir"    : "results/thesis/4_nebb/5_sens_anal_buff_dept",
+
+    "params" : {
+        "topology"              : "mesh",
+        "k"                     : "8",
+        "n"                     : "2",
+        "routing_function"      : "dim_order",
+        "router"                : "bypass_arb",
+        "noq"                   : "0",
+        "routing_delay"         : "0",
+        "lookaheads_kill_flits" : "1",
+        "bypass_empty_vc"       : "0",
+        "sim_count"             : "1",
+        "traffic"               : "uniform",
+        "classes"               : "2",
+        "packet_size"           : "\\{1,5\\}"
+    },
+
+    "injection_rate_classes"  : ["0.001","0.5","0.0125",["0.8","0.2"]],
+
+    "variables" : {
+        "vc_buf_size"           : ["5","10"],
+        "num_vcs"               : ["1","2","4","6","8"]
+    }
+}

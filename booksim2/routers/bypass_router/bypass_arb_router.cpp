@@ -240,6 +240,16 @@ namespace Booksim
                     *gWatchOut << "Cycle: " << GetSimTime() << " | Router: " << FullName() << " | Stage: ReceiveFlits | Flit: " << f->id << " pid " << f->pid << " head? " << f->head << " tail? " << f->tail << " | Input: " << input << " VC: " << f->vc << " | Bypass? " << _bypass_path[input] << std::endl;
                 }
 #endif
+		if(f->ctime + 1000 < GetSimTime())
+		{
+		    std::cerr << "Warning: Cycle: " << GetSimTime()
+			      << " | Router: " << FullName()
+			      << " Flit: " << f->id
+			      << " PID: " << f->pid
+			      << " _ReceiveFlits"
+			      << std::endl;
+		}
+
                 // Is the bypass path ready?
                 if(_bypass_path[input])
                 {
@@ -385,6 +395,16 @@ namespace Booksim
                 *gWatchOut << "Cycle: " << GetSimTime() << " | Router: " << FullName() << " | Stage: SwitchTraversal | Flit: " << f->id << " pid " << f->pid << " head? " << f->head << " tail? " << f->tail << " | Output: " << output << std::endl;
             }
 #endif
+	    if(f->ctime + 1000 < GetSimTime())
+	    {
+	        std::cerr << "Warning: Cycle: " << GetSimTime()
+	    	      << " | Router: " << FullName()
+	    	      << " Flit: " << f->id
+	    	      << " PID: " << f->pid
+	    	      << " _SwitchTraversal"
+		      << " Output: " << output
+	    	      << std::endl;
+	    }
 
             // Store the flit in the output buffer (It should have slot only for one flit)
             _output_buffer[output].push(f);
@@ -414,6 +434,15 @@ namespace Booksim
             
             //assert(cur_buf->GetState(in_vc) == VC::sa_output || cur_buf->GetState(in_vc) == VC::active);
            
+	    if(f->ctime + 1000 < GetSimTime())
+	    {
+	        std::cerr << "Warning: Cycle: " << GetSimTime()
+	    	      << " | Router: " << FullName()
+	    	      << " Flit: " << f->id
+	    	      << " PID: " << f->pid
+	    	      << " _SwitchArbiterOutput"
+	    	      << std::endl;
+	    }
 
             // FIMXE: To improve performance we should allow interleaving between flits of different flits.
             
@@ -440,6 +469,16 @@ namespace Booksim
                     
                     int dest_vc = dest_buf->GetAvailVCMinOccupancy(iter.vc_start, iter.vc_end);
 
+                    // FIXME: Seems that GetAvailVCMinOccupancy is not selecting an Empty VC
+                    // The following code do that when _empty_vc is enabled
+                    if (_empty_vc) {
+                        for (int iter_test=iter.vc_start; iter_test <= iter.vc_end; iter_test++) {
+                            if (dest_buf->IsEmptyFor(iter_test)) {
+                                dest_vc = iter_test;
+                            }
+                        }
+                    }
+
 #ifdef FLIT_DEBUG
                     if(f->watch) {
                         *gWatchOut  << "(line " << __LINE__ << ") | Cycle: " << GetSimTime() << " Name: " << FullName() << " SA-O | Flit: "
@@ -462,8 +501,8 @@ namespace Booksim
                         }
                         //assert(cur_buf->GetState(in_vc) == VC::sa_output);
 #endif
-                        //if(dest_buf->IsAvailableFor(dest_vc) && dest_buf->AvailableFor(dest_vc) > 0)
-                        bool available_space = _empty_vc ? dest_buf->AvailableFor(dest_vc) == dest_buf->LimitFor(dest_vc) : dest_buf->AvailableFor(dest_vc) > 0;
+                        //bool available_space = _empty_vc ? dest_buf->AvailableFor(dest_vc) == dest_buf->LimitFor(dest_vc) : dest_buf->AvailableFor(dest_vc) > 0;
+                        bool available_space = _empty_vc ? dest_buf->IsEmptyFor(dest_vc) : dest_buf->AvailableFor(dest_vc) > 0;
                         if(dest_buf->IsAvailableFor(dest_vc) && available_space)
                         {
 
@@ -677,6 +716,16 @@ namespace Booksim
                     BufferState const * const dest_buf = _next_buf[route_iter.output_port];
 
                     int dest_vc = dest_buf->GetAvailVCMinOccupancy(route_iter.vc_start, route_iter.vc_end);
+                    
+                    // FIXME: Seems that GetAvailVCMinOccupancy is not selecting an Empty VC
+                    // The following code do that when _empty_vc is enabled
+                    if (_empty_vc) {
+                        for (int iter_test=route_iter.vc_start; iter_test <= route_iter.vc_end; iter_test++) {
+                            if (dest_buf->IsEmptyFor(iter_test)) {
+                                dest_vc = iter_test;
+                            }
+                        }
+                    }
 
 #ifdef LOOKAHEAD_DEBUG
                     if(la->watch) {
@@ -693,7 +742,8 @@ namespace Booksim
 
                     //for(int dest_vc = route_iter.vc_start; dest_vc <= route_iter.vc_end; dest_vc++)
                     //{
-                        bool available_space = _empty_vc ? dest_buf->AvailableFor(dest_vc) == dest_buf->LimitFor(dest_vc) : dest_buf->AvailableFor(dest_vc) > 0;
+                        //bool available_space = _empty_vc ? dest_buf->AvailableFor(dest_vc) == dest_buf->LimitFor(dest_vc) : dest_buf->AvailableFor(dest_vc) > 0;
+                        bool available_space = _empty_vc ? dest_buf->IsEmptyFor(dest_vc) : dest_buf->AvailableFor(dest_vc) > 0;
                         //if(dest_buf->IsAvailableFor(dest_vc) && dest_buf->AvailableFor(dest_vc) > 0)
                         if(dest_buf->IsAvailableFor(dest_vc) && available_space)
                         {
@@ -1223,6 +1273,16 @@ namespace Booksim
             //{
             //    _switch_arbiter_input[input]->Clear();
             //}
+	
+	    if(f->ctime + 1000 < GetSimTime())
+	    {
+	        std::cerr << "Warning: Cycle: " << GetSimTime()
+	    	      << " | Router: " << FullName()
+	    	      << " Flit: " << f->id
+	    	      << " PID: " << f->pid
+	    	      << " _SwitchArbiterInput"
+	    	      << std::endl;
+	    }
 
 #ifdef FLIT_DEBUG
             if(f->watch)

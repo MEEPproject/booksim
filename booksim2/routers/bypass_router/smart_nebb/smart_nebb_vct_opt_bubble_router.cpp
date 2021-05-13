@@ -93,7 +93,7 @@ namespace Booksim
         // Bubble has to be evaluated on dimension changes
         bool dimension_change = false;
         //if ((output < _outputs -gC) && input/2 != output/2) {
-        if (input/2 != output/2) {
+        if (input/2 != output/2 && output < _outputs - gC) {
             dimension_change = true;
         }
 

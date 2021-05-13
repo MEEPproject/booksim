@@ -29,7 +29,7 @@
 LEX = flex
 YACC   = bison -y
 
-DEFINE = -DTRACK_FLOWS=1 -DTRACK_STALLS=1
+#DEFINE = -DTRACK_FLOWS=1 -DTRACK_STALLS=1
 DEFINE += -DDEADLOCK_ABORT=1
 #DEFINE += -DFLIT_DEBUG=1 -DLOOKAHEAD_DEBUG=1 # Incompatible with -DTRACK_*
 #DEFINE += -DCREDIT_DEBUG=1
@@ -37,14 +37,16 @@ DEFINE += -DDEADLOCK_ABORT=1
 #DEFINE += -DPIPELINE_DEBUG=1
 #DEFINE += -DDEBUG_FLATFLY=1
 #DEFINE += -DTOPOLOGY_DEBUG=1
+#DEFINE += -DPACKET_TRACE=1
 
 INCPATH = -I. -Iarbiters -Iallocators -Irouters -Inetworks -Ipower
 CPPFLAGS += -Wall $(INCPATH) $(DEFINE)
 # @FIXME: remove -fpermissive 
 CPPFLAGS += -O3 -std=c++11
-#CPPFLAGS += -std=c++11 -fno-inline-functions -O0 -fpermissive
+#CPPFLAGS += -std=c++11 -fno-inline-functions -O0
 #CPPFLAGS += -g
-CPPFLAGS += -fPIC
+# //BSMOD: Enable this option if dynamic library compilation is needed
+#CPPFLAGS += -fPIC
 LFLAGS +=
 
 PROG := booksim
@@ -100,7 +102,7 @@ $(NETRACE_OBJS): $(NETRACE_SRCS) $(NETRACE_HDRS)
 
 lib: $(OBJS)
 	echo $(subst main.o, ,$(OBJS))
-	$(CXX) -fPIC -shared $(LFLAGS) $(subst main.o, ,$(OBJS)) -o libbooksim.so
+	$(CXX) -shared $(LFLAGS) $(subst main.o, ,$(OBJS)) -o libbooksim.so
 
 lib_static: $(OBJS)
 	echo $(subst main.o, ,$(OBJS))

@@ -51,9 +51,9 @@
 #include "fattree.hpp"
 #include "anynet.hpp"
 #include "dragonfly.hpp"
+#include "ideal.hpp"
 #include "../NetworkInterface.h"
 #include "../routers/bypass_router/smart_router.hpp"
-//#include "testnet.hpp"
 
 namespace Booksim
 {
@@ -71,22 +71,38 @@ namespace Booksim
 
     Network::~Network()
     {
-        for (int r = 0; r < _size; ++r) {
+        for (long unsigned r = 0; r < _routers.size(); ++r) {
             if (_routers[r]) delete _routers[r];
         }
-        for (int s = 0; s < _nodes; ++s) {
+        long unsigned s;
+        for (s = 0; s < _inject.size(); ++s) {
             if (_inject[s]) delete _inject[s];
+        }
+        for (s = 0; s < _inject_cred.size(); ++s) {
             if (_inject_cred[s]) delete _inject_cred[s];
+        }
+        for (s = 0; s < _inject_la.size(); ++s) {
             if (_inject_la[s]) delete _inject_la[s];
         }
-        for (int d = 0; d < _nodes; ++d) {
+        long unsigned d;
+        for (d = 0; d < _eject.size(); ++d) {
             if (_eject[d]) delete _eject[d];
+        }
+        for (d = 0; d < _eject_cred.size(); ++d) {
             if (_eject_cred[d]) delete _eject_cred[d];
+        }
+        
+        for (d = 0; d < _eject_la.size(); ++d) {
             if (_eject_la[d]) delete _eject_la[d];
         }
-        for (int c = 0; c < _channels; ++c) {
+        long unsigned c;
+        for (c = 0; c < _chan.size(); ++c) {
             if (_chan[c]) delete _chan[c];
+        }
+        for (c = 0; c < _chan_cred.size(); ++c) {
             if (_chan_cred[c]) delete _chan_cred[c];
+        }
+        for (c = 0; c < _chan_la.size(); ++c) {
             if (_chan_la[c]) delete _chan_la[c];
         }
     }
@@ -150,10 +166,9 @@ namespace Booksim
         } else if (topo == "dragonflynew"){
             DragonFlyNew::RegisterRoutingFunctions() ;
             n = new DragonFlyNew(config, name);
-		/*} else if ( topo == "testnet"){
-    TestNet::RegisterRoutingFunctions() ;
-    n = new TestNet(config, name);
-        */
+        } else if (topo == "ideal"){
+            Ideal::RegisterRoutingFunctions() ;
+            n = new Ideal(config, name);
         } else {
             cerr << "Unknown topology: " << topo << endl;
         }

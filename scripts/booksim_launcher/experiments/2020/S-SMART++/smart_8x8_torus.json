@@ -1,0 +1,36 @@
+{
+    "name"          : "smart_8x8_torus",
+    "booksim_bin"   : "bin/booksim_2020_06_01_debug",
+    "config_file"   : "configs/launcher_template.cfg",
+    "output_dir"    : "results/2020/2020_06_01/smart_8x8_torus",
+
+    "params" : {
+        "topology"                  : "smartctorus",
+        "n"                         : "2",
+        "k"                         : "\"{8,8}\"",
+        "c"                         : "\"{1,1}\"",
+        "routing_function"          : "dor",
+        "router"                    : "smart",
+        "smart_priority"            : "local",
+        "use_noc_latency"           : "0",
+        "routing_delay"             : "0",
+        "noq"                       : "0",
+        "sw_allocator"              : "select",
+    	"injection_rate_uses_flits" : "1",
+        "sample_period"     : "500",
+       	"sim_count"		    : "1"
+    },
+
+    "injection_rate"  : ["0.001","0.95","0.0125"],
+    
+    "variables" : {
+        "traffic"             : ["uniform"],
+        "smart_max_hops"      : ["1","2","4","8"],
+        "num_vcs"             : ["2"],
+        "vc_buf_size"         : ["10"],
+    	"smart_priority"      : ["local"],
+	"smart_dimensions"    : ["oneD"],
+        "smart_type"          : ["nebb_vct_opt","nebb_vct_la"],
+	"packet_size"	      : ["1"]
+    }
+}

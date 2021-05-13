@@ -52,87 +52,87 @@ namespace Booksim
     template<typename T>
     class Channel : public TimedModule {
     public:
-      Channel(Module * parent, string const & name);
-      virtual ~Channel() {}
+        Channel(Module * parent, string const & name);
+        virtual ~Channel() {}
 
-      // Physical Parameters
-      void SetLatency(int cycles);
-      int GetLatency() const { return _delay ; }
-      
-      // Send data 
-      virtual void Send(T * data);
-      
-      // Receive data
-      virtual T * Receive(); 
-      
-      virtual void ReadInputs();
-      virtual void Evaluate() {}
-      virtual void WriteOutputs();
+        // Physical Parameters
+        void SetLatency(int cycles);
+        int GetLatency() const { return _delay ; }
+
+        // Send data 
+        virtual void Send(T * data);
+
+        // Receive data
+        virtual T * Receive(); 
+
+        virtual void ReadInputs();
+        virtual void Evaluate() {}
+        virtual void WriteOutputs();
 
     protected:
-      int _delay;
-      T * _input;
-      T * _output;
-      queue<pair<int, T *> > _wait_queue;
+        int _delay;
+        T * _input;
+        T * _output;
+        queue<pair<int, T *> > _wait_queue;
 
     };
 
     template<typename T>
     Channel<T>::Channel(Module * parent, string const & name)
-      : TimedModule(parent, name), _delay(1), _input(0), _output(0) {
+        : TimedModule(parent, name), _delay(1), _input(0), _output(0) {
     }
 
     template<typename T>
     void Channel<T>::SetLatency(int cycles) {
-    //  if(cycles <= 0) {
-    //    Error("Channel must have positive delay.");
-    //  }
-      _delay = cycles ;
+        //  if(cycles <= 0) {
+        //    Error("Channel must have positive delay.");
+        //  }
+        _delay = cycles ;
     }
 
     template<typename T>
     void Channel<T>::Send(T * data) {
-      _input = data;
+        _input = data;
     }
 
     template<typename T>
     T * Channel<T>::Receive() {
-      if(_output){
-        //std::cout << "IVAN, channel: " << FullName() << " , receive: " << _output << std::endl;
-      }
-      return _output;
+        //*gWatchOut << GetSimTime() << " IVAN, channel: " << FullName() << " , receive 1 " << std::endl;
+        //if(_output){
+        //    *gWatchOut << GetSimTime() << " IVAN, channel: " << FullName() << " , receive: " << _output->id << std::endl;
+        //}
+        return _output;
     }
 
     template<typename T>
     void Channel<T>::ReadInputs() {
-      if(_input) {
-        _wait_queue.push(make_pair(GetSimTime() + _delay - 1, _input));
-        //std::cout << "IVAN, channel: " << FullName() << ", delay: " << _delay << std::endl;
-        _input = 0;
-      }
+        if(_input) {
+            _wait_queue.push(make_pair(GetSimTime() + _delay - 1, _input));
+            //*gWatchOut << GetSimTime() << " IVAN, channel: " << FullName() << " , ReadInputs: " << _input->id << std::endl;
+            _input = 0;
+        }
     }
 
     template<typename T>
     void Channel<T>::WriteOutputs() {
-      _output = 0;
-      if(_wait_queue.empty()) {
-        return;
-      }
+        if(_wait_queue.empty()) {
+            _output = 0;
+            return;
+        }
 
-      
-      pair<int, T *> const & item = _wait_queue.front();
-      long const & time = item.first;
-      if(GetSimTime() < time) {
-        //std::cout << "IVAN, channel: " << FullName() << " WriteOutputs time: " << time << std::endl;
-        return;
-      }
-     
-      assert(GetSimTime() == time);
+        pair<long, T *> const & item = _wait_queue.front();
+        long const & time = item.first;
+        if(GetSimTime() < time) {
+            //*gWatchOut << GetSimTime() << " IVAN, channel: " << FullName() << " WriteOutputs time: " << time << " No Pass " << item.second->id << std::endl;
+            _output = 0;
+            return;
+        }
 
-      _output = item.second;
-      //  std::cout << "IVAN, channel: " << FullName() << " WriteOutputs _output: " << _output->id << std::endl;
-      assert(_output);
-      _wait_queue.pop();
+        assert(GetSimTime() == time);
+        _output = item.second;
+        //*gWatchOut << GetSimTime() << " IVAN, channel: " << FullName() << " WriteOutputs _output: " << _output->id << " Pass " << std::endl;
+        assert(_output);
+        _wait_queue.pop();
     }
 } // namespace Booksim
 

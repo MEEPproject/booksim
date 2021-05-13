@@ -1,0 +1,69 @@
+{
+    "plots" : {
+        "type"     : "custom",
+        "simulation_dir"   : "/home/iperez/ATC/Tools/booksim-unican/scripts/booksim_launcher/results/thesis/",
+        "simulation_files" :    [
+            "2_3_hpcm_anal/ssmart++_8x8_mesh_smart_max_hops_1.csv",
+            "2_3_hpcm_anal/ssmart++_8x8_mesh_smart_max_hops_2.csv",
+            "2_3_hpcm_anal/ssmart++_8x8_mesh_smart_max_hops_4.csv",
+            "2_3_hpcm_anal/ssmart++_8x8_mesh_smart_max_hops_7.csv",
+            "SMART_torus_ps_1/ssmart++_8x8_torus_smart_max_hops_1.csv",
+            "SMART_torus_ps_1/ssmart++_8x8_torus_smart_max_hops_2.csv",
+            "SMART_torus_ps_1/ssmart++_8x8_torus_smart_max_hops_4.csv"
+        ],
+        "legend"    : [
+            "SMART-1",
+            "SMART-2",
+            "SMART-4",
+            "SMART-7",
+            "S-SMART++-1",
+            "S-SMART++-2",
+            "S-SMART++-4"
+        ],
+        "disable_legend" : "1",
+        "colors"    : [
+            "'black'",
+            "'grey'",
+            "'silver'",
+            "'gainsboro'",
+            "colormap[0]",
+            "colormap[1]",
+            "colormap[2]",
+            "colormap[3]"
+        ],
+        "linestyle" : [
+            "-",
+            "-",
+            "-",
+            "-",
+            "-",
+            "-",
+            "-",
+            "-"
+        ],
+        "markers"   : [
+            "o",
+            "o",
+            "o",
+            "o",
+            "*",
+            "*",
+            "*",
+            "*"
+        ],
+        "legend_outside" : "0",
+        "legend_columns" : "3",
+        "markevery" : "4",
+        "markersize" : "6",
+        "title_old"	   : "8x8 Mesh\n, 1-flit packets, Random Uniform",
+        "x-axis"   : "load",
+        "y-axis"   : "avg_plat",
+        "x-label"  : "Offered load (%)",
+        "y-label"  : "Packet lat. (cycles)",
+        "y-min"    : "0",
+        "y-max"    : "25",
+        "x-min"    : "0.0",
+        "x-max"    : "90",
+        "figsize"  : "3.5,1.75"
+    }
+}

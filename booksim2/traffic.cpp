@@ -194,6 +194,24 @@ namespace Booksim
                 rates.resize(hotspots.size(), 1);
             }
             result = new HotSpotTrafficPattern(nodes, hotspots, rates);
+        } else if(pattern_name == "hotspot_uniform") {
+            if(params.empty()) {
+                params.push_back("-1");
+            } 
+            vector<int> hotspots = tokenize_int(params[0]);
+            for(size_t i = 0; i < hotspots.size(); ++i) {
+                if(hotspots[i] < 0) {
+                    hotspots[i] = RandomInt(nodes - 1);
+                }
+            }
+            vector<int> rates;
+            if(params.size() >= 2) {
+                rates = tokenize_int(params[1]);
+                rates.resize(hotspots.size(), rates.back());
+            } else {
+                rates.resize(hotspots.size(), 1);
+            }
+            result = new HotSpotUniformTrafficPattern(nodes, hotspots, rates);
         } else if(pattern_name == "one_to_many") {
             result = new OneToManyTrafficPattern(nodes);
         } else if(pattern_name == "debug"){
@@ -535,6 +553,42 @@ namespace Booksim
         assert(_rates.back() > pct);
         return _hotspots.back();
     }
+    
+    HotSpotUniformTrafficPattern::HotSpotUniformTrafficPattern(int nodes, vector<int> hotspots, 
+            vector<int> rates)
+    : TrafficPattern(nodes), _hotspots(hotspots), _rates(rates), _max_val(-1)
+    {
+        assert(!_hotspots.empty());
+        size_t const size = _hotspots.size();
+        _rates.resize(size, _rates.empty() ? 1 : _rates.back());
+        for(size_t i = 0; i < size; ++i) {
+            int const hotspot = _hotspots[i];
+            assert((hotspot >= 0) && (hotspot < _nodes));
+            int const rate = _rates[i];
+            assert(rate >= 0);
+            _max_val += rate;
+        }
+    }
+
+    int HotSpotUniformTrafficPattern::dest(int source)
+    {
+        assert((source >= 0) && (source < _nodes));
+
+        if(_hotspots.size() == 1) {
+            return _hotspots[0];
+        }
+
+        int pct = RandomInt(100);
+
+        int limit = 0;
+        for(size_t i = 0; i < _hotspots.size(); ++i) {
+            limit += _rates[i];
+            if(limit > pct) {
+                return _hotspots[i];
+            }
+        }
+        return RandomInt(_nodes-1);
+    }
 
     OneToManyTrafficPattern::OneToManyTrafficPattern(int nodes)
     : TrafficPattern(nodes)
@@ -559,7 +613,7 @@ namespace Booksim
     : TrafficPattern(nodes)
     {
         // FIXME: Parametrize this
-        _source = 0;
+        //_source = 0;
     }
 
     int DebugTrafficPattern::dest(int source)
@@ -568,11 +622,11 @@ namespace Booksim
 
         //return _nodes-1;
         //if(source != 2 && source != 3) {
-        if(source != 0 && source != 6) {
+        if(source == 0) {
             return -1;
         }
         else {
-            return _nodes-1;
+            return 0;
             //return RandomInt(_nodes-1);
             //return 0;
         }

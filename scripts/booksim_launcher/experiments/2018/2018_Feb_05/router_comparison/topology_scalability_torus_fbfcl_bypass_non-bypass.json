@@ -1,0 +1,28 @@
+{
+    "name"          : "topology_scalability_torus_fbfcl_bypass_non-bypass",
+    "booksim_bin"   : "bin/booksim_16_Jan_2018",
+    "config_file"   : "configs/launcher_template.cfg",
+    "output_dir"    : "results/2018/router_comparison/topology_scalability_torus_fbfcl_bypass_non-bypass",
+
+    "params" : {
+        "topology"            : "torus",
+        "n"                   : "2",
+        "routing_function"    : "dim_order",
+        "router"              : "fbfcl_bypass",
+        "routing_delay"       : "0",
+        "noq"                 : "0",
+        "disable_bypass"      : "1",
+        "sw_allocator"        : "select",
+        "packet_size"         : "5"
+    },
+
+    "injection_rate"  : ["0.001","1.0","0.01"],
+
+    "variables" : {
+        "traffic"             : ["uniform","tornado","transpose","bitrev","hotspot\\(0\\)","one_to_many"],
+        "num_vcs"             : ["1","2","4","6"],
+        "vc_buf_size"         : ["6","12"],
+        "k"                   : ["16"],
+        "packet_size"         : ["1","5"]
+    }
+}

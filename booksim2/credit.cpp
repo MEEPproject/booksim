@@ -39,6 +39,11 @@ namespace Booksim
     stack<Credit *> Credit::_all;
     stack<Credit *> Credit::_free;
 
+    std::ostream& operator<< (std::ostream& os, const Credit& credit) {
+        credit.print(os);
+        return os;
+    }
+
     Credit::Credit()
     {
       Reset();

@@ -1568,8 +1568,8 @@ namespace Booksim
         vcEnd -= available_vcs;
           } else if( f->ph == 1) {
         vcBegin += available_vcs;
-          } else {
-            std::cout << "WARINING partition: -1 => cur " << cur << " dest " << dest << std::endl;
+          //} else {
+          //  std::cout << "WARNING partition: -1 => cur " << cur << " dest " << dest << std::endl;
           }
         }
 

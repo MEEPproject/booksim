@@ -1,0 +1,33 @@
+{
+    "name"          : "smart_8x8_torus",
+    "booksim_bin"   : "bin/booksim_2019_09_11",
+    "config_file"   : "configs/launcher_template.cfg",
+    "output_dir"    : "results/2019/ISPASS/2019_09_11/smart_8x8_torus",
+
+    "params" : {
+        "topology"                  : "torus",
+        "n"                         : "2",
+        "k"                          : "\"{8,8}\"",
+        "routing_function"          : "dor_dateline",
+        "router"                    : "smart",
+        "smart_priority"            : "local",
+        "routing_delay"             : "0",
+        "noq"                       : "0",
+        "sw_allocator"              : "select",
+    	"injection_rate_uses_flits" : "1",
+	    "sim_count"		    : "5"
+    },
+
+    "injection_rate"  : ["0.001","0.5","0.0125"],
+    
+    "variables" : {
+        "traffic"             : ["uniform"],
+        "smart_max_hops"      : ["4","8"],
+        "num_vcs"             : ["2"],
+        "vc_buf_size"         : ["10","20"],
+    	"smart_priority"      : ["local"],
+	    "smart_dimensions"    : ["oneD"],
+        "smart_type"          : ["nebb_vct_opt"],
+	    "packet_size"	      : ["1","5"]
+    }
+}

@@ -1,0 +1,36 @@
+{
+    "name"          : "nebb_wh",
+    "booksim_bin"   : "bin/booksim_2020_12_26",
+    "config_file"   : "configs/launcher_template.cfg",
+    "output_dir"    : "results/thesis/4_nebb/3_nebb_flow_cont_hybr",
+
+    "params" : {
+        "topology"              : "mesh",
+        "k"                     : "8",
+        "n"                     : "2",
+        "routing_function"      : "dim_order",
+        "router"                : "hybrid_simplified",
+        "noq"                   : "0",
+        "routing_delay"         : "0",
+        "buffer_policy"         : "shared",
+        "private_bufs"          : "-1",
+        "private_buf_size"      : "1",
+        "lookaheads_kill_flits" : "1",
+        "bypass_empty_vc"       : "0",
+        "sim_count"             : "20",
+        "sample_period"         : "500",
+        "classes"               : "2",
+        "buf_size"              : "12",
+        "num_vcs"               : "2",
+        "packet_size"           : "\\{1,5\\}"
+    },
+
+    "injection_rate_classes"  : ["0.001","0.5","0.00625",["0.8","0.2"]],
+
+    "variables" : {
+        "traffic"               : [
+                                   "bitcomp",
+                                   "transpose"
+        ]
+    }
+}

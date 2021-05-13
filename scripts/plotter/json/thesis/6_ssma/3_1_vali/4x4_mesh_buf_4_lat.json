@@ -1,0 +1,73 @@
+{
+    "plots" : {
+        "type"     : "custom-statlist",
+        "simulation_dir"   : "/home/iperez/ATC/Tools/booksim-unican/scripts/booksim_launcher/results/papers/2020-TC/MR/3_1_vali/",
+        "simulation_files" :    [
+            "OpenSMART/smart_nebb_4x4_hpcmax_3_vc_1_buf_size_4.out",
+            "OpenSMART/smart_nebb_4x4_hpcmax_3_vc_2_buf_size_4.out",
+            "OpenSMART/smart_nebb_4x4_hpcmax_3_vc_4_buf_size_4.out",
+            "BookSim/ssmart++_4x4_mesh_num_vcs_1_vc_buf_size_4.csv",
+            "BookSim/ssmart++_4x4_mesh_num_vcs_2_vc_buf_size_4.csv",
+            "BookSim/ssmart++_4x4_mesh_num_vcs_4_vc_buf_size_4.csv"
+        ],
+        "legend"    : [
+            "OS$_{1VC}$",
+            "OS$_{2VC}$",
+            "OS$_{4VC}$",
+            "BS$_{1VC}$",
+            "BS$_{2VC}$",
+            "BS$_{4VC}$"
+        ],
+        "colors"    : [
+            "'black'",
+            "'grey'",
+            "'silver'",
+            "colormap[0]",
+            "colormap[1]",
+            "colormap[2]"
+        ],
+        "linestyle" : [
+            "-",
+            "-",
+            "-",
+            "-",
+            "-",
+            "-"
+        ],
+        "markers"   : [
+            "o",
+            "o",
+            "o",
+            "^",
+            "^",
+            "^"
+        ],
+        "disable_legend" : "1",
+        "legend_outside" : "0",
+        "legend_columns" : "4",
+        "markevery" : "2",
+        "markersize" : "6",
+        "title_old"	   : "8x8 Mesh\n, 1-flit packets, Random Uniform",
+        "x-axis"   : ["load",
+                      "load",
+                      "load",
+                      "load",
+                      "load",
+                      "load"
+                     ],
+        "y-axis"   : ["avg_plat",
+                      "avg_plat",
+                      "avg_plat",
+                      "eval($(avg_plat)-3)",
+                      "eval($(avg_plat)-3)",
+                      "eval($(avg_plat)-3)"
+                     ],
+        "x-label"  : "Offered load (%)",
+        "y-label"  : "Packet lat. (cycles)",
+        "y-min"    : "0",
+        "y-max"    : "20",
+        "x-min"    : "0.0",
+        "x-max"    : "85",
+        "figsize"  : "3.5,1.75"
+    }
+}

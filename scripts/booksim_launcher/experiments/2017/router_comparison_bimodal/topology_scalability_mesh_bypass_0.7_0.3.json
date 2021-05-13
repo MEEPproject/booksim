@@ -1,0 +1,42 @@
+{
+    "name"          : "topology_scalability_mesh_bypass",
+    "booksim_bin"   : "bin/booksim_18_May_2017",
+    "config_file"   : "configs/launcher_template.cfg",
+    "output_dir"    : "results/router_comparison_bimodal/topology_scalability_mesh_bypass_0.7_0.3",
+
+    "params" : {
+        "topology"            : "mesh",
+        "n"                   : "2",
+        "routing_function"    : "dim_order",
+        "router"              : "bypass",
+        "routing_delay"       : "0",
+        "noq"                 : "0",
+        "sw_allocator"        : "select",
+        "hold_switch_for_packet" : "1",
+        "classes"             : "2",
+        "packet_size"         : "\\{1,5\\}"
+    },
+
+    "injection_rate_classes"  : ["0.001","1.0","0.01",["0.7","0.3"]],
+
+    "variables" : {
+        "traffic"             : ["uniform","tornado","transpose","bitrev","hotspot\\(0\\)","one_to_many"],
+        "num_vcs"             : ["2","4","6","8"],
+        "vc_buf_size"         : ["6","12","18"],
+        "k"                   : ["8"]
+    },
+
+    "plots" : {
+        "type"     : "double_yaxis",
+        "subplots" : "traffic",
+        "lines"    : "num_vcs",
+        "xaxis"    : "load",
+        "yaxis1"   : "avg_plat",
+        "yaxis2"   : "avg_nlat",
+        "xlabel"   : "Injection rate (packets/cycle/node)",
+        "ylabel1"  : "Average packet latency (cycles)",
+        "ymax1"    : "100",
+        "ymin1"    : "0"
+    }
+
+}

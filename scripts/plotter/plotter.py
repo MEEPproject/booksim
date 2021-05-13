@@ -10,6 +10,15 @@ from abc import ABCMeta, abstractmethod
 from math import log
 import pylab
 import inspect
+# PDF Metadata
+from pdf_metadata import *
+import socket
+# Latex text rendering
+#from matplotlib import rc
+#rc('font',**{'family':'sans-serif','sans-serif':['Helvetica']})
+## for Palatino and other serif fonts use:
+#rc('font',**{'family':'serif','serif':['Palatino']})
+#rc('text', usetex=True)
 
 def lineno():
     """Returns the current line number in our program."""
@@ -18,12 +27,14 @@ def lineno():
 
 def main():
 
-    print("Openning JSON:\t\t\t{}".format(sys.argv[1]))
+    in_file = sys.argv[1]
+
+    print("Openning JSON:\t\t\t{}".format(in_file))
     with open(sys.argv[1],'r') as f:
         data = json.load(f)
 
         if "output" not in data["plots"]:
-            data["plots"]["output"] = sys.argv[1].replace(".json",".pdf")
+            data["plots"]["output"] = in_file.replace(".json",".pdf")
 
         p = Plotter.factory(data)
 
@@ -33,7 +44,34 @@ def main():
 
         p.GenerateOutput()
 
-        print("Generated output:\t", data["plots"]["output"])
+        # FIXME: refactor the following lines
+        out_file = data["plots"]["output"]
+
+        print("Generated output:\t", out_file)
+
+        if ".pdf" in out_file:
+            commit_hash = os.popen("git show | head -1").read()
+            cfg_info = '{} : {}'.format(socket.gethostname(), in_file)
+            metadata_dict = {
+                '/Producer' : cfg_info,
+                '/Author' : 'Ivan Perez (University of Cantabria)',
+                '/Subject' : 'BST Plotter: ' + commit_hash
+            }
+
+            # Create a temporary file to save the metadata
+            out_file_meta = out_file.replace(".pdf", "_meta.pdf")
+            setMetaData(out_file, out_file_meta, metadata_dict)
+            # Replace original pdf with the one with metadata
+            os.rename(out_file_meta, out_file)
+
+        if len(sys.argv) > 2 and sys.argv[2] == "v":
+            os.system("evince {}".format(out_file))
+            #visualize = input("Do you want to open the output?")
+            #if visualize == "y":
+            #    os.system("evince {}".format(out_file))
+
+        if len(sys.argv) > 2 and sys.argv[2] == "t":
+            p.CreateTSV()
 
 
 
@@ -166,9 +204,11 @@ class BookSimReader(object):
             return stat_values
 
 
+        print(y_values)
         stat_values = [0.0] * len(y_values[0])
         # stat times sent packets/flits
         for index, values in enumerate(y_values):
+            print(values, index, multipliers, stat_values)
             stat_values = [x*y + z for x,y,z in zip(values, multipliers[index], stat_values)]
         
         total = [0.0] * len(multipliers[0])
@@ -208,7 +248,7 @@ class Plotter:
                         ss_list.append(data['plots']['simulation_dir'] + s)
                     new_simnames.append(ss_list)
                     
-            print(new_simnames)
+            #print(new_simnames)
             data['plots']['simulation_files'] = new_simnames
 
         self.markevery = None
@@ -224,6 +264,7 @@ class Plotter:
         self.fig, self.ax = plt.subplots(figsize=figsize)
 
         self.colormap = self.CreateColormap()
+
 
     def factory(data):
         if data['plots']['type'] == 'custom': return CustomPlotter(data)
@@ -272,7 +313,11 @@ class Plotter:
             x_list, y_list = self.ObtainSeries(br)
             if indx == 0:
                 y_list_baseline = y_list
-            #print('y_list: ', y_list)
+            
+            # Saturation point
+            #for i,y in enumerate(y_list):
+            #    if y > 3*y_list[0]:
+            #        print(x_list[i])
 
             ### FIXME: I don't like this code here. create self.color as list.
             ###        Here we only have to index that list
@@ -280,20 +325,47 @@ class Plotter:
 
             tmp = ""
             index_list = y_list if len(y_list) < len(y_list_baseline) else y_list_baseline
-            for p_index, y in enumerate(index_list):
-                tmp += "x = {} | y_base = {} | y = {} | y/y_base = {}\n".format(
-                        str(x_list[p_index]),
-                        str(y_list_baseline[p_index]),
-                        str(y_list[p_index]),
-                        str(y_list[p_index]/y_list_baseline[p_index])
-                    )
-            print("Points of ", f, " (relative to the baseline):\n", tmp)
+            #for p_index, y in enumerate(index_list):
+            #    print(x_list)
+            #    tmp += "x = {} | y_base = {} | y = {} | y/y_base = {}\n".format(
+            #            str(x_list[p_index]),
+            #            str(y_list_baseline[p_index]),
+            #            str(y_list[p_index]),
+            #            str(y_list[p_index]/y_list_baseline[p_index])
+            #        )
+            #print("Points of ", f, " (relative to the baseline):\n", tmp)
 
             self.ax.plot(x_list, y_list, label=self.data["plots"]["legend"][indx],
                     color=eval(self.data["plots"]["colors"][indx]),
                     linestyle=self.linestyle[indx], marker=self.markers[indx],
                     mec='black', markersize=self.markersize, markeredgewidth=0.5 , lw=1,
                     markevery=self.markevery)
+    
+    def CreateTSV(self):
+        header = ""
+        rows = list()
+        legend = self.data["plots"]["legend"]
+        spaces_label = max([len(val) for val in legend])
+        spaces = ""
+        for i in range(len("load"),spaces_label):
+            spaces += " "
+
+        for indx, f in enumerate(self.data["plots"]["simulation_files"]):
+            br = BookSimReader(f)
+            
+            x_list, y_list = self.ObtainSeries(br)
+            label = legend[indx]
+
+            row_fn = lambda x : "\t".join([str(round(val,3)) for val in x])
+            if indx == 0:
+                header = "load" + spaces + "\t" + row_fn(x_list) 
+            rows.append(label.replace(" ", "_") + "\t" + row_fn(y_list))
+
+        output = header
+        for row in rows:
+            output += "\n" + row
+        os.system('echo "{}" | column'.format(output))
+
 
     ### FIXME: This code is a shiiit
     def GenerateOutput(self):
@@ -306,11 +378,13 @@ class Plotter:
                 self.ax.legend().remove()
         self.ax.set_xlabel(self.data["plots"]["x-label"])
         self.ax.set_ylabel(self.data["plots"]["y-label"])
-        self.ax.set_ylim(ymin= float(self.data["plots"]["y-min"]), ymax=float(self.data["plots"]["y-max"]))
-        self.ax.set_xlim(xmin= float(self.data["plots"]["x-min"]), xmax=float(self.data["plots"]["x-max"]))
+        if "y-min" in self.data["plots"]:
+            self.ax.set_ylim(ymin= float(self.data["plots"]["y-min"]), ymax=float(self.data["plots"]["y-max"]))
+        if "x-min" in self.data["plots"]:
+            self.ax.set_xlim(xmin= float(self.data["plots"]["x-min"]), xmax=float(self.data["plots"]["x-max"]))
         if "title" in self.data["plots"]:
             self.ax.set_title(self.data["plots"]["title"])
-        #self.ax.minorticks_on()
+        self.ax.minorticks_on()
         self.ax.grid(b=True, which='major',color='silver', linewidth=0.2, linestyle="-")
         #self.ax.grid(b=True, which='minor',color='silver', linewidth=0.1, linestyle=":")
        
@@ -392,16 +466,15 @@ class CustomStatListPlotter(Plotter):
 
     def ObtainSeries(self, booksim_reader):
         yaxis_stat = self.yaxis_stat[self.stat_index]
+        xaxis_stat = self.xaxis_stat[self.stat_index]
         self.stat_index += 1
-        xaxis_stat = self.xaxis_stat
 
-        y_list = booksim_reader.read_combined_stat(yaxis_stat, -1)
+        print(xaxis_stat, yaxis_stat)
 
-        # FIXME: Add this in read_stat. If the stat is load, then can to read_offered_load().
-        if xaxis_stat == "load":
-            x_list = booksim_reader.read_offered_load()
-        else:
-            x_list = booksim_reader.read_stat(xaxis_stat,-1)
+        #y_list = booksim_reader.read_combined_stat(yaxis_stat, -1)
+        #x_list = booksim_reader.read_combined_stat(xaxis_stat, -1)
+        y_list = booksim_reader.read_stat_ponderate_classes(yaxis_stat)
+        x_list = booksim_reader.read_stat_ponderate_classes(xaxis_stat)
 
         return x_list, y_list
 
@@ -510,7 +583,7 @@ class BarMulticlassPlotter(Plotter):
         self.ax.set_ylim(ymin= float(self.data["plots"]["y-min"]), ymax=float(self.data["plots"]["y-max"]))
         if "title" in self.data["plots"]:
             self.ax.set_title(self.data["plots"]["title"])
-        #self.ax.minorticks_on()
+        self.ax.minorticks_on()
         self.ax.grid(b=True, which='major',color='silver', linewidth=0.2, linestyle="-")
         #self.ax.grid(b=True, which='minor',color='silver', linewidth=0.1, linestyle=":")
        
@@ -653,7 +726,8 @@ class HistogramPlotter(Plotter):
 
         self.fig.savefig(self.data["plots"]["output"], bbox_inches='tight')
 
-## FIXME: Does this class have some relation with HistogramPlotter?
+
+# This is a class prepared specifically to create figures 4.18.c and f of the thesis
 class HorizontalHistogramPlotter(Plotter):
     def __init__(self, data):
         super().__init__(data)
@@ -691,26 +765,6 @@ class HorizontalHistogramPlotter(Plotter):
         return x_list, y_list
     
     def CreatePlot(self):
-        # FIXME: general stuff like figsave
-        """
-        offset = 0.0
-        # TODO: find offset
-        for indx, f in enumerate(self.data["plots"]["simulation_files"]):
-            br = BookSimReader(f)
-
-            x_list, y_list = self.ObtainSeries(br)
-
-            ### FIXME: Use user defined x value to read histogram
-            bin_data_temp = eval(y_list[eval(self.data["plots"]["x-val"])])
-            bin_data = list()
-            for x in bin_data_temp:
-                if x > 0:
-                    bin_data.append(log(x,10))
-                else:
-                    bin_data.append(0)
-            #lefts = [i-j for i,j in zip([indx]*len(bin_data),[0.5*x for x in bin_data])]
-            offset = max(max(bin_data), offset)
-        """
 
         x_ticks = list()
         x_tick_labels = list()
@@ -737,19 +791,9 @@ class HorizontalHistogramPlotter(Plotter):
             bin_data_temp = y_list[x_pos]
             bin_data = list()
             bin_data = bin_data_temp
-            """
-            for x in bin_data_temp:
-                if x > 0:
-                    bin_data.append(log(x,10))
-                else:
-                    bin_data.append(0)
-            """
-            #lefts = [i-j for i,j in zip([indx]*len(bin_data),[0.5*x for x in bin_data])]
-            #lefts = [offset*indx - y for y in [0.5 * x for x in bin_data]]
-            #x_ticks.append(offset*indx)
-            #x_tick_labels.append(self.data["plots"]["legend"][indx])
             bar_height = eval(self.data["plots"]["y-height"])
             name = format_label(self.data["plots"]["legend"][indx])
+            
             #self.ax.barh([bar_height*x for x in range(len(bin_data))], bin_data, height=bar_height, left=lefts,
             # Find 99% percentile:
             total_samples = sum(bin_data)
@@ -758,7 +802,7 @@ class HorizontalHistogramPlotter(Plotter):
             percentile = 0
             for index, x in enumerate(bin_data):
                 accumulated_samples += x
-                if accumulated_samples / float(total_samples) >= 0.999:
+                if accumulated_samples / float(total_samples) >= 0.99:
                     percentile = bar_height*index
                     break
             self.ax.bar([bar_height*(x+width*indx) for x in range(len(bin_data))], bin_data, width=width*bar_height,
@@ -767,7 +811,7 @@ class HorizontalHistogramPlotter(Plotter):
                     edgecolor='black', linewidth=0.3)
             self.ax.axvline(x=percentile, color='k', linestyle=':')
             print("percentile", percentile)
-            self.ax.annotate('99.9%', (percentile*1.1,max_samples/4.0))
+            self.ax.annotate('99%', (percentile*1.02,max_samples/4.0))
 
             self.ax.set_yscale('log')
             #self.ax.set_xticks(x_ticks)
@@ -796,9 +840,9 @@ class HorizontalHistogramPlotter(Plotter):
         self.ax.minorticks_on()
         self.ax.grid(b=True, which='major',color='gray', linewidth=0.05, linestyle=":")
         #self.ax.grid(b=True, which='minor',color='gray', linewidth=0.01, linestyle=":")
-       
+
         # FIXME: Check if output path exists
-	#	 Current implementation only supports linux filesystems
+        #        Current implementation only supports linux filesystems
         output_dir = ""
         for x in self.data["plots"]["output"].split("/")[0:-1]:
             output_dir += x + "/"
@@ -810,7 +854,7 @@ class HorizontalHistogramPlotter(Plotter):
             except OSError as e:
                 if e.errno != errno.EEXIST:
                     raise
-        
+
         #box = self.ax.get_position()
         #self.ax.set_position([box.x0, box.y0, box.width * 0.8, box.height])
         #self.ax.legend(loc='center left', bbox_to_anchor=(1,0.5))
@@ -843,20 +887,19 @@ class ThroughputPlotter(Plotter):
         x_list = booksim_reader.read_stat_ponderate_classes(xaxis_stat)
 
         return x_list, y_list
-    
+
     def CreatePlot(self):
-        
-            
+
         colormap = self.CreateColormap()
 
         cfg_names = self.data["plots"]["configurations"]
         cfg_number = len(cfg_names)
         assert cfg_number == len(self.data["plots"]["simulation_files"])
-            
+
         x_ticks = list()
         x_tick_labels = list()
 
-        width = 1.0/cfg_number
+        width = 0.8/cfg_number
         for cfg_indx, config in enumerate(self.data["plots"]["simulation_files"]):
             x_ticks = list()
             x_tick_labels = list()
@@ -872,17 +915,16 @@ class ThroughputPlotter(Plotter):
                     x_tick_labels.append(self.data["plots"]["legend"][indx])
                 else:
                     throughput.append(0.0)
-                
+
                 #x_ticks.append(indx) # TODO: one tick per config comparison
                 #x_tick_labels.append(self.data["plots"]["legend"][indx])
-        
-            
+
             ind = [x + cfg_indx*width for x in range(len(throughput))]
+            print(cfg_names[cfg_indx], x_tick_labels, throughput)
 
             self.ax.bar(ind, throughput, width=width, label=cfg_names[cfg_indx],
                     color=eval(self.data["plots"]["colors"][cfg_indx]),
                     edgecolor='black', linewidth=0.3)
-            
 
             #name.append(self.data["plots"]["legend"][indx])
 
@@ -914,7 +956,7 @@ class ThroughputPlotter(Plotter):
         #self.ax.set_xlim(xmin= float(self.data["plots"]["x-min"]), xmax=float(self.data["plots"]["x-max"]))
         if "title" in self.data["plots"]:
             self.ax.set_title(self.data["plots"]["title"])
-        #self.ax.minorticks_on()
+        self.ax.minorticks_on()
         self.ax.grid(b=True, which='major', axis='y', color='gray', linewidth=0.05, linestyle="-")
         #self.ax.grid(b=True, which='minor',color='gray', linewidth=0.01, linestyle=":")
        
@@ -1045,7 +1087,7 @@ class ThroughputBaselinePlotter(Plotter):
         #self.ax.set_xlim(xmin= float(self.data["plots"]["x-min"]), xmax=float(self.data["plots"]["x-max"]))
         if "title" in self.data["plots"]:
             self.ax.set_title(self.data["plots"]["title"])
-        #self.ax.minorticks_on()
+        self.ax.minorticks_on()
         self.ax.grid(b=True, which='major', axis='y', color='gray', linewidth=0.05, linestyle="-")
         #self.ax.grid(b=True, which='minor',color='gray', linewidth=0.01, linestyle=":")
        
@@ -1166,7 +1208,7 @@ class ZeroLatencyPlotter(Plotter):
         #self.ax.set_xlim(xmin= float(self.data["plots"]["x-min"]), xmax=float(self.data["plots"]["x-max"]))
         if "title" in self.data["plots"]:
             self.ax.set_title(self.data["plots"]["title"])
-        #self.ax.minorticks_on()
+        self.ax.minorticks_on()
         self.ax.grid(b=True, which='major', axis='y', color='gray', linewidth=0.05, linestyle="-")
         #self.ax.grid(b=True, which='minor',color='gray', linewidth=0.01, linestyle=":")
        
@@ -1242,12 +1284,14 @@ class LegendPlotter(Plotter):
             legend = pylab.figlegend(*fig.gca().get_legend_handles_labels(),
                                      title=self.data['plots']['legend_title'],
                                      loc = 'center',
-                                     ncol=columns)
+                                     ncol=columns
+                                     )
         else:
             print("NOOOOOOOOOOOO")
             legend = pylab.figlegend(*fig.gca().get_legend_handles_labels(),
                                      loc = 'center',
-                                     ncol=columns)
+                                     ncol=columns
+                                     )
 
 
         output_dir = ""

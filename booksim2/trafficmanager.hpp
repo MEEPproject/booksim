@@ -278,6 +278,10 @@ namespace Booksim
       ostream * _max_credits_out;
 #endif
 
+#ifdef PACKET_TRACE
+      ostream * _packet_trace_out;
+#endif // PACKET_TRACE
+
       // Used by smart_nebb_vct_opt
       bool _vct; //Virtual Cut-Through
 

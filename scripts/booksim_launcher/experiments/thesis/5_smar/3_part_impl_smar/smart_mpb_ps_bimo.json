@@ -1,0 +1,35 @@
+{
+    "name"          : "smart_mpb_ps_bimo",
+    "booksim_bin"   : "bin/booksim_2020_12_30",
+    "config_file"   : "configs/launcher_template.cfg",
+    "output_dir"    : "results/thesis/5_smar/3_part_impl_smar",
+
+    "params" : {
+        "topology"                  : "mesh",
+        "n"                         : "2",
+        "k"                         : "8",
+        "routing_function"          : "dim_order",
+        "router"                    : "smart",
+        "smart_type"                : "not_empty_realocation",
+        "smart_dimensions"          : "oneD",
+        "smart_priority"            : "local",
+        "routing_delay"             : "0",
+        "noq"                       : "0",
+        "sw_allocator"              : "select",
+    	"injection_rate_uses_flits" : "1",
+        "smart_priority"            : "local",
+        "smart_max_hops"            : "7",
+        "sample_period"             : "1000",
+        "traffic"                   : "uniform",
+        "classes"                   : "2",
+        "packet_size"               : "\"{1,5}\"",
+       	"sim_count"		            : "1"
+    },
+
+    "injection_rate_classes"  : ["0.005","0.5","0.0125",["0.8","0.2"]],
+
+    "variables" : {
+        "num_vcs"                   : ["1","2","4","8"],
+        "vc_buf_size"               : ["5","10","15","20"]
+    }
+}

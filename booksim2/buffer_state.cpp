@@ -55,7 +55,7 @@ namespace Booksim
 
     int BufferState::GetAvailVCMinOccupancy(int vc_start, int vc_end) const {
         int vc_min_occup = -1;
-        int max_avail_for = 0;
+        int max_avail_for = -1;
         for(int vc = vc_start; vc <= vc_end; vc++) {
             if(IsAvailableFor(vc)) {
                 if(max_avail_for < AvailableFor(vc)) {
@@ -196,6 +196,7 @@ namespace Booksim
         return _vc_buf_size;
     }
     
+	// FIXME: Remove this BufferState Class. I think it's not required anymore
     BufferState::DestPrivateBufferPolicy::DestPrivateBufferPolicy(Configuration const & config, BufferState * parent, const string & name)
         : PrivateBufferPolicy(config, parent, name)
     {
@@ -203,9 +204,11 @@ namespace Booksim
         int const buf_size = config.GetInt("buf_size");
         // Multiply by 100 the buffer size in destination nodes
         if(buf_size <= 0) {
-            _vc_buf_size = 100 * config.GetInt("vc_buf_size"); 
+            //_vc_buf_size = 100 * config.GetInt("vc_buf_size"); 
+            _vc_buf_size = config.GetInt("vc_buf_size"); 
         } else {
-            _vc_buf_size = 100 * buf_size / vcs;
+            //_vc_buf_size = 100 * buf_size / vcs;
+            _vc_buf_size = buf_size / vcs;
         }
         assert(_vc_buf_size > 0);
     }
@@ -970,7 +973,8 @@ namespace Booksim
             }
             if(_occupancy < 0) {
                 ostringstream err;
-                err << " Buffer occupancy fell below zero (Credit: " << c->id << ")";
+                err << " Buffer occupancy fell below zero (Credit: ";
+                c->print(err);
                 Error( err.str() );
             }
             if (vct) {
@@ -981,7 +985,8 @@ namespace Booksim
             //std::cout << GetSimTime() << " | " << FullName() << " VC: " << vc << " Occupancy " <<  _vc_occupancy[vc] << " after processing credit: " << c->id << std::endl;
             if(_vc_occupancy[vc] < 0) {
                 ostringstream err;
-                err << "Line: " << __LINE__ << " | " << GetSimTime() << " | " << FullName() << " | Buffer occupancy fell below zero for VC " << vc << " Credit: " << c->id;
+                err << "Line: " << __LINE__ << " | " << GetSimTime() << " | " << FullName() << " | Buffer occupancy fell below zero for VC " << vc << " Credit: ";
+                c->print(err);
                 Error(err.str());
             }
             if(_wait_for_tail_credit && !_vc_occupancy[vc] && _tail_sent[vc]) {

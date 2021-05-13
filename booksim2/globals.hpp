@@ -37,7 +37,7 @@ namespace Booksim
 
     /*all declared in main.cpp*/
 
-    int GetSimTime();
+    long GetSimTime();
 
     class Stats;
     Stats * GetStats(const std::string & name);

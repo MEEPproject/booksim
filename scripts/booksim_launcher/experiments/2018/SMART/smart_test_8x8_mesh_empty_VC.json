@@ -1,0 +1,47 @@
+{
+    "name"          : "smart_test_8x8_mesh_single_flit_packets_empty_vc",
+    "booksim_bin"   : "bin/booksim_12_Nov_2018",
+    "config_file"   : "configs/launcher_template.cfg",
+    "output_dir"    : "results/smart_test_8x8_mesh_single_flit_packets_empty_vc",
+
+    "params" : {
+        "topology"                  : "smartcmesh",
+        "k"                         : "\"{8,8}\"",
+        "n"                         : "2",
+        "c"                          : "\"{1,1}\"",
+        "routing_function"          : "dim_order",
+        "router"                    : "smart",
+        "num_vcs"                   : "12",
+        "vc_buf_size"               : "1",
+        "routing_delay"             : "0",
+        "noq"                       : "0",
+        "sw_allocator"              : "select",
+        "vc_prioritize_empty"       : "1",
+        "vc_priority_donation"      : "1",
+        "vc_shuffle_requests"       : "1",
+        "classes"                   : "1",
+        "packet_size"               : "1"
+    },
+
+    "injection_rate"  : ["0.005","0.5","0.05"],
+
+    "variables" : {
+        "traffic"             : ["uniform"],
+        "smart_max_hops"      : ["4","8","12"]
+    },
+
+    "plots" : {
+        "type"     : "single_yaxis_single_line_multi_class",
+        "classes"  : "2",
+        "subplots" : "traffic",
+        "xaxis"    : "avg_accepted_flits",
+        "yaxis1"   : "avg_plat",
+        "xlabel"   : "Injection rate (flits/cycle/node)",
+        "ylabel1"  : "Average packet latency (cycles)",
+        "ymin1"    : "0",
+        "ymax1"    : "80",
+        "title"    : "8x8 Mesh - Traffic: ",
+        "legend"   : ["Low priority packets", "High priority packets"]
+    }
+
+}

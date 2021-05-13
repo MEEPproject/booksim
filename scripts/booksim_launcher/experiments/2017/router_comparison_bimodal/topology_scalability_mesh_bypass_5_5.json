@@ -1,0 +1,28 @@
+{
+    "name"          : "topology_scalability_mesh_bypass_bimodal",
+    "booksim_bin"   : "bin/booksim_14_Jun_2017",
+    "config_file"   : "configs/launcher_template.cfg",
+    "output_dir"    : "results/router_comparison_bimodal/topology_scalability_mesh_bypass_5_5",
+
+    "params" : {
+        "topology"            : "mesh",
+        "n"                   : "2",
+        "routing_function"    : "dim_order",
+        "router"              : "bypass",
+        "routing_delay"       : "0",
+        "noq"                 : "0",
+        "sw_allocator"        : "select",
+        "hold_switch_for_packet" : "1",
+        "classes"             : "2",
+        "packet_size"         : "\\{1,5\\}"
+    },
+
+    "injection_rate_classes"  : ["0.001","1.0","0.01",["0.5","0.5"]],
+
+    "variables" : {
+        "traffic"             : ["uniform","tornado","transpose","bitrev","hotspot\\(0\\)","one_to_many"],
+        "num_vcs"             : ["1","2","4","6"],
+        "vc_buf_size"         : ["1","3","6","12"],
+        "k"                   : ["8"]
+    }
+}

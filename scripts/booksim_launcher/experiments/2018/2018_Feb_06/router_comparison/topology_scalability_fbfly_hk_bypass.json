@@ -1,0 +1,31 @@
+{
+    "name"          : "topology_scalability_flatfly_hk_bypass",
+    "booksim_bin"   : "bin/booksim_09_Feb_2018",
+    "config_file"   : "configs/launcher_template.cfg",
+    "output_dir"    : "results/2018/router_comparison/topology_scalability_flatfly_hk_bypass",
+
+    "params" : {
+        "topology"            : "flatfly",
+        "n"                   : "2",
+        "routing_function"    : "xyyx",
+        "router"              : "hk",
+        "routing_delay"       : "0",
+        "noq"                 : "0",
+        "sw_allocator"        : "select",
+        "sim_count"           : "5",
+        "packet_size"         : "5"
+    },
+
+    "injection_rate"  : ["0.001","1.0","0.01"],
+
+    "variables" : {
+        "traffic"             : ["uniform","tornado","transpose","bitrev","hotspot\\(0\\)","one_to_many"],
+        "num_vcs"             : ["1","2","3","6"],
+        "vc_buf_size"         : ["1","3","6","12"],
+        "k"                   : ["4"],
+        "xr"                  : ["2"],
+        "yr"                  : ["2"],
+       "c"                   : ["4"],
+        "packet_size"         : ["1","5"]
+    }
+}

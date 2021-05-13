@@ -1,0 +1,77 @@
+{
+    "plots" : {
+        "type"     : "legend",
+        "simulation_files" :    [
+			"/home/ivan/ATC/Tools/OpenSMART/Backend/BSV/output/2019_05_17/smart_nebb_4x4_hpcmax_4_vc_1_buf_size_1.out",
+			"/home/ivan/ATC/Tools/OpenSMART/Backend/BSV/output/2019_05_17/smart_nebb_4x4_hpcmax_4_vc_2_buf_size_1.out",
+			"/home/ivan/ATC/Tools/OpenSMART/Backend/BSV/output/2019_05_17/smart_nebb_4x4_hpcmax_4_vc_4_buf_size_1.out",
+			"/home/ivan/ATC/Tools/OpenSMART/Backend/BSV/output/2019_05_17/smart_nebb_4x4_hpcmax_4_vc_8_buf_size_1.out",
+			"/home/ivan/ATC/Tools/booksim-unican/scripts/booksim_launcher/results/2019/2019_05_15/smart_4x4_mesh/smart_4x4_mesh_smart_dimensions_oneD_num_vcs_1_smart_type_nebb_vct_opt_packet_size_1_smart_max_hops_4_vc_buf_size_1_smart_priority_local_traffic_uniform.csv",
+			"/home/ivan/ATC/Tools/booksim-unican/scripts/booksim_launcher/results/2019/2019_05_15/smart_4x4_mesh/smart_4x4_mesh_smart_dimensions_oneD_num_vcs_2_smart_type_nebb_vct_opt_packet_size_1_smart_max_hops_4_vc_buf_size_1_smart_priority_local_traffic_uniform.csv",
+			"/home/ivan/ATC/Tools/booksim-unican/scripts/booksim_launcher/results/2019/2019_05_15/smart_4x4_mesh/smart_4x4_mesh_smart_dimensions_oneD_num_vcs_4_smart_type_nebb_vct_opt_packet_size_1_smart_max_hops_4_vc_buf_size_1_smart_priority_local_traffic_uniform.csv",
+			"/home/ivan/ATC/Tools/booksim-unican/scripts/booksim_launcher/results/2019/2019_05_15/smart_4x4_mesh/smart_4x4_mesh_smart_dimensions_oneD_num_vcs_8_smart_type_nebb_vct_opt_packet_size_1_smart_max_hops_4_vc_buf_size_1_smart_priority_local_traffic_uniform.csv"
+        ],
+        "legend"    : [
+			"Bluspec - 1 VC",
+			"BookSim - 1 VC",
+			"Bluspec - 2 VC",
+			"BookSim - 2 VC",
+			"Bluspec - 4 VC",
+			"BookSim - 4 VC",
+			"Bluspec - 8 VC",
+			"BookSim - 8 VC"
+        ],
+		"legend_columns" : "4",
+        "disable_legend" : "0",
+        "colors"    : [
+            "'black'",
+            "colormap[0]",
+            "'darkgray'",
+            "colormap[1]",
+	    	"'gray'",
+            "colormap[2]",
+            "'lightgray'",
+            "colormap[3]"
+        ],
+        "linestyle" : [
+            "-",
+            "-",
+            "-",
+            "-",
+            "-",
+            "-",
+            "-",
+            "-"
+        ],
+        "markers"   : [
+            "o",
+            "*",
+            "o",
+            "*",
+            "o",
+            "*",
+            "o",
+            "*"
+        ],
+        "legend_outside" : "0",
+		"title"	   : "4x4 Mesh, Buffer Size: 1\nHPCMax: 4, Single-flit traffic, Random Uniform",
+        "x-axis"   : "load",
+        "y-axis"   : [
+						"avg_plat",
+						"avg_plat",
+						"avg_plat",
+						"avg_plat",
+						"eval($(avg_plat)-3)",
+						"eval($(avg_plat)-3)",
+						"eval($(avg_plat)-3)",
+						"eval($(avg_plat)-3)"
+					],
+        "x-label"  : "Offered load (%)",
+        "y-label"  : "Packet latency (Cycles)",
+        "y-min"    : "0",
+        "y-max"    : "25",
+        "x-min"    : "0.0",
+        "x-max"    : "100",
+		"figsize"  : "(7,6)"
+    }
+}

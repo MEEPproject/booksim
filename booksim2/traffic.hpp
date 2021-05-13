@@ -173,6 +173,18 @@ namespace Booksim
                 vector<int> rates = vector<int>());
       virtual int dest(int source);
     };
+    
+    // Hotspot + Uniform traffic
+    class HotSpotUniformTrafficPattern : public TrafficPattern {
+    private:
+      vector<int> _hotspots;
+      vector<int> _rates;
+      int _max_val;
+    public:
+      HotSpotUniformTrafficPattern(int nodes, vector<int> hotspots, 
+                vector<int> rates = vector<int>());
+      virtual int dest(int source);
+    };
 
     class OneToManyTrafficPattern : public TrafficPattern {
     private:

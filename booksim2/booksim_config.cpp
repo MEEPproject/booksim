@@ -325,6 +325,10 @@ namespace Booksim
       AddStrField("max_credits_out", "");
 #endif
 
+#ifdef PACKET_TRACE
+      AddStrField("packet_trace_out", "");
+#endif
+
       // batch only -- packet sequence numbers
       AddStrField("sent_packets_out", "");
       

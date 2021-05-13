@@ -1,0 +1,59 @@
+{
+    "plots" : {
+        "type"     : "custom",
+        "simulation_dir"   : "/home/iperez/ATC/Tools/booksim-unican/scripts/booksim_launcher/results/thesis/4_nebb/2_nebb_sing_flit_pack/",
+        "simulation_files" :    [
+            "baseline_arb_min_buf_buf_size_2.csv",
+            "baseline_arb_min_buf_buf_size_3.csv",
+            "baseline_arb_min_buf_buf_size_4.csv",
+            "hybrid_min_buf_buf_size_2.csv",
+            "hybrid_min_buf_buf_size_3.csv",
+            "hybrid_min_buf_buf_size_4.csv"
+        ],
+        "legend"    : [
+            "Baseline | 2",
+            "Baseline | 3",
+            "Baseline | 4",
+            "Hybrid | 2",
+            "Hybrid | 3",
+            "Hybrid | 4"
+        ],
+        "disable_legend" : "1",
+        "colors"    : [
+            "'black'",
+            "'grey'",
+            "'silver'",
+            "colormap[0]",
+            "colormap[1]",
+            "colormap[2]"
+        ],
+        "linestyle" : [
+            "-",
+            "-",
+            "-",
+            "-",
+            "-",
+            "-"
+        ],
+        "markers"   : [
+            "o",
+            "o",
+            "o",
+            "*",
+            "*",
+            "*"
+        ],
+        "markevery" : "4",
+        "markersize" : "6",
+        "legend_title" : "Bypass mechanism | Buffer size",
+        "x-axis"   : "load",
+        "y-axis"   : "eval((${avg_accepted_flits})*100)",
+        "x-label"  : "Offered load (%)",
+        "y-label"  : "Buffered flits (%)",
+        "y-min"    : "0",
+        "y-max"    : "40",
+        "x-min"    : "0.0",
+        "x-max"    : "40",
+        "figsize"  : "2.5,1.75"
+    }
+}

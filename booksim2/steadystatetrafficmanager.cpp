@@ -105,7 +105,9 @@ namespace Booksim
       if(_injection_process[cl]->test(source)) {
         int dest = _traffic_pattern[cl]->dest(source);
         int size = _GetNextPacketSize(cl);
-        long time = ((_include_queuing == 1) ? _qtime[cl][source] : _time);
+        // FIXME: I don't exactly know the cause of why I have to decrease by 1
+        //  the latency of qtime to obtain correct results
+        long time = ((_include_queuing == 1) ? _qtime[cl][source]-1 : _time);
         return _GeneratePacket(source, dest, size, cl, time);
       }
       return -1;

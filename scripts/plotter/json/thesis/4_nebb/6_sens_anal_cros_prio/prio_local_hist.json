@@ -1,0 +1,44 @@
+{
+    "plots" : {
+        "type"     : "horizontal-histogram",
+        "simulation_dir"   : "/home/iperez/ATC/Tools/booksim-unican/scripts/booksim_launcher/results/thesis/4_nebb/6_sens_anal_cros_prio/",
+        "simulation_files" :    [
+            "hybrid_lookaheads_kill_flits_0.csv"
+        ],
+        "legend"    : [
+            "Hybrid"
+        ],
+        "disable_legend" : "1",
+        "colors"    : [
+            "colormap[0]"
+        ],
+        "linestyle" : [
+            "-",
+            "-",
+            "-",
+            "-",
+            "-",
+            "-",
+            "-",
+            "-",
+            "-",
+            "-"
+        ],
+        "markers"   : [
+            "o",
+            "^",
+            "*"
+        ],
+        "markevery" : "2",
+        "markersize" : "6",
+        "x-axis"   : "load",
+        "y-axis"   : "his_plat",
+        "x-label"  : "Avg. packet latency (Cycles)",
+        "y-label"  : "Frequency",
+        "x-min"    : "-50",
+        "x-max"    : "8000",
+        "x-val"    : "50",
+        "y-height" : "50",
+        "figsize"  : "2.5,1.75"
+    }
+}

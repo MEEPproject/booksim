@@ -1,0 +1,32 @@
+{
+    "name"          : "hybrid",
+    "booksim_bin"   : "bin/booksim_2020_12_26",
+    "config_file"   : "configs/launcher_template.cfg",
+    "output_dir"    : "results/thesis/4_nebb/2_nebb_sing_flit_pack",
+
+    "params" : {
+        "topology"              : "mesh",
+        "k"                     : "8",
+        "n"                     : "2",
+        "routing_function"      : "dim_order",
+        "router"                : "hybrid",
+        "noq"                   : "0",
+        "routing_delay"         : "0",
+        "buffer_policy"         : "shared",
+        "private_bufs"          : "-1",
+        "private_buf_size"      : "1",
+        "buf_size"              : "6",
+        "traffic"               : "uniform",
+        "lookaheads_kill_flits" : "1",
+        "bypass_empty_vc"       : "0",
+        "sim_count"             : "1",
+        "classes"               : "1",
+        "packet_size"           : "1"
+    },
+
+    "injection_rate"  : ["0.001","0.5","0.0125"],
+
+    "variables" : {
+        "num_vcs"               : ["2"]
+    }
+}

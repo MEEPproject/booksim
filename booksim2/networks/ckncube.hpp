@@ -83,6 +83,8 @@ namespace Booksim
     int dor_next_cknmesh( int cur, int dest, bool descending );
 
     void dim_order_ckntorus( const Router *r, const Flit *f, int in_channel, OutputSet *outputs, bool inject );
+    
+	void dim_order_dateline_ckntorus( const Router *r, const Flit *f, int in_channel, OutputSet *outputs, bool inject );
 
     int dor_next_ckntorus( int cur, int dest );
 } // namespace Booksim

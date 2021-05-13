@@ -1,0 +1,34 @@
+{
+    "name"          : "smart_8x8_mesh",
+    "booksim_bin"   : "bin/booksim_2020_11_03",
+    "config_file"   : "configs/launcher_template.cfg",
+    "output_dir"    : "results/papers/2020-TC/MR/2_3_hpcm_anal",
+
+    "params" : {
+        "topology"                  : "mesh",
+        "n"                         : "2",
+        "k"                         : "8",
+        "routing_function"          : "dim_order",
+        "router"                    : "smart",
+        "smart_dimensions"          : "oneD",
+        "smart_priority"            : "local",
+        "routing_delay"             : "0",
+        "noq"                       : "0",
+        "sw_allocator"              : "select",
+        "num_vcs"                   : "8",
+        "vc_buf_size"               : "1",
+        "smart_type"                : "classic",
+        "smart_priority"            : "local",
+        "packet_size"	            : "1",
+        "traffic"                   : "uniform",
+        "injection_rate_uses_flits" : "1",
+        "sample_period"             : "1000",
+        "sim_count"		    : "1"
+    },
+
+    "injection_rate"  : ["0.001","0.5","0.0125"],
+
+    "variables" : {
+        "smart_max_hops"            : ["1","2","4","7"]
+    }
+}

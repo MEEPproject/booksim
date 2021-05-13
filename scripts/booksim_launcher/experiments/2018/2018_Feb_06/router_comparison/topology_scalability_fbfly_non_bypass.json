@@ -1,0 +1,32 @@
+{
+    "name"          : "topology_scalability_flatfly_non_bypass",
+    "booksim_bin"   : "bin/booksim_09_Feb_2018",
+    "config_file"   : "configs/launcher_template.cfg",
+    "output_dir"    : "results/2018/router_comparison/topology_scalability_flatfly_non_bypass",
+
+    "params" : {
+        "topology"            : "flatfly",
+        "n"                   : "2",
+        "routing_function"    : "xyyx",
+        "router"              : "bypass",
+        "routing_delay"       : "0",
+        "noq"                 : "0",
+        "disable_bypass"      : "1",
+        "sw_allocator"        : "select",
+        "packet_size"         : "5",
+        "hold_switch_for_packet" : "1"
+    },
+
+    "injection_rate"  : ["0.001","1.0","0.01"],
+
+    "variables" : {
+        "traffic"             : ["uniform","tornado","transpose","bitrev","hotspot\\(0\\)","one_to_many"],
+        "num_vcs"             : ["1","2","4","6"],
+        "vc_buf_size"         : ["1","2","3","4","6","12"],
+        "k"                   : ["4"],
+        "xr"                  : ["2"],
+        "yr"                  : ["2"],
+       "c"                   : ["4"],
+        "packet_size"         : ["1","5"]
+    }
+}

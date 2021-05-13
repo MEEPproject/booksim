@@ -46,7 +46,7 @@ namespace Booksim
      /* the current traffic manager instance */
     TrafficManager * trafficManager = NULL;
 
-    int GetSimTime() {
+    long GetSimTime() {
       return trafficManager->getTime();
     }
 
@@ -182,6 +182,12 @@ namespace Booksim
     BooksimWrapper::CheckInFlightPackets()
     {
         return _traffic_manager->CheckInFlightPackets();
+    }
+    
+    int
+    BooksimWrapper::CheckInjectionQueue(int source, int cl)
+    {
+        return _traffic_manager->CheckInjectionQueue(source, cl);
     }
 
     // when calling _Step() _time is increased by 1.

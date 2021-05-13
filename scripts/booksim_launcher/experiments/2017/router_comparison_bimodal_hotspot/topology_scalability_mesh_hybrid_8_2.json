@@ -1,0 +1,27 @@
+{
+    "name"          : "topology_scalability_mesh_hybrid_bimodal",
+    "booksim_bin"   : "bin/booksim_17_Aug_2017",
+    "config_file"   : "configs/launcher_template.cfg",
+    "output_dir"    : "results/router_comparison_bimodal/topology_scalability_hybrid_8_2",
+
+    "params" : {
+        "topology"            : "mesh",
+        "n"                   : "2",
+        "routing_function"    : "dim_order",
+        "router"              : "hybrid",
+        "routing_delay"       : "0",
+        "noq"                 : "0",
+        "classes"             : "2",
+        "sim_count"           : "5",
+        "packet_size"         : "\\{1,5\\}"
+    },
+
+    "injection_rate_classes"  : ["0.001","0.03","0.002",["0.8","0.2"]],
+
+    "variables" : {
+        "traffic"             : ["hotspot\\(0\\)"],
+        "num_vcs"             : ["1","2","4","6"],
+        "vc_buf_size"         : ["1","3","6","12"],
+        "k"                   : ["8"]
+    }
+}

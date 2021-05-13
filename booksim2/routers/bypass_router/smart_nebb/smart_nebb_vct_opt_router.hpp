@@ -79,10 +79,11 @@ namespace Booksim
 
       protected:
         vector<int> _output_port_blocked;
+        vector<bool> _bypass_blocked;
         vector<int> _input_port_blocked;
         queue<SMARTRequest> _sag_requests;
         
-        vector<pair<int, int>> _destination_credit_ps;
+        //vector<pair<int, int>> _destination_credit_ps;
     };
 
 } // namespace Booksim
