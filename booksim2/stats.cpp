@@ -61,8 +61,8 @@ namespace Booksim
 
       _hist.assign(_num_bins, 0);
 
-      _min = numeric_limits<double>::quiet_NaN();
-      _max = -numeric_limits<double>::quiet_NaN();
+      _min = numeric_limits<long double>::quiet_NaN();
+      _max = -numeric_limits<long double>::quiet_NaN();
       
       //  _reset = true;
     }
@@ -102,7 +102,7 @@ namespace Booksim
       return _num_samples;
     }
 
-    void Stats::AddSample( double val )
+    void Stats::AddSample( long double val )
     {
       ++_num_samples;
       _sample_sum += val;

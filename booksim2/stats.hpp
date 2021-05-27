@@ -40,8 +40,8 @@ namespace Booksim
       double _sample_squared_sum;
 
       //bool _reset;
-      double _min;
-      double _max;
+      long double _min;
+      long double _max;
 
       int    _num_bins;
       double _bin_size;
@@ -62,12 +62,16 @@ namespace Booksim
       double SquaredSum( ) const;
       int    NumSamples( ) const;
 
-      void AddSample( double val );
+      //BSMOD: Change time to long long
+      void AddSample( long double val );
       inline void AddSample( int val ) {
-        AddSample( (double)val );
+        AddSample( (long double)val );
       }
       inline void AddSample( long val ) {
-        AddSample( (double)val );
+        AddSample( (long double)val );
+      }
+      inline void AddSample( long long val ) {
+        AddSample( (long double)val );
       }
 
       int GetBin(int b){ return _hist[b];}

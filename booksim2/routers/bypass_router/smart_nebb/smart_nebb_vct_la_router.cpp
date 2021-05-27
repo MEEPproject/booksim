@@ -97,7 +97,8 @@ namespace Booksim
 
         for (int input = 0; input < _inputs; input++) {
             if(!_flits_to_BW[input].empty()) {
-                pair<long, Flit *> elem = _flits_to_BW[input].front();
+                //BSMOD: Change time to long long
+                pair<long long, Flit *> elem = _flits_to_BW[input].front();
                 // In SuperSMART++ packets we must check if the bypass is
                 // enabled for the flit in the input pipeline register
 #if defined(FLIT_DEBUG) || defined(PIPELINE_DEBUG)
@@ -246,7 +247,8 @@ namespace Booksim
 
         for (int output = 0; output < _outputs; output++) {
             if (!_destination_queue_credits[output].empty()) { 
-                pair<long, Credit *> elem = _destination_queue_credits[output].front();
+                //BSMOD: Change time to long long
+                pair<long long, Credit *> elem = _destination_queue_credits[output].front();
                 if (elem.first >= GetSimTime()){
                     continue;
                 }

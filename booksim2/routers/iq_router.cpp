@@ -423,10 +423,10 @@ namespace Booksim
       _in_queue_flits.clear();
 
       while(!_proc_credits.empty()) {
-
-        pair<long, pair<Credit *, int> > const & item = _proc_credits.front();
-
-        long const time = item.first;
+        //BSMOD: Change time to long long
+        pair<long long, pair<Credit *, int> > const & item = _proc_credits.front();
+        //BSMOD: Change time to long long
+        long long const time = item.first;
         if(GetSimTime() < time) {
           break;
         }
@@ -464,12 +464,12 @@ namespace Booksim
     void IQRouter::_RouteEvaluate( )
     {
       assert(_routing_delay);
-
-      for(deque<pair<long, pair<int, int> > >::iterator iter = _route_vcs.begin();
+      //BSMOD: Change time to long long
+      for(deque<pair<long long, pair<int, int> > >::iterator iter = _route_vcs.begin();
           iter != _route_vcs.end();
           ++iter) {
-
-        long const time = iter->first;
+        //BSMOD: Change time to long long
+        long long const time = iter->first;
         if(time >= 0) {
           break;
         }
@@ -504,10 +504,10 @@ namespace Booksim
       assert(_routing_delay);
 
       while(!_route_vcs.empty()) {
-
-        pair<long, pair<int, int> > const & item = _route_vcs.front();
-
-        long const time = item.first;
+        //BSMOD: Change time to long long
+        pair<long long, pair<int, int> > const & item = _route_vcs.front();
+        //BSMOD: Change time to long long
+        long long const time = item.first;
         if((time < 0) || (GetSimTime() < time)) {
           break;
         }
@@ -558,12 +558,12 @@ namespace Booksim
       assert(_vc_allocator);
 
       bool watched = false;
-
-      for(deque<pair<long, pair<pair<int, int>, int> > >::iterator iter = _vc_alloc_vcs.begin();
+      //BSMOD: Change time to long long
+      for(deque<pair<long long, pair<pair<int, int>, int> > >::iterator iter = _vc_alloc_vcs.begin();
           iter != _vc_alloc_vcs.end();
           ++iter) {
-
-        long const time = iter->first;
+        //BSMOD: Change time to long long
+        long long const time = iter->first;
         if(time >= 0) {
           break;
         }
@@ -708,11 +708,12 @@ namespace Booksim
         _vc_allocator->PrintGrants( gWatchOut );
       }
 
-      for(deque<pair<long, pair<pair<int, int>, int> > >::iterator iter = _vc_alloc_vcs.begin();
+      //BSMOD: Change time to long long
+      for(deque<pair<long long, pair<pair<int, int>, int> > >::iterator iter = _vc_alloc_vcs.begin();
           iter != _vc_alloc_vcs.end();
           ++iter) {
-
-        long const time = iter->first;
+        //BSMOD: Change time to long long
+        long long const time = iter->first;
         if(time >= 0) {
           break;
         }
@@ -777,12 +778,12 @@ namespace Booksim
       if(_vc_alloc_delay <= 1) {
         return;
       }
-
-      for(deque<pair<long, pair<pair<int, int>, int> > >::iterator iter = _vc_alloc_vcs.begin();
+      //BSMOD: Change time to long long
+      for(deque<pair<long long, pair<pair<int, int>, int> > >::iterator iter = _vc_alloc_vcs.begin();
           iter != _vc_alloc_vcs.end();
           ++iter) {
-
-        long const time = iter->first;
+        //BSMOD: Change time to long long
+        long long const time = iter->first;
         assert(time >= 0);
         if(GetSimTime() < time) {
           break;
@@ -846,9 +847,10 @@ namespace Booksim
 
       while(!_vc_alloc_vcs.empty()) {
 
-        pair<long, pair<pair<int, int>, int> > const & item = _vc_alloc_vcs.front();
-
-        long const time = item.first;
+        //BSMOD: Change time to long long
+        pair<long long, pair<pair<int, int>, int> > const & item = _vc_alloc_vcs.front();
+        //BSMOD: Change time to long long
+        long long const time = item.first;
         if((time < 0) || (GetSimTime() < time)) {
           break;
         }
@@ -935,11 +937,12 @@ namespace Booksim
     {
       assert(_hold_switch_for_packet);
 
-      for(deque<pair<long, pair<pair<int, int>, int> > >::iterator iter = _sw_hold_vcs.begin();
+      //BSMOD: Change time to long long
+      for(deque<pair<long long, pair<pair<int, int>, int> > >::iterator iter = _sw_hold_vcs.begin();
           iter != _sw_hold_vcs.end();
           ++iter) {
-
-        long const time = iter->first;
+        //BSMOD: Change time to long long
+        long long const time = iter->first;
         if(time >= 0) {
           break;
         }
@@ -1010,10 +1013,10 @@ namespace Booksim
       assert(_hold_switch_for_packet);
 
       while(!_sw_hold_vcs.empty()) {
-
-        pair<long, pair<pair<int, int>, int> > const & item = _sw_hold_vcs.front();
-
-        long const time = item.first;
+        //BSMOD: Change time to long long
+        pair<long long, pair<pair<int, int>, int> > const & item = _sw_hold_vcs.front();
+        //BSMOD: Change time to long long
+        long long const time = item.first;
         if(time < 0) {
           break;
         }
@@ -1331,11 +1334,11 @@ namespace Booksim
     {
       bool watched = false;
 
-      for(deque<pair<long, pair<pair<int, int>, int> > >::iterator iter = _sw_alloc_vcs.begin();
+      for(deque<pair<long long, pair<pair<int, int>, int> > >::iterator iter = _sw_alloc_vcs.begin();
           iter != _sw_alloc_vcs.end();
           ++iter) {
-
-        long const time = iter->first;
+        //BSMOD: Change time to long long
+        long long const time = iter->first;
         if(time >= 0) {
           break;
         }
@@ -1494,12 +1497,12 @@ namespace Booksim
           _spec_sw_allocator->PrintGrants(gWatchOut);
         }
       }
-
-      for(deque<pair<long, pair<pair<int, int>, int> > >::iterator iter = _sw_alloc_vcs.begin();
+      //BSMOD: Change time to long long
+      for(deque<pair<long long, pair<pair<int, int>, int> > >::iterator iter = _sw_alloc_vcs.begin();
           iter != _sw_alloc_vcs.end();
           ++iter) {
-
-        long const time = iter->first;
+        //BSMOD: Change time to long long
+        long long const time = iter->first;
         if(time >= 0) {
           break;
         }
@@ -1635,12 +1638,12 @@ namespace Booksim
       if(!_speculative && (_sw_alloc_delay <= 1)) {
         return;
       }
-
-      for(deque<pair<long, pair<pair<int, int>, int> > >::iterator iter = _sw_alloc_vcs.begin();
+      //BSMOD: Change time to long long
+      for(deque<pair<long long, pair<pair<int, int>, int> > >::iterator iter = _sw_alloc_vcs.begin();
           iter != _sw_alloc_vcs.end();
           ++iter) {
-
-        long const time = iter->first;
+        //BSMOD: Change time to long long
+        long long const time = iter->first;
         assert(time >= 0);
         if(GetSimTime() < time) {
           break;
@@ -1839,10 +1842,10 @@ namespace Booksim
     void IQRouter::_SWAllocUpdate( )
     {
       while(!_sw_alloc_vcs.empty()) {
-
-        pair<long, pair<pair<int, int>, int> > const & item = _sw_alloc_vcs.front();
-
-        long const time = item.first;
+        //BSMOD: Change time to long long
+        pair<long long, pair<pair<int, int>, int> > const & item = _sw_alloc_vcs.front();
+        //BSMOD: Change time to long long
+        long long const time = item.first;
         if((time < 0) || (GetSimTime() < time)) {
           break;
         }
@@ -2137,11 +2140,12 @@ namespace Booksim
 
     void IQRouter::_SwitchEvaluate( )
     {
-      for(deque<pair<long, pair<Flit *, pair<int, int> > > >::iterator iter = _crossbar_flits.begin();
+      //BSMOD: Change time to long long
+      for(deque<pair<long long, pair<Flit *, pair<int, int> > > >::iterator iter = _crossbar_flits.begin();
           iter != _crossbar_flits.end();
           ++iter) {
-
-        long const time = iter->first;
+        //BSMOD: Change time to long long
+        long long const time = iter->first;
         if(time >= 0) {
           break;
         }
@@ -2168,10 +2172,10 @@ namespace Booksim
     void IQRouter::_SwitchUpdate( )
     {
       while(!_crossbar_flits.empty()) {
-
-        pair<long, pair<Flit *, pair<int, int> > > const & item = _crossbar_flits.front();
-
-        long const time = item.first;
+        //BSMOD: Change time to long long
+        pair<long long, pair<Flit *, pair<int, int> > > const & item = _crossbar_flits.front();
+        //BSMOD: Change time to long long
+        long long const time = item.first;
         if((time < 0) || (GetSimTime() < time)) {
           break;
         }

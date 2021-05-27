@@ -46,7 +46,8 @@ namespace Booksim
      /* the current traffic manager instance */
     TrafficManager * trafficManager = NULL;
 
-    long GetSimTime() {
+    //BSMOD: Change time to long long
+    long long GetSimTime() {
       return trafficManager->getTime();
     }
 

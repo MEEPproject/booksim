@@ -68,7 +68,8 @@ namespace Booksim
           bool dim_change; // used to produce speculative SSRs
           bool spec; // speculative SSR or not
           bool dest_ssr; // used to bypass destination (nebb_vct_la)
-          long sag_cycle; // used by nebb_vct_la to avoid speculation SSR creation in the same cycle
+          //BSMOD: Change time to long long
+          long long sag_cycle; // used by nebb_vct_la to avoid speculation SSR creation in the same cycle
           int agregated_dist; // used by nebb_vct_la to implement the SSR-propagation based idea
         };
 
@@ -121,8 +122,9 @@ namespace Booksim
         //          output, FLIT
         vector<pair<int, Flit *>> _crossbar_flits;
 
+        //BSMOD: Change time to long long
         // processing cycle, flit
-        vector<queue<pair<long, Flit *>>> _flits_to_BW;
+        vector<queue<pair<long long, Flit *>>> _flits_to_BW;
 
         virtual void _InternalStep();
 
@@ -133,8 +135,9 @@ namespace Booksim
         vector<queue<Credit *> > _credit_buffer;
         map<int, Credit *> _out_queue_smart_credits;
         vector<queue<Credit *> > _smart_credit_buffer;
+        //BSMOD: Change time to long long
         // FIXME: Hack to emulate OpenSMART consumption latency
-        vector<queue<pair<long, Credit *>>> _destination_queue_credits;
+        vector<queue<pair<long long, Credit *>>> _destination_queue_credits;
         //vector<int> _destination_credit;
 
         // Avoid computation when there aren't flits in the router

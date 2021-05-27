@@ -214,8 +214,9 @@ namespace Booksim
       enum eSimState { warming_up, running, draining, done };
       eSimState _sim_state;
 
-      long _reset_time;
-      long _drain_time;
+      //BSMOD: Change time to long long
+      long long _reset_time;
+      long long _drain_time;
 
       int   _total_sims;
 
@@ -226,7 +227,8 @@ namespace Booksim
 
       int _cur_id;
       int _cur_pid;
-      long _time;
+      //BSMOD: Change time to long long
+      long long _time;
 
       set<int> _flits_to_watch;
       set<int> _packets_to_watch;
@@ -296,7 +298,8 @@ namespace Booksim
 
       virtual bool _PacketsOutstanding( ) const;
       
-      int _GeneratePacket( int source, int dest, int size, int cl, long time );
+      //BSMOD: Change time to long long
+      int _GeneratePacket( int source, int dest, int size, int cl, long long time );
 
       virtual void _ResetSim( );
 
@@ -336,7 +339,8 @@ namespace Booksim
       void DisplayOverallStats(ostream & os = cout) const;
       void DisplayOverallStatsCSV(ostream & os = cout) const;
 
-      inline long getTime() { return _time;}
+      //BSMOD: Change time to long long
+      inline long long getTime() { return _time;}
       Stats * getStats(const string & name) { return _stats[name]; }
 
     };

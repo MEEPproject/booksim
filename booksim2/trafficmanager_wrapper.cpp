@@ -212,6 +212,7 @@ namespace Booksim
     TrafficManagerWrapper::UpdateSimTime(int cycles)
     {
         _time += cycles;
+        assert(_time);
     }
     
     int

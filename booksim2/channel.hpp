@@ -73,7 +73,8 @@ namespace Booksim
         int _delay;
         T * _input;
         T * _output;
-        queue<pair<int, T *> > _wait_queue;
+        //BSMOD: Change time to long long
+        queue<pair<long long, T *> > _wait_queue;
 
     };
 
@@ -119,9 +120,10 @@ namespace Booksim
             _output = 0;
             return;
         }
-
-        pair<long, T *> const & item = _wait_queue.front();
-        long const & time = item.first;
+        
+        //BSMOD: Change time to long long
+        pair<long long, T *> const & item = _wait_queue.front();
+        long long const & time = item.first;
         if(GetSimTime() < time) {
             //*gWatchOut << GetSimTime() << " IVAN, channel: " << FullName() << " WriteOutputs time: " << time << " No Pass " << item.second->id << std::endl;
             _output = 0;

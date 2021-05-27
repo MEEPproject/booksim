@@ -36,8 +36,8 @@ namespace Booksim
 {
 
     /*all declared in main.cpp*/
-
-    long GetSimTime();
+    //BSMOD: Change time to long long
+    long long GetSimTime();
 
     class Stats;
     Stats * GetStats(const std::string & name);

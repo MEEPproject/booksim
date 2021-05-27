@@ -76,15 +76,15 @@ namespace Booksim
 
         // Stage communication
         map<int, Flit *> _in_queue_flits;
-
-        deque<pair<long, pair<Credit *, int> > > _proc_credits;
-
-        deque<pair<long, pair<int, int> > > _route_vcs;
-        deque<pair<long, pair<pair<int, int>, int> > > _vc_alloc_vcs;  
-        deque<pair<long, pair<pair<int, int>, int> > > _sw_hold_vcs;
-        deque<pair<long, pair<pair<int, int>, int> > > _sw_alloc_vcs;
-
-        deque<pair<long, pair<Flit *, pair<int, int> > > > _crossbar_flits;
+        //BSMOD: Change time to long long
+        deque<pair<long long, pair<Credit *, int> > > _proc_credits;
+        //BSMOD: Change time to long long
+        deque<pair<long long, pair<int, int> > > _route_vcs;
+        deque<pair<long long, pair<pair<int, int>, int> > > _vc_alloc_vcs;  
+        deque<pair<long long, pair<pair<int, int>, int> > > _sw_hold_vcs;
+        deque<pair<long long, pair<pair<int, int>, int> > > _sw_alloc_vcs;
+        //BSMOD: Change time to long long
+        deque<pair<long long, pair<Flit *, pair<int, int> > > > _crossbar_flits;
 
         map<int, Credit *> _out_queue_credits;
 

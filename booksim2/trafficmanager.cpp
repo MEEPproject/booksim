@@ -866,8 +866,9 @@ namespace Booksim
         _requests_outstanding[head->cl][head->src]--;
     }
 
+    //BSMOD: Change time to long long
     int TrafficManager::_GeneratePacket( int source, int dest, int size, int cl, 
-            long time )
+            long long time )
     {
 
 #ifdef PACKET_TRACE
@@ -952,7 +953,8 @@ namespace Booksim
                     f->pri = _class_priority[cl];
                     break;
                 case age_based:
-                    f->pri = numeric_limits<long>::max() - time;
+                    //BSMOD: Change time to long long
+                    f->pri = numeric_limits<long long>::max() - time;
                     assert(f->pri >= 0);
                     break;
                 case sequence_based:
@@ -1281,7 +1283,8 @@ namespace Booksim
                     dest_buf->SendingFlit(f, _vct);
 
                     if(_pri_type == network_age_based) {
-                        f->pri = numeric_limits<long>::max() - _time;
+                        //BSMOD: Change time to long long
+                        f->pri = numeric_limits<long long>::max() - _time;
                         assert(f->pri >= 0);
                     }
 

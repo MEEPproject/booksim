@@ -193,7 +193,8 @@ namespace Booksim
         int _vcs;
         vector<int> _occupancy_limit;
         vector<long> _round_trip_time;
-        vector<queue<long> > _flit_sent_time;
+        //BSMOD: Change time to long long
+        vector<queue<long long> > _flit_sent_time;
         int _min_latency;
         int _total_mapped_size;
         int _aging_scale;

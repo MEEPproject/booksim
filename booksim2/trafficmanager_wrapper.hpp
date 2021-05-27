@@ -52,7 +52,8 @@ namespace Booksim
 
             virtual void _RetirePacket(Flit * head, Flit * tail);
 
-            long _last_print;
+            //BSMOD: Change time to long long
+            long long _last_print;
 
             long _sample_period;	
 

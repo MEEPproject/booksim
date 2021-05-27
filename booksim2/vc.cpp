@@ -102,7 +102,8 @@ namespace Booksim
         
       // Update flit priority before adding to VC buffer
       if(_pri_type == local_age_based) {
-        f->pri = numeric_limits<int>::max() - GetSimTime();
+        //BSMOD: Change time to long long
+        f->pri = numeric_limits<long long>::max() - GetSimTime();
         assert(f->pri >= 0);
       } else if(_pri_type == hop_count_based) {
         f->pri = f->hops;

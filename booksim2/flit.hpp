@@ -56,12 +56,13 @@ namespace Booksim
             // Is this a tail flit?
             bool tail;
 
+            //BSMOD: Change time to long long
             // Creation time
-            long  ctime;
+            long long  ctime;
             // Injection time
-            long  itime;
+            long long  itime;
             // Arrival time
-            long  atime;
+            long long  atime;
 
             // Flit ID
             int  id;
@@ -81,7 +82,8 @@ namespace Booksim
             int  dest;
 
             // Packet priority
-            int  pri;
+            //BSMOD: Change time to long long
+            long  pri;
 
             // Hops done
             int  hops;
