@@ -152,7 +152,8 @@ namespace Booksim
         _vc[vc]->SetPriority(pri);
       }
       
-      inline int GetLastPid( int vc ) const
+      //BSMOD: Change flit and packet id to long
+      inline long GetLastPid( int vc ) const
       {
         return _vc[vc]->GetLastPid( );
       }
@@ -185,12 +186,14 @@ namespace Booksim
         return _vc[vc]->GetOccupancy( );
       }
 
-      inline int GetActivePID(int vc) const
+      //BSMOD: Change flit and packet id to long
+      inline long GetActivePID(int vc) const
       {
         return _vc[vc]->GetActivePID();
       }
       
-      inline void SetActivePID(int vc, int pid)
+      //BSMOD: Change flit and packet id to long
+      inline void SetActivePID(int vc, long pid)
       {
         _vc[vc]->SetActivePID(pid);
       }
@@ -201,7 +204,8 @@ namespace Booksim
         _vc[vc]->ReleaseVC();
       }
       
-      inline int GetExpectedPID(int vc) const
+      //BSMOD: Change flit and packet id to long
+      inline long GetExpectedPID(int vc) const
       {
         return _vc[vc]->GetExpectedPID();
       }

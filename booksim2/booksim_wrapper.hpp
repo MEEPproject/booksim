@@ -46,7 +46,8 @@ namespace Booksim
             // NOTE: if you require additional stats, add more fields. If it
             // grows considerably, consider the creation of a STATS structure.
             struct RetiredPacket {
-                int pid; // packet ID
+                //BSMOD: Change flit and packet id to long
+                long pid; // packet ID
                 int src; // source
                 int dst; // destination
                 int c; // packet class
@@ -67,7 +68,8 @@ namespace Booksim
              Generate a new packet. Returns the packet ID (-1 if not possible).
              \todo {Possible overflow in Full System simulations}
             */
-            int GeneratePacket(int source, int dest, int size, int cl,
+            //BSMOD: Change flit and packet id to long
+            long GeneratePacket(int source, int dest, int size, int cl,
                                long time);
 
             //! Run "cycles" internal cycles

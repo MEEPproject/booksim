@@ -183,7 +183,8 @@ namespace Booksim
           double latency = (double)_plat_stats[c]->Sum();
           double count = (double)_plat_stats[c]->NumSamples();
           
-          map<int, Flit *>::const_iterator iter;
+          //BSMOD: Change flit and packet id to long
+          map<long, Flit *>::const_iterator iter;
           for(iter = _total_in_flight_flits[c].begin(); 
           iter != _total_in_flight_flits[c].end(); 
           iter++) {
@@ -285,7 +286,8 @@ namespace Booksim
             double acc_latency = _plat_stats[c]->Sum();
             double acc_count = (double)_plat_stats[c]->NumSamples();
             
-            map<int, Flit *>::const_iterator iter;
+            //BSMOD: Change flit and packet id to long
+            map<long, Flit *>::const_iterator iter;
             for(iter = _total_in_flight_flits[c].begin(); 
             iter != _total_in_flight_flits[c].end(); 
             iter++) {

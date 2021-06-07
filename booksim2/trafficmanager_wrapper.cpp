@@ -59,7 +59,8 @@ namespace Booksim
 
 
     // Interface to internal methods of TrafficManager
-    int
+    //BSMOD: Change flit and packet id to long
+    long
     TrafficManagerWrapper::GeneratePacket(int source,
                                           int dest,
                                           int size,

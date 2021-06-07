@@ -140,7 +140,8 @@ namespace Booksim
         vector<bool> _bypass_path;
         vector<int> _vc_bypassing;
         vector<int> _output_strict_priority_vc;
-        vector<int> _pid_bypass;
+        //BSMOD: Change flit and packet id to long
+        vector<long> _pid_bypass;
         // Only for dateline routing: used to copy ph field from LA to a Flit
         vector<int> _dateline_partition;
 

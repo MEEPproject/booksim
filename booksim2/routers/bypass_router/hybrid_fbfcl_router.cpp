@@ -578,7 +578,9 @@ namespace Booksim
         for(int output = 0; output < _outputs; output++)
         {
             // Read expanded input of SA-O winner
-            int expanded_input, priority;
+            //BSMOD: Change flit and packet id to long
+            long expanded_input;
+            int priority;
             if(_switch_arbiter_output[output]->Arbitrate(&expanded_input,&priority) > -1) {
 
                 // Move flit to LA-CC stage
@@ -854,7 +856,8 @@ namespace Booksim
         {
 
             Lookahead * la;
-            int la_id;
+            //BSMOD: Change flit and packet id to long
+            long la_id;
             int input;
             int priority;
             // Read winner
@@ -1201,8 +1204,9 @@ namespace Booksim
 
 #ifdef FLIT_DEBUG
             if(f->watch) {
-                int front_id = cur_buf->FrontFlit(in_vc) ? cur_buf->FrontFlit(in_vc)->id : -1;
-                int front_pid = cur_buf->FrontFlit(in_vc) ? cur_buf->FrontFlit(in_vc)->pid : -1;
+                //BSMOD: Change flit and packet id to long
+                long front_id = cur_buf->FrontFlit(in_vc) ? cur_buf->FrontFlit(in_vc)->id : -1;
+                long front_pid = cur_buf->FrontFlit(in_vc) ? cur_buf->FrontFlit(in_vc)->pid : -1;
                 *gWatchOut  << "(line " << __LINE__ << ") | Cycle: " << GetSimTime() << " Router: " << FullName() 
                             << " BufferWrite, Adding flit from buffer input " << input << " in vc " << in_vc
                             << " Flit: " << f->id << " pid " << f->pid << " Front flit buffer "
@@ -1339,7 +1343,9 @@ namespace Booksim
         for(int input = 0; input < _inputs; input++)
         {
             // Arbitrate
-            int in_vc, pid, pri;
+            int in_vc, pri;
+            //BSMOD: Change flit and packet id to long
+            long pid;
             in_vc = _switch_arbiter_input[input]->Arbitrate(&pid, &pri);
 
             // Update and Clear switch for next cycles:

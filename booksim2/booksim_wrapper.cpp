@@ -137,8 +137,8 @@ namespace Booksim
         delete _traffic_manager;
     }
 
-
-    int //! Packet ID
+    //BSMOD: Change flit and packet id to long
+    long //! Packet ID
     BooksimWrapper::GeneratePacket(int source,
                                    int dest,
                                    int size,

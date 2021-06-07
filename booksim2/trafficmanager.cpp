@@ -797,7 +797,8 @@ namespace Booksim
             if(f->head) {
                 head = f;
             } else {
-                map<int, Flit *>::iterator iter = _retired_packets[f->cl].find(f->pid);
+                //BSMOD: Change flit and packet id to long
+                map<long, Flit *>::iterator iter = _retired_packets[f->cl].find(f->pid);
                 assert(iter != _retired_packets[f->cl].end());
                 head = iter->second;
                 _retired_packets[f->cl].erase(iter);
@@ -867,7 +868,8 @@ namespace Booksim
     }
 
     //BSMOD: Change time to long long
-    int TrafficManager::_GeneratePacket( int source, int dest, int size, int cl, 
+    //BSMOD: Change flit and packet id to long
+    long TrafficManager::_GeneratePacket( int source, int dest, int size, int cl, 
             long long time )
     {
 
@@ -901,7 +903,8 @@ namespace Booksim
         assert((source >= 0) && (source < _nodes));
         assert((dest >= 0) && (dest < _nodes));
 
-        int pid = _cur_pid++;
+        //BSMOD: Change flit and packet id to long
+        long pid = _cur_pid++;
         assert(_cur_pid);
 
         bool watch = gWatchOut && ((_packets_to_watch.count(pid) > 0) || _watch_every_packet == 1);
@@ -920,7 +923,8 @@ namespace Booksim
 
         for ( int i = 0; i < size; ++i ) {
 
-            int id = _cur_id++;
+            //BSMOD: Change flit and packet id to long
+            long id = _cur_id++;
             assert(_cur_id);
 
             Flit * f = Flit::New();
@@ -1503,7 +1507,8 @@ namespace Booksim
     {
         for(int c = 0; c < _classes; ++c) {
 
-            map<int, Flit *>::const_iterator iter;
+            //BSMOD: Change flit and packet id to long
+            map<long, Flit *>::const_iterator iter;
             int i;
 
             os << "Cycle: " << GetSimTime() << " Class " << c << ":" << endl;

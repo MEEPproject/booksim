@@ -71,7 +71,8 @@ namespace Booksim
         // Execute the output arbiter and propagate the grants to the
         // input arbiters.
 
-        int label = -1;
+        //BSMOD: Change flit and packet id to long
+        long label = -1;
         const int input = _output_arb[output]->Arbitrate(&label, NULL);
         assert(input > -1);
 

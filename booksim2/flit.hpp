@@ -64,10 +64,11 @@ namespace Booksim
             // Arrival time
             long long  atime;
 
+            //BSMOD: Change flit and packet id to long
             // Flit ID
-            int  id;
+            long  id;
             // Packet ID
-            int  pid;
+            long  pid;
 
             // Used in SMART routers
             int router_id;

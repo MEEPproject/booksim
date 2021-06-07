@@ -65,7 +65,8 @@ namespace Booksim
       _request[input].pri = pri ;
     }
 
-    int Arbiter::Arbitrate( int* id, int* pri )
+    //BSMOD: Change flit and packet id to long
+    int Arbiter::Arbitrate( long* id, int* pri )
     {
       if ( _selected != -1 ) {
         if ( id )

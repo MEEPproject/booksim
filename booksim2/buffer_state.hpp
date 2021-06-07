@@ -228,10 +228,11 @@ namespace Booksim
       
       BufferPolicy * _buffer_policy;
       
-      vector<int> _in_use_by;
+      //BSMOD: Change flit and packet id to long
+      vector<long> _in_use_by;
       vector<bool> _tail_sent;
-      vector<int> _last_id;
-      vector<int> _last_pid;
+      vector<long> _last_id;
+      vector<long> _last_pid;
 
 #ifdef TRACK_BUFFERS
       int _classes;
@@ -256,7 +257,7 @@ namespace Booksim
       void ProcessCredit( Credit const * const c, bool vct = false);
       void SendingFlit(Flit const * const f, bool vct = false);
 
-      void TakeBuffer( int vc = 0, int tag = 0 );
+      void TakeBuffer( int vc = 0, long tag = 0 );
 
       inline bool IsFull() const {
         assert(_occupancy <= _size);
@@ -284,7 +285,8 @@ namespace Booksim
         assert( ( vc >= 0 ) && ( vc < _vcs ) );
         return _in_use_by[vc] < 0;
       }
-      inline int UsedBy(int vc = 0) const {
+      //BSMOD: Change flit and packet id to long
+      inline long UsedBy(int vc = 0) const {
         assert( ( vc >= 0 ) && ( vc < _vcs ) );
         return _in_use_by[vc];
       }

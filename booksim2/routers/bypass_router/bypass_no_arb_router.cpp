@@ -565,7 +565,9 @@ namespace Booksim
         // Arbitration
         for(int output = 0; output < _outputs; output++)
         {
-            int expanded_input, priority;
+            //BSMOD: Change flit and packet id to long
+            long expanded_input;
+            int priority;
             if(_switch_arbiter_output[output]->Arbitrate(&expanded_input,&priority) > -1)
             {
                 _lookahead_conflict_check_flits[output] = expanded_input;
@@ -1241,7 +1243,9 @@ namespace Booksim
         for(int input = 0; input < _inputs; input++)
         {
             // Arbitrate
-            int in_vc, pid, pri;
+            int in_vc, pri;
+            //BSMOD: Change flit and packet id to long
+            long pid;
             in_vc = _switch_arbiter_input[input]->Arbitrate(&pid, &pri);
 
             // Update and Clear switch for next cycles:

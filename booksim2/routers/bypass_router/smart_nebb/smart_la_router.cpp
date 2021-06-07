@@ -216,7 +216,8 @@ namespace Booksim
                     } else {
 #if defined(FLIT_DEBUG) || defined(PIPELINE_DEBUG)
                         if (f->watch) {
-                            int tmp_pid = -1;
+                            //BSMOD: Change flit and packet id to long
+                            long tmp_pid = -1;
                             Flit * tmp_f = _buf[input]->FrontFlit(f->vc);
                             if (tmp_f) tmp_pid = tmp_f->pid;
                             *gWatchOut  << GetSimTime() << " | " << FullName() << " | ReadFlit (ReadInputs - latched) | Flit " << f->id

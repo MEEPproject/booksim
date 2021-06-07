@@ -646,7 +646,8 @@ namespace Booksim
         
         if(!dest_buf->IsAvailableFor(out_vc)) {
           if(f->watch) {
-            int const use_input_and_vc = dest_buf->UsedBy(out_vc);
+            //BSMOD: Change flit and packet id to long
+            long const use_input_and_vc = dest_buf->UsedBy(out_vc);
             int const use_input = use_input_and_vc / _vcs;
             int const use_vc = use_input_and_vc % _vcs;
             *gWatchOut << GetSimTime() << " | " << FullName() << " | "

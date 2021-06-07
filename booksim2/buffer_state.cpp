@@ -1052,7 +1052,8 @@ namespace Booksim
         _last_pid[vc] = f->pid;
     }
 
-    void BufferState::TakeBuffer( int vc, int tag )
+    //BSMOD: Change flit and packet id to long
+    void BufferState::TakeBuffer( int vc, long tag )
     {
         assert( ( vc >= 0 ) && ( vc < _vcs ) );
 

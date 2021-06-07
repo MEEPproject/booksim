@@ -88,13 +88,16 @@ namespace Booksim
       ++_group_reqs[group_index];
     }
 
-    int TreeArbiter::Arbitrate( int* id, int* pri ) {
+    //BSMOD: Change flit and packet id to long
+    int TreeArbiter::Arbitrate( long* id, int* pri ) {
       if(!_num_reqs) {
         return -1;
       } 
       for(int i = 0; i < (int)_group_arbiters.size(); ++i) {
         if(_group_reqs[i]) {
-          int group_id, group_pri;
+          //BSMOD: Change flit and packet id to long
+          long group_id;
+          int group_pri;
           _group_arbiters[i]->Arbitrate(&group_id, &group_pri);
           _global_arbiter->AddRequest(i, group_id, group_pri);
         }

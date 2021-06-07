@@ -62,7 +62,8 @@ namespace Booksim
             OutputSet *_route_set;
             // ???
             int _out_port, _out_vc;
-            int _active_pid;
+            //BSMOD: Change flit and packet id to long
+            long _active_pid;
 
             // Types of priority. FIXME: Here we should add the new priority type for RSU priorities
             enum ePrioType { local_age_based, queue_length_based, hop_count_based, none, other };
@@ -81,12 +82,14 @@ namespace Booksim
 
             // Packet id expected. This is used to check if the flits of a packet are written in sequence into the buffer.
             // If the last flit was a tail flit, _expected_pid is -1, and the check is not done.
-            int _expected_pid;
+            //BSMOD: Change flit and packet id to long
+            long _expected_pid;
 
+            //BSMOD: Change flit and packet id to long
             // ID of last flit
-            int _last_id;
+            long _last_id;
             // Packet ID of last packet
-            int _last_pid;
+            long _last_pid;
 
             // Is lookahead routing activated?
             bool _lookahead_routing;
@@ -162,21 +165,25 @@ namespace Booksim
                 return (int)_buffer.size();
             }
 
-            inline int GetLastPid( ) const
+            //BSMOD: Change flit and packet id to long
+            inline long GetLastPid( ) const
             {
                 return _last_pid;
             }
 
-            inline void SetActivePID(int pid)
+            //BSMOD: Change flit and packet id to long
+            inline void SetActivePID(long pid)
             {
               _active_pid = pid;
             }
-            inline int GetActivePID() const
+            //BSMOD: Change flit and packet id to long
+            inline long GetActivePID() const
             {
                 return _active_pid;
             }
             
-            inline int GetExpectedPID() const
+            //BSMOD: Change flit and packet id to long
+            inline long GetExpectedPID() const
             {
                 return _expected_pid;
             }

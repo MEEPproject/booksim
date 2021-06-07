@@ -79,7 +79,8 @@ namespace Booksim
       Arbiter::AddRequest(input, id, pri);
     }
 
-    int MatrixArbiter::Arbitrate( int* id, int* pri ) {
+    //BSMOD: Change flit and packet id to long
+    int MatrixArbiter::Arbitrate( long* id, int* pri ) {
       
       // avoid running arbiter if it has not recevied at least two requests
       // (in this case, requests and grants are identical)

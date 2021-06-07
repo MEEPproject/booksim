@@ -142,7 +142,8 @@ namespace Booksim
         // Bypass paths
         vector<bool> _bypass_path;
         vector<int>  _vc_bypassing;
-        vector<int>  _pid_bypass; // This is only used for debugging
+        //BSMOD: Change flit and packet id to long
+        vector<long>  _pid_bypass; // This is only used for debugging
         vector<int> _output_strict_priority_vc;
         // Only for dateline routing: used to copy ph field from LA to a Flit
         vector<int> _dateline_partition;

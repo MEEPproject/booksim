@@ -68,7 +68,8 @@ namespace Booksim
       Arbiter::AddRequest(input, id, pri);
     }
 
-    int RoundRobinArbiter::Arbitrate( int* id, int* pri ) {
+    //BSMOD: Change flit and packet id to long
+    int RoundRobinArbiter::Arbitrate( long* id, int* pri ) {
       
       _selected = _best_input;
       

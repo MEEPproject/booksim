@@ -103,9 +103,10 @@ namespace Booksim
 
       vector<vector<list<Flit *> > > _partial_packets;
 
-      vector<map<int, Flit *> > _total_in_flight_flits;
-      vector<map<int, Flit *> > _measured_in_flight_flits;
-      vector<map<int, Flit *> > _retired_packets;
+      //BSMOD: Change flit and packet id to long
+      vector<map<long, Flit *> > _total_in_flight_flits;
+      vector<map<long, Flit *> > _measured_in_flight_flits;
+      vector<map<long, Flit *> > _retired_packets;
 
       bool _empty_network;
 
@@ -204,8 +205,9 @@ namespace Booksim
       vector<double> _overall_la_output_blocked;
 #endif
 
-      vector<int> _slowest_packet;
-      vector<int> _slowest_flit;
+      //BSMOD: Change flit and packet id to long
+      vector<long> _slowest_packet;
+      vector<long> _slowest_flit;
 
       map<string, Stats *> _stats;
 
@@ -225,8 +227,9 @@ namespace Booksim
       vector<int> _measure_stats;
       bool _pair_stats;
 
-      int _cur_id;
-      int _cur_pid;
+      //BSMOD: Change flit and packet id to long
+      long _cur_id;
+      long _cur_pid;
       //BSMOD: Change time to long long
       long long _time;
 
@@ -299,7 +302,8 @@ namespace Booksim
       virtual bool _PacketsOutstanding( ) const;
       
       //BSMOD: Change time to long long
-      int _GeneratePacket( int source, int dest, int size, int cl, long long time );
+      //BSMOD: Change flit and packet id to long
+      long _GeneratePacket( int source, int dest, int size, int cl, long long time );
 
       virtual void _ResetSim( );
 
