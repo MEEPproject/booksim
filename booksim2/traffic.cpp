@@ -136,9 +136,18 @@ namespace Booksim
                 (pattern_name == "badperm_yarc")) {
             bool missing_params = false;
             int k = -1;
+            //BSMOD: Fix neighbor and tornado traffics for square cmesh implemented as CNKCube
+            vector<int> kVect;
             if(params.size() < 1) {
                 if(config) {
-                    k = config->GetInt("k");
+                    kVect = config->GetIntArray( "k" );
+                    if(kVect.size() > 1) {
+                        k = kVect[0];
+                        // Only valid for square meshes
+                        for(int i=1; i < (int) kVect.size(); i++)
+                            assert(kVect[i] == kVect[i-1]);
+                    } else
+                        k = config->GetInt("k");
                 } else {
                     missing_params = true;
                 }
@@ -344,7 +353,6 @@ namespace Booksim
 
         int offset = 1;
         int result = 0;
-
         for(int n = 0; n < _n; ++n) {
             result += offset *
                 (((source / offset) % (_xr * _k) + 1) % (_xr * _k));
