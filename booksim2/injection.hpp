@@ -28,6 +28,7 @@
 #ifndef _INJECTION_HPP_
 #define _INJECTION_HPP_
 
+#include <unordered_set>
 #include "config_utils.hpp"
 
 namespace Booksim
@@ -51,6 +52,17 @@ namespace Booksim
     class BernoulliInjectionProcess : public InjectionProcess {
     public:
       BernoulliInjectionProcess(int nodes, double rate);
+      virtual bool test(int source);
+    };
+
+    //BSMOD: Add AcmeVasMemTilesTrafficPattern
+    class AcmeVasMemTilesInjectionProcess : public BernoulliInjectionProcess {
+    private:
+      std::unordered_set<int> _mem_tiles;
+      int _mem;
+      int _vas;
+    public:
+      AcmeVasMemTilesInjectionProcess(int nodes, double rate, vector<int> kVect);
       virtual bool test(int source);
     };
 

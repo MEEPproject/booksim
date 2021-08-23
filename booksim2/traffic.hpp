@@ -119,6 +119,18 @@ namespace Booksim
       RandomTrafficPattern(int nodes);
     };
 
+    //BSMOD: Add AcmeVasMemTilesTrafficPattern
+    class AcmeVasMemTilesTrafficPattern : public RandomTrafficPattern {
+      private:
+        vector<int> _vas_tiles;
+        int _vas;
+        vector<int> _mem_tiles;
+        int _mem;
+      public:
+        AcmeVasMemTilesTrafficPattern(int nodes, vector<int> kVect);
+        virtual int dest(int source);
+    };
+
     class UniformRandomTrafficPattern : public RandomTrafficPattern {
     public:
       UniformRandomTrafficPattern(int nodes);

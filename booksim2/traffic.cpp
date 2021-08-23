@@ -27,6 +27,7 @@
 
 #include <iostream>
 #include <sstream>
+#include <algorithm>
 #include "random_utils.hpp"
 #include "traffic.hpp"
 
@@ -94,6 +95,25 @@ namespace Booksim
                 perm_seed = atoi(params[0].c_str());
             }
             result = new RandomPermutationTrafficPattern(nodes, perm_seed);
+        //BSMOD: Add AcmeVasMemTilesTrafficPattern
+        } else if(pattern_name == "acmevasmemtiles") {
+            assert(config->GetStr( "injection_process" ) == "bernoulli" || config->GetStr( "injection_process" ) == "acmevasmemtiles");
+            vector<int> kVect;
+            vector<int> cVect;
+            int n;
+            kVect = config->GetIntArray( "k" );
+            cVect = config->GetIntArray( "c" );
+            n = config->GetInt("n");
+            assert(n == 2); // Implemented for D-2 mesh
+            if(kVect.size() == 0) { // Fix kVect for square mesh network
+                kVect.push_back(config->GetInt( "k" ));
+                kVect.push_back(config->GetInt( "k" ));
+            }
+            if(cVect.size() == 0)
+                cVect.push_back(config->GetInt( "c" ));
+            assert((int) kVect.size() == n);
+            assert(cVect[0] == 1); // Traffic pattern has been implemented only for non-concentrated mesh topo
+            result = new AcmeVasMemTilesTrafficPattern(nodes, kVect);
         } else if(pattern_name == "uniform") {
             result = new UniformRandomTrafficPattern(nodes);
         } else if(pattern_name == "background") {
@@ -408,6 +428,37 @@ namespace Booksim
     : TrafficPattern(nodes)
     {
 
+    }
+
+    //BSMOD: Add AcmeVasMemTilesTrafficPattern
+    AcmeVasMemTilesTrafficPattern::AcmeVasMemTilesTrafficPattern(int nodes, vector<int> kVect)
+    : RandomTrafficPattern(nodes)
+    {
+        for(int cnode=0; cnode < _nodes; cnode++) {
+            if(cnode % kVect[0] == 0 ||              // Left MEM tiles
+               cnode % kVect[0] == (kVect[0] - 1)) { // Right MEM tiles
+               _mem_tiles.push_back(cnode);
+            } else {
+                _vas_tiles.push_back(cnode);         // VAS tiles
+            }
+        }
+        _vas = _vas_tiles.size();
+        _mem = _mem_tiles.size();
+        assert(_vas + _mem == _nodes);
+    }
+
+    int AcmeVasMemTilesTrafficPattern::dest(int source)
+    {
+        assert((source >= 0) && (source < _nodes));
+        int result;
+
+        if(std::find(_vas_tiles.begin(), _vas_tiles.end(), source) != _vas_tiles.end()) { // src is a VAS tile
+            result = _mem_tiles[RandomInt(_mem - 1)];
+        } else { // src is a MEM tile
+            result = _vas_tiles[RandomInt(_vas - 1)];
+        }
+
+        return result;
     }
 
         UniformRandomTrafficPattern::UniformRandomTrafficPattern(int nodes)

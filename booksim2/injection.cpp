@@ -79,6 +79,19 @@ namespace Booksim
       InjectionProcess * result = NULL;
       if(process_name == "bernoulli") {
         result = new BernoulliInjectionProcess(nodes, load);
+      //BSMOD: Add AcmeVasMemTilesTrafficPattern
+      } else if(process_name == "acmevasmemtiles") {
+        vector<int> kVect;
+        int n;
+        kVect = config->GetIntArray( "k" );
+        n = config->GetInt("n");
+        assert(n == 2); // Implemented for D-2 mesh
+        if(kVect.size() == 0) { // Fix kVect for square mesh network
+          kVect.push_back(config->GetInt( "k" ));
+          kVect.push_back(config->GetInt( "k" ));
+        }
+        assert((int) kVect.size() == n);
+        result = new AcmeVasMemTilesInjectionProcess(nodes, load, kVect);
       } else if(process_name == "on_off") {
         bool missing_params = false;
         double alpha = numeric_limits<double>::quiet_NaN();
@@ -147,6 +160,34 @@ namespace Booksim
     {
       assert((source >= 0) && (source < _nodes));
       return (RandomFloat() < _rate);
+    }
+
+    //BSMOD: Add AcmeVasMemTilesTrafficPattern
+    AcmeVasMemTilesInjectionProcess::AcmeVasMemTilesInjectionProcess(int nodes, double rate, vector<int> kVect)
+      : BernoulliInjectionProcess(nodes, rate)
+    {
+      for(int cnode=0; cnode < _nodes; cnode++)
+        if(cnode % kVect[0] == 0 ||              // Left MEM tiles
+           cnode % kVect[0] == (kVect[0] - 1)) // Right MEM tiles
+            _mem_tiles.insert(cnode);
+      _mem = _mem_tiles.size();
+      _vas = _nodes - _mem;
+      assert(_mem <= _vas);
+    }
+
+    bool AcmeVasMemTilesInjectionProcess::test(int source)
+    {
+      assert((source >= 0) && (source < _nodes));
+      bool result;
+
+      std::unordered_set<int>::const_iterator find_mem = _mem_tiles.find(source);
+      if(find_mem != _mem_tiles.end()) { // SRC is a mem tile
+        result = RandomFloat() < _rate;
+      } else { // SRC is a vas tile, so, it reduces its injection based on the ratio of vas tiles for each mem tile
+        result = RandomFloat() < (_rate * _mem / _vas);
+      }
+
+      return result;
     }
 
     //=============================================================
