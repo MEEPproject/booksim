@@ -79,19 +79,21 @@ namespace Booksim
       InjectionProcess * result = NULL;
       if(process_name == "bernoulli") {
         result = new BernoulliInjectionProcess(nodes, load);
-      //BSMOD: Add AcmeVasMemTilesTrafficPattern
-      } else if(process_name == "acmevasmemtiles") {
+      //BSMOD: Add AcmeMemoryTrafficInjectionProcess
+      } else if(process_name == "acmememorytraffic") {
+        string mem_loc_cfg = config->GetStr( "acme_mem_location" );
+        assert(mem_loc_cfg == "left" || mem_loc_cfg == "right" || mem_loc_cfg == "both");
         vector<int> kVect;
         int n;
         kVect = config->GetIntArray( "k" );
         n = config->GetInt("n");
         assert(n == 2); // Implemented for D-2 mesh
-        if(kVect.size() == 0) { // Fix kVect for square mesh network
+        if(kVect.empty()) { // Fix kVect for square mesh network
           kVect.push_back(config->GetInt( "k" ));
           kVect.push_back(config->GetInt( "k" ));
         }
         assert((int) kVect.size() == n);
-        result = new AcmeVasMemTilesInjectionProcess(nodes, load, kVect);
+        result = new AcmeMemoryTrafficInjectionProcess(nodes, load, kVect, mem_loc_cfg);
       } else if(process_name == "on_off") {
         bool missing_params = false;
         double alpha = numeric_limits<double>::quiet_NaN();
@@ -163,29 +165,33 @@ namespace Booksim
     }
 
     //BSMOD: Add AcmeVasMemTilesTrafficPattern
-    AcmeVasMemTilesInjectionProcess::AcmeVasMemTilesInjectionProcess(int nodes, double rate, vector<int> kVect)
+    AcmeMemoryTrafficInjectionProcess::AcmeMemoryTrafficInjectionProcess(int nodes, double rate, vector<int> kVect, string mem_tiles_location)
       : BernoulliInjectionProcess(nodes, rate)
     {
       for(int cnode=0; cnode < _nodes; cnode++)
-        if(cnode % kVect[0] == 0 ||              // Left MEM tiles
-           cnode % kVect[0] == (kVect[0] - 1)) // Right MEM tiles
+        if((mem_tiles_location != "right" && cnode % kVect[0] == 0) ||              // Left MEM tiles
+           (mem_tiles_location != "left" && cnode % kVect[0] == (kVect[0] - 1)))    // Right MEM tiles
             _mem_tiles.insert(cnode);
-      _mem = _mem_tiles.size();
-      _vas = _nodes - _mem;
-      assert(_mem <= _vas);
+
+      //cout << "MEM Tiles: ";
+      //for(auto it=_mem_tiles.begin(); it != _mem_tiles.end(); it++)
+      //    cout << to_string(*it) << ",";
+      //cout << endl;
     }
 
-    bool AcmeVasMemTilesInjectionProcess::test(int source)
+    bool AcmeMemoryTrafficInjectionProcess::test(int source)
     {
       assert((source >= 0) && (source < _nodes));
-      bool result;
+      bool result = false;
 
-      std::unordered_set<int>::const_iterator find_mem = _mem_tiles.find(source);
-      if(find_mem != _mem_tiles.end()) { // SRC is a mem tile
+      unordered_set<int>::const_iterator find_mem = _mem_tiles.find(source);
+      if(find_mem == _mem_tiles.end()) { // SRC is a VAS tile - inject!
         result = RandomFloat() < _rate;
-      } else { // SRC is a vas tile, so, it reduces its injection based on the ratio of vas tiles for each mem tile
-        result = RandomFloat() < (_rate * _mem / _vas);
-      }
+      } // SRC is a MEM tile - no inject because MEM tiles only answers to VAS tiles
+
+      //cout << "LINE " << __LINE__
+      //     << " SRC: " << to_string(source)
+      //     << " injects: " << to_string(result) << endl;
 
       return result;
     }

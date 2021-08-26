@@ -55,14 +55,12 @@ namespace Booksim
       virtual bool test(int source);
     };
 
-    //BSMOD: Add AcmeVasMemTilesTrafficPattern
-    class AcmeVasMemTilesInjectionProcess : public BernoulliInjectionProcess {
+    //BSMOD: Add AcmeMemoryTrafficInjectionProcess
+    class AcmeMemoryTrafficInjectionProcess : public BernoulliInjectionProcess {
     private:
       std::unordered_set<int> _mem_tiles;
-      int _mem;
-      int _vas;
     public:
-      AcmeVasMemTilesInjectionProcess(int nodes, double rate, vector<int> kVect);
+      AcmeMemoryTrafficInjectionProcess(int nodes, double rate, vector<int> kVect, string mem_tiles_location);
       virtual bool test(int source);
     };
 

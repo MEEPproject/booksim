@@ -144,10 +144,9 @@ namespace Booksim
             _packet_seq_no[head->cl][head->dest]++;
             //_packet_seq_no[reply_class][head->dest]++;
             int size = _GetNextPacketSize(reply_class);
-            //FIXME
             //cout << "LINE " << __LINE__ << " Cycle: " << GetSimTime()
             //     << "Request packet id " << head->pid << " Request source " << head->src << " dest "
-            //     << head->dest << " Reply packet id: " << _cur_pid +1 << " Request class " << head->cl
+            //     << head->dest << " Reply packet id: " << _cur_pid << " Request class " << head->cl
             //     << " Reply class " << reply_class 
             //     << " Packet sequence no: " << _packet_seq_no[head->cl][head->dest] << endl;
             _GeneratePacket(head->dest, head->src, size, reply_class, tail->atime + 1);

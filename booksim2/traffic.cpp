@@ -95,9 +95,11 @@ namespace Booksim
                 perm_seed = atoi(params[0].c_str());
             }
             result = new RandomPermutationTrafficPattern(nodes, perm_seed);
-        //BSMOD: Add AcmeVasMemTilesTrafficPattern
-        } else if(pattern_name == "acmevasmemtiles") {
-            assert(config->GetStr( "injection_process" ) == "bernoulli" || config->GetStr( "injection_process" ) == "acmevasmemtiles");
+        //BSMOD: Add AcmeScalarMemoryTrafficPattern
+        } else if(pattern_name == "acmescalarmemory") {
+            string mem_loc_cfg = config->GetStr( "acme_mem_location" );
+            assert(mem_loc_cfg == "left" || mem_loc_cfg == "right" || mem_loc_cfg == "both");
+            assert(config->GetStr( "injection_process" ) == "acmememorytraffic");
             vector<int> kVect;
             vector<int> cVect;
             int n;
@@ -105,15 +107,20 @@ namespace Booksim
             cVect = config->GetIntArray( "c" );
             n = config->GetInt("n");
             assert(n == 2); // Implemented for D-2 mesh
-            if(kVect.size() == 0) { // Fix kVect for square mesh network
+            if(kVect.empty()) { // Fix kVect for square mesh network
                 kVect.push_back(config->GetInt( "k" ));
                 kVect.push_back(config->GetInt( "k" ));
             }
-            if(cVect.size() == 0)
+            if(cVect.empty())
                 cVect.push_back(config->GetInt( "c" ));
             assert((int) kVect.size() == n);
             assert(cVect[0] == 1); // Traffic pattern has been implemented only for non-concentrated mesh topo
-            result = new AcmeVasMemTilesTrafficPattern(nodes, kVect);
+            // Check classes and reply configuration
+            int classes = config->GetInt( "classes" );
+            assert(classes % 2 == 0);
+            vector<int> replies = config->GetIntArray( "reply_class" );
+            assert(!replies.empty());
+            result = new AcmeScalarMemoryTrafficPattern(nodes, kVect, mem_loc_cfg);
         } else if(pattern_name == "uniform") {
             result = new UniformRandomTrafficPattern(nodes);
         } else if(pattern_name == "background") {
@@ -430,33 +437,34 @@ namespace Booksim
 
     }
 
-    //BSMOD: Add AcmeVasMemTilesTrafficPattern
-    AcmeVasMemTilesTrafficPattern::AcmeVasMemTilesTrafficPattern(int nodes, vector<int> kVect)
+    //BSMOD: Add AcmeScalarMemoryTrafficPattern
+    AcmeScalarMemoryTrafficPattern::AcmeScalarMemoryTrafficPattern(int nodes, vector<int> kVect, string mem_tiles_location)
     : RandomTrafficPattern(nodes)
     {
         for(int cnode=0; cnode < _nodes; cnode++) {
-            if(cnode % kVect[0] == 0 ||              // Left MEM tiles
-               cnode % kVect[0] == (kVect[0] - 1)) { // Right MEM tiles
+            if((mem_tiles_location != "right" && cnode % kVect[0] == 0) ||              // Left MEM tiles
+               (mem_tiles_location != "left" && cnode % kVect[0] == (kVect[0] - 1))) {  // Right MEM tiles
                _mem_tiles.push_back(cnode);
-            } else {
-                _vas_tiles.push_back(cnode);         // VAS tiles
-            }
+            } // Node is a VAS tile
         }
-        _vas = _vas_tiles.size();
         _mem = _mem_tiles.size();
-        assert(_vas + _mem == _nodes);
+
+        //cout << "MEM Tiles: ";
+        //for(std::vector<int>::iterator it=_mem_tiles.begin(); it != _mem_tiles.end(); it++)
+        //    cout << to_string(*it) << ",";
+        //cout << endl;
     }
 
-    int AcmeVasMemTilesTrafficPattern::dest(int source)
+    int AcmeScalarMemoryTrafficPattern::dest(int source)
     {
         assert((source >= 0) && (source < _nodes));
-        int result;
+        assert(std::find(_mem_tiles.begin(), _mem_tiles.end(), source) == _mem_tiles.end());
+        
+        int result = _mem_tiles[RandomInt(_mem - 1)];
 
-        if(std::find(_vas_tiles.begin(), _vas_tiles.end(), source) != _vas_tiles.end()) { // src is a VAS tile
-            result = _mem_tiles[RandomInt(_mem - 1)];
-        } else { // src is a MEM tile
-            result = _vas_tiles[RandomInt(_vas - 1)];
-        }
+        //cout << "Line " << __LINE__ 
+        //     << " Src: " << to_string(source)
+        //     << " AcmeScalarMemoryTrafficPattern::dest: " << to_string(result) << endl;
 
         return result;
     }

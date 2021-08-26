@@ -195,6 +195,8 @@ namespace Booksim
 
       AddStrField( "traffic", "uniform" );
 
+      AddStrField( "acme_mem_location", "both"); // Mem tiles location can be: left, right, both
+
       _int_map["class_priority"] = 0;
       AddStrField("class_priority", ""); // workaraound to allow for vector specification
 
