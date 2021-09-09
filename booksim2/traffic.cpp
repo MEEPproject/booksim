@@ -121,6 +121,84 @@ namespace Booksim
             vector<int> replies = config->GetIntArray( "reply_class" );
             assert(!replies.empty());
             result = new AcmeScalarMemoryTrafficPattern(nodes, kVect, mem_loc_cfg);
+        //BSMOD: Add AcmeVectorMemoryTrafficPattern
+        } else if(pattern_name == "acmevectormemory") {
+            string mem_loc_cfg = config->GetStr( "acme_mem_location" );
+            AcmeVectorMemoryTrafficPattern::MEM_LOCATION mem_tiles_location;
+            if(mem_loc_cfg == "left"){
+                mem_tiles_location = AcmeVectorMemoryTrafficPattern::MEM_LOCATION::LEFT;
+            }else if(mem_loc_cfg == "right"){
+                mem_tiles_location = AcmeVectorMemoryTrafficPattern::MEM_LOCATION::RIGHT;
+            }else if(mem_loc_cfg == "both"){
+                mem_tiles_location = AcmeVectorMemoryTrafficPattern::MEM_LOCATION::BOTH;
+            }else{
+                cout << "Error: Invalid value in acme_mem_location parameter, options:\n" 
+                     << "\t-left\n" 
+                     << "\t-right\n"
+                     << "\t-both"
+                     << endl;
+                exit(-1);
+            }
+            // This traffic patterns is only valid with acmememorytraffic injection process
+            assert(config->GetStr( "injection_process" ) == "acmememorytraffic");
+            // Network
+            vector<int> kVect;
+            vector<int> cVect;
+            int n;
+            kVect = config->GetIntArray( "k" );
+            cVect = config->GetIntArray( "c" );
+            n = config->GetInt("n");
+            assert(n == 2); // Implemented for D-2 mesh
+            if(kVect.empty()) { // Fix kVect for square mesh network
+                kVect.push_back(config->GetInt( "k" ));
+                kVect.push_back(config->GetInt( "k" ));
+            }
+            if(cVect.empty())
+                cVect.push_back(config->GetInt( "c" ));
+            assert((int) kVect.size() == n);
+            assert(cVect[0] == 1); // Traffic pattern has been implemented only for non-concentrated mesh topo
+            // Check classes and reply configuration
+            int classes = config->GetInt( "classes" );
+            assert(classes % 2 == 0);
+            vector<int> replies = config->GetIntArray( "reply_class" );
+            assert(!replies.empty());
+            // Pattern option
+            if(params.size() < 1) {
+                cout << "Error: Missing parameter for AcmeVectorMemory traffic pattern, options:\n" 
+                     << "\t-OWN\n" 
+                     << "\t-SAMECOL\n"
+                     << "\t-RANDOM\n"
+                     << "\t-OPPCOL\n"
+                     << "\t-FARTHEST"
+                     << endl;
+                exit(-1);
+            }
+            string option = params[0].c_str();
+            AcmeVectorMemoryTrafficPattern::MCPU_OPTION mcpu_option;
+            if(option == "OWN" || option == "own") {
+                mcpu_option = AcmeVectorMemoryTrafficPattern::MCPU_OPTION::OWN;
+            }else if(option == "SAMECOL" || option == "samecol"){
+                mcpu_option = AcmeVectorMemoryTrafficPattern::MCPU_OPTION::SAME_COL;
+            }else if(option == "RANDOM" || option == "random"){
+                assert(mem_loc_cfg == "both"); // Only supported for both columns option
+                mcpu_option = AcmeVectorMemoryTrafficPattern::MCPU_OPTION::RANDOM;
+            }else if(option == "OPPCOL" || option == "oppcol"){
+                assert(mem_loc_cfg == "both"); // Only supported for both columns option
+                mcpu_option = AcmeVectorMemoryTrafficPattern::MCPU_OPTION::OPP_COL;
+            }else if(option == "FARTHEST" || option == "farthest"){
+                assert(mem_loc_cfg == "both"); // Only supported for both columns option
+                mcpu_option = AcmeVectorMemoryTrafficPattern::MCPU_OPTION::FARTHEST;
+            }else{
+                cout << "Error: Invalid option in AcmeVectorMemory traffic pattern, options:\n" 
+                     << "\t-OWN\n" 
+                     << "\t-SAMECOL\n"
+                     << "\t-RANDOM\n"
+                     << "\t-OPPCOL\n"
+                     << "\t-FARTHEST"
+                     << endl;
+                exit(-1);
+            }
+            result = new AcmeVectorMemoryTrafficPattern(nodes, kVect, mem_tiles_location, mcpu_option);
         } else if(pattern_name == "uniform") {
             result = new UniformRandomTrafficPattern(nodes);
         } else if(pattern_name == "background") {
@@ -429,6 +507,64 @@ namespace Booksim
         assert((source >= 0) && (source < _nodes));
         assert((_dest[source] >= 0) && (_dest[source] < _nodes));
         return _dest[source];
+    }
+
+    //BSMOD: Add AcmeVectorMemoryTrafficPattern
+    AcmeVectorMemoryTrafficPattern::AcmeVectorMemoryTrafficPattern(int nodes, vector<int> kVect, MEM_LOCATION mem_tiles_location, MCPU_OPTION mcpu_dest)
+    : TrafficPattern(nodes),
+      _mem_location(mem_tiles_location),
+      _mcpu_dest_option(mcpu_dest)
+    {
+        assert(mcpu_dest == OWN); // WiP: It is only supported OWN mcpu option
+        if(kVect[0] % 2 != 0)
+            cout << "WARNING: The size of the dimension is odd, so we assign 1 node more to righ mcpus." << endl;
+        _mcpu_for_vas_tile.resize(nodes);
+        for(int cnode=0; cnode < _nodes; cnode++) {
+            if((_mem_location != RIGHT && cnode % kVect[0] == 0) ||              // Left MEM tiles
+               (_mem_location != LEFT && cnode % kVect[0] == (kVect[0] - 1))) {  // Right MEM tiles
+               _mcpu_for_vas_tile[cnode] = -1;
+            } else { // Node is a VAS tile
+                switch(_mem_location){
+                    case LEFT:
+                        _mcpu_for_vas_tile[cnode] = (cnode / kVect[0]) * kVect[0];
+                        break;
+                    case RIGHT:
+                        _mcpu_for_vas_tile[cnode] = ((cnode / kVect[0])+1) * kVect[0] - 1;
+                        break;
+                    case BOTH:
+                        if((cnode % kVect[0]) < (kVect[0]/2)){
+                            _mcpu_for_vas_tile[cnode] = (cnode / kVect[0]) * kVect[0];
+                        }else{
+                            _mcpu_for_vas_tile[cnode] = ((cnode / kVect[0])+1) * kVect[0] - 1;
+                        }
+                        break;
+                    default:
+                        assert(false);
+                }
+            }
+        }
+
+        /*
+        cout << "MCPU for each tile (-1 is MCPU): ";
+        for(std::vector<int>::iterator it=_mcpu_for_vas_tile.begin(); it != _mcpu_for_vas_tile.end(); it++)
+            cout << to_string(*it) << ",";
+        cout << endl;
+        */
+    }
+
+    int AcmeVectorMemoryTrafficPattern::dest(int source)
+    {
+        assert((source >= 0) && (source < _nodes));
+        assert(_mcpu_for_vas_tile[source] >= 0);
+        
+        int result = _mcpu_for_vas_tile[source];
+
+        /*
+        cout << "Line " << __LINE__ 
+             << " Src: " << to_string(source)
+             << " AcmeVectorMemoryTrafficPattern::dest: " << to_string(result) << endl;
+        */
+        return result;
     }
 
         RandomTrafficPattern::RandomTrafficPattern(int nodes)

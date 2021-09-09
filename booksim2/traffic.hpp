@@ -114,6 +114,19 @@ namespace Booksim
       virtual int dest(int source);
     };
 
+    //BSMOD: Add AcmeVectorMemoryTrafficPattern
+    class AcmeVectorMemoryTrafficPattern : public TrafficPattern {
+    public:
+      enum MEM_LOCATION { LEFT, RIGHT, BOTH};
+      enum MCPU_OPTION { OWN, SAME_COL, RANDOM, OPP_COL, FARTHEST };
+      AcmeVectorMemoryTrafficPattern(int nodes, vector<int> kVect, MEM_LOCATION mem_tiles_location, MCPU_OPTION mcpu_dest);
+      virtual int dest(int source);
+    private:
+      MEM_LOCATION _mem_location;
+      MCPU_OPTION _mcpu_dest_option;
+      vector<int> _mcpu_for_vas_tile;
+    };
+
     class RandomTrafficPattern : public TrafficPattern {
     protected:
       RandomTrafficPattern(int nodes);
