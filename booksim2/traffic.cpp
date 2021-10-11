@@ -165,11 +165,11 @@ namespace Booksim
             // Pattern option
             if(params.size() < 1) {
                 cout << "Error: Missing parameter for AcmeVectorMemory traffic pattern, options:\n" 
-                     << "\t-OWN\n" 
-                     << "\t-SAMECOL\n"
-                     << "\t-RANDOM\n"
-                     << "\t-OPPCOL\n"
-                     << "\t-FARTHEST"
+                     << "\t-OWN: VAS tile communicates only with its own mcpu.\n" 
+                     << "\t-SAMECOL: VAS tile communicates with its own mcpu and with another random mem tile in the same column.\n"
+                     << "\t-RANDOM: VAS tile communicates with its own mcpu and with another random mem tile in the system.\n"
+                     << "\t-OPPCOL: VAS tile communicates with its own mcpu and with another random mem tile in the opposite column.\n"
+                     << "\t-FARTHEST: VAS tile communicates with its own mcpu and with the farest mem tile."
                      << endl;
                 exit(-1);
             }
@@ -186,15 +186,14 @@ namespace Booksim
                 assert(mem_loc_cfg == "both"); // Only supported for both columns option
                 mcpu_option = AcmeVectorMemoryTrafficPattern::MCPU_OPTION::OPP_COL;
             }else if(option == "FARTHEST" || option == "farthest"){
-                assert(mem_loc_cfg == "both"); // Only supported for both columns option
                 mcpu_option = AcmeVectorMemoryTrafficPattern::MCPU_OPTION::FARTHEST;
             }else{
                 cout << "Error: Invalid option in AcmeVectorMemory traffic pattern, options:\n" 
-                     << "\t-OWN\n" 
-                     << "\t-SAMECOL\n"
-                     << "\t-RANDOM\n"
-                     << "\t-OPPCOL\n"
-                     << "\t-FARTHEST"
+                     << "\t-OWN: VAS tile communicates only with its own mcpu.\n" 
+                     << "\t-SAMECOL: VAS tile communicates with its own mcpu and with another random mem tile in the same column.\n"
+                     << "\t-RANDOM: VAS tile communicates with its own mcpu and with another random mem tile in the system.\n"
+                     << "\t-OPPCOL: VAS tile communicates with its own mcpu and with another random mem tile in the opposite column.\n"
+                     << "\t-FARTHEST: VAS tile communicates with its own mcpu and with the farest mem tile."
                      << endl;
                 exit(-1);
             }
@@ -335,6 +334,11 @@ namespace Booksim
             exit(-1);
         }
         return result;
+    }
+
+    int TrafficPattern::chainDestination(int source, int destination)
+    {
+        return -1;
     }
 
         PermutationTrafficPattern::PermutationTrafficPattern(int nodes)
@@ -513,17 +517,16 @@ namespace Booksim
     AcmeVectorMemoryTrafficPattern::AcmeVectorMemoryTrafficPattern(int nodes, vector<int> kVect, MEM_LOCATION mem_tiles_location, MCPU_OPTION mcpu_dest)
     : TrafficPattern(nodes),
       _mem_location(mem_tiles_location),
-      _mcpu_dest_option(mcpu_dest)
+      _mcpu_dest_option(mcpu_dest),
+      _kVect(kVect)
     {
-        assert(mcpu_dest == OWN); // WiP: It is only supported OWN mcpu option
-        if(kVect[0] % 2 != 0)
-            cout << "WARNING: The size of the dimension is odd, so we assign 1 node more to righ mcpus." << endl;
-        _mcpu_for_vas_tile.resize(nodes);
+        if(_mem_location == BOTH && kVect[0] % 2 != 0)
+            cout << "WARNING: The size of the dimension is odd, so we assign one node more to right mcpus per row." << endl;
+        if(kVect[1] % 2 != 0)
+            cout << "WARNING: The size of the dimension is odd, so we assign one row more to the lowest mcpu index on each column." << endl;
+        _mcpu_for_vas_tile.resize(nodes, -1);
         for(int cnode=0; cnode < _nodes; cnode++) {
-            if((_mem_location != RIGHT && cnode % kVect[0] == 0) ||              // Left MEM tiles
-               (_mem_location != LEFT && cnode % kVect[0] == (kVect[0] - 1))) {  // Right MEM tiles
-               _mcpu_for_vas_tile[cnode] = -1;
-            } else { // Node is a VAS tile
+            if(!isMemTile(cnode)) { // Node is a VAS tile
                 switch(_mem_location){
                     case LEFT:
                         _mcpu_for_vas_tile[cnode] = (cnode / kVect[0]) * kVect[0];
@@ -541,12 +544,34 @@ namespace Booksim
                     default:
                         assert(false);
                 }
+            } else {
+                _both_mem_tiles.push_back(cnode);
+                if (isLeftMemTile(cnode)) {
+                    _left_mem_tiles.push_back(cnode);
+                } else {
+                    _right_mem_tiles.push_back(cnode);
+                }
             }
         }
 
         /*
         cout << "MCPU for each tile (-1 is MCPU): ";
         for(std::vector<int>::iterator it=_mcpu_for_vas_tile.begin(); it != _mcpu_for_vas_tile.end(); it++)
+            cout << to_string(*it) << ",";
+        cout << endl;
+        
+        cout << "Left mem tiles: ";
+        for(std::vector<int>::iterator it=_left_mem_tiles.begin(); it != _left_mem_tiles.end(); it++)
+            cout << to_string(*it) << ",";
+        cout << endl;
+        
+        cout << "Right mem tiles: ";
+        for(std::vector<int>::iterator it=_right_mem_tiles.begin(); it != _right_mem_tiles.end(); it++)
+            cout << to_string(*it) << ",";
+        cout << endl;
+
+        cout << "Both mem tiles: ";
+        for(std::vector<int>::iterator it=_both_mem_tiles.begin(); it != _both_mem_tiles.end(); it++)
             cout << to_string(*it) << ",";
         cout << endl;
         */
@@ -565,6 +590,96 @@ namespace Booksim
              << " AcmeVectorMemoryTrafficPattern::dest: " << to_string(result) << endl;
         */
         return result;
+    }
+
+    int AcmeVectorMemoryTrafficPattern::chainDestination(int source, int destination)
+    {
+        int chainDest = -1;
+        assert(isMemTile(destination));
+
+        switch(_mcpu_dest_option) {
+            case OWN:
+                assert(false); // Chain is not possible in OWN traffic option
+                break;
+            case SAME_COL:
+                do {
+                    if(isLeftMemTile(destination))
+                        chainDest = _left_mem_tiles[rand() % _left_mem_tiles.size()];
+                    else
+                        chainDest = _right_mem_tiles[rand() % _right_mem_tiles.size()];
+                } while(chainDest == destination);
+                break;
+            case RANDOM:
+                do {
+                    chainDest = _both_mem_tiles[rand() % _both_mem_tiles.size()];
+                } while(chainDest == destination);
+                break;
+            case OPP_COL:
+                if(isLeftMemTile(destination))
+                    chainDest = _right_mem_tiles[rand() % _right_mem_tiles.size()];
+                else
+                    chainDest = _left_mem_tiles[rand() % _left_mem_tiles.size()];
+                break;
+            case FARTHEST:
+                switch(_mem_location) {
+                    case LEFT:
+                        if(destination < _left_mem_tiles[_left_mem_tiles.size()/2]) {
+                            chainDest = _left_mem_tiles[_left_mem_tiles.size()-1];
+                        } else {
+                            chainDest = _left_mem_tiles[0];
+                        }
+                        break;
+                    case RIGHT:
+                        if(destination < _right_mem_tiles[_right_mem_tiles.size()/2]) {
+                            chainDest = _right_mem_tiles[_right_mem_tiles.size()-1];
+                        } else {
+                            chainDest = _right_mem_tiles[0];
+                        }
+                        break;
+                    case BOTH:
+                        if(isLeftMemTile(destination)) {
+                            if(destination < _left_mem_tiles[_left_mem_tiles.size()/2]) {
+                                chainDest = _right_mem_tiles[_left_mem_tiles.size()-1];
+                            } else {
+                                chainDest = _right_mem_tiles[0];
+                            }
+                        } else {
+                            if(destination < _right_mem_tiles[_right_mem_tiles.size()/2]) {
+                                chainDest = _left_mem_tiles[_right_mem_tiles.size()-1];
+                            } else {
+                                chainDest = _left_mem_tiles[0];
+                            }
+                        }
+                }
+                break;
+            default:
+                assert(false);
+        }
+
+        //cout << "source: " << source << " ownmcpu: " << destination << " chainmcpu: " << chainDest << endl;
+
+        return chainDest;
+    }
+
+    bool AcmeVectorMemoryTrafficPattern::isLeftMemTile(int node)
+    {
+        bool result = false;
+        if(_mem_location != RIGHT && node % _kVect[0] == 0)
+            result = true;
+        return result;
+    }
+
+    bool AcmeVectorMemoryTrafficPattern::isRightMemTile(int node)
+    {
+        bool result = false;
+        if(_mem_location != LEFT && node % _kVect[0] == (_kVect[0] - 1))
+            result = true;
+        return result;
+    }
+
+    bool AcmeVectorMemoryTrafficPattern::isMemTile(int node)
+    {
+        return (isLeftMemTile(node)) || (isRightMemTile(node));
     }
 
         RandomTrafficPattern::RandomTrafficPattern(int nodes)

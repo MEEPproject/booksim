@@ -870,7 +870,7 @@ namespace Booksim
     //BSMOD: Change time to long long
     //BSMOD: Change flit and packet id to long
     long TrafficManager::_GeneratePacket( int source, int dest, int size, int cl, 
-            long long time )
+            long long time, int chain_aux )
     {
 
 #ifdef PACKET_TRACE
@@ -934,6 +934,7 @@ namespace Booksim
             f->watch = watch | (gWatchOut && (_flits_to_watch.count(f->id) > 0));
             f->src = source;
             f->dest = dest;
+            f->chain_aux = chain_aux; //BSMOD: Add AcmeVectorMemoryTrafficPattern
             f->ctime = time;
             f->record = record;
             f->cl = cl;

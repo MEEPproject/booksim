@@ -81,6 +81,10 @@ namespace Booksim
             int  src;
             // Packet destination
             int  dest;
+            //BSMOD: Add AcmeVectorMemoryTrafficPattern
+            // Packet chain auxiliar field
+            // Change to a LIFO stack if multiple chain hops are required
+            int chain_aux;
 
             // Packet priority
             //BSMOD: Change time to long long

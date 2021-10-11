@@ -45,6 +45,7 @@ namespace Booksim
       virtual ~TrafficPattern() {}
       virtual void reset();
       virtual int dest(int source) = 0;
+      virtual int chainDestination(int source, int destination); //BSMOD: Add AcmeVectorMemoryTrafficPattern
       static TrafficPattern * New(string const & pattern, int nodes, 
                       Configuration const * const config = NULL);
     };
@@ -121,10 +122,19 @@ namespace Booksim
       enum MCPU_OPTION { OWN, SAME_COL, RANDOM, OPP_COL, FARTHEST };
       AcmeVectorMemoryTrafficPattern(int nodes, vector<int> kVect, MEM_LOCATION mem_tiles_location, MCPU_OPTION mcpu_dest);
       virtual int dest(int source);
+      virtual int chainDestination(int source, int destination);
     private:
       MEM_LOCATION _mem_location;
       MCPU_OPTION _mcpu_dest_option;
       vector<int> _mcpu_for_vas_tile;
+      vector<int> _kVect;
+      vector<int> _left_mem_tiles;
+      vector<int> _right_mem_tiles;
+      vector<int> _both_mem_tiles;
+    protected:
+    bool isMemTile(int node);
+    bool isLeftMemTile(int node);
+    bool isRightMemTile(int node);
     };
 
     class RandomTrafficPattern : public TrafficPattern {

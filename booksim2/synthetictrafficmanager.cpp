@@ -26,6 +26,7 @@
    */
 
 #include <sstream>
+#include <algorithm>
 
 #include "synthetictrafficmanager.hpp"
 #include "random_utils.hpp"
@@ -91,12 +92,37 @@ namespace Booksim
       }
       _reply_class.resize(_classes, _reply_class.back());
 
+      //BSMOD: Add AcmeVectorMemoryTrafficPattern
+      _chain_class = config.GetIntArray("chain_class");
+      if(_chain_class.empty()) {
+        _chain_class.resize(_classes, -1);
+      }
+      for(int c = 0; c < _classes; ++c) {
+        int const chain_class = _chain_class[c];
+        if(chain_class >= 0) {
+          assert(_chain_class[chain_class] < 0); // 1 hop chains are only supported
+        }
+      }
+
+      //BSMOD: Add AcmeVectorMemoryTrafficPattern
       _request_class.resize(_classes, -1);
+      _chain_request_class.resize(_classes, -1);
       for(int c = 0; c < _classes; ++c) {
         int const reply_class = _reply_class[c];
+        int const chain_class = _chain_class[c];
         if(reply_class >= 0) {
           assert(_request_class[reply_class] < 0);
           _request_class[reply_class] = c;
+        }
+        if(chain_class >= 0) {
+          assert(_request_class[chain_class] < 0);
+          _request_class[chain_class] = c;
+          int const first_answer_to_chain_class = _reply_class[chain_class];
+          int const latest_answer_to_chain_class = _reply_class[first_answer_to_chain_class];
+          assert(_reply_class[latest_answer_to_chain_class] < 0); // Only 1 hop chains supported
+          assert(_chain_request_class[latest_answer_to_chain_class] < 0);
+          // Chain_request_class indicates what class triggers an answer for each class
+          _chain_request_class[latest_answer_to_chain_class] = first_answer_to_chain_class;
         }
       }
 
@@ -127,8 +153,18 @@ namespace Booksim
         assert(head->cl == tail->cl);
         int const reply_class = _reply_class[head->cl];
         assert(reply_class < _classes);
+        //BSMOD: Add AcmeVectorMemoryTrafficPattern
+        int const chain_class = _chain_class[head->cl];
+        assert(chain_class < _classes);
 
-        if (reply_class < 0) {
+        //cout << "LINE " << __LINE__ << " Cycle: " << GetSimTime()
+        //     << " packet id: " << head->pid << " class: " << head->cl
+        //     << " src: " << head->src << " dest: " << head->dest
+        //     << " reply class: " << reply_class << " chain_class: " << chain_class << endl;
+
+        //BSMOD: Add AcmeVectorMemoryTrafficPattern
+        // It is a request without reply or a latest reply
+        if (reply_class < 0 && chain_class < 0) { 
             int const request_class = _request_class[head->cl];
             assert(request_class < _classes);
             if(request_class < 0) {
@@ -138,18 +174,36 @@ namespace Booksim
             } else {
                 // request-reply transactions complete when reply arrives
                 _requests_outstanding[request_class][head->dest]--;
+                //cout << "\t\tLINE " << __LINE__ << " Cycle: " << GetSimTime()
+                // << " Request/chain-reply completed" << endl; 
             }
-
-        } else {
-            _packet_seq_no[head->cl][head->dest]++;
-            //_packet_seq_no[reply_class][head->dest]++;
+        } else if (chain_class < 0) { // It is a reply
+            int const chain_request_class = _chain_request_class[reply_class];
+            assert(chain_request_class < _classes);
+            //_packet_seq_no[head->cl][head->dest]++;
+            _packet_seq_no[reply_class][head->dest]++;
             int size = _GetNextPacketSize(reply_class);
-            //cout << "LINE " << __LINE__ << " Cycle: " << GetSimTime()
-            //     << "Request packet id " << head->pid << " Request source " << head->src << " dest "
-            //     << head->dest << " Reply packet id: " << _cur_pid << " Request class " << head->cl
-            //     << " Reply class " << reply_class 
-            //     << " Packet sequence no: " << _packet_seq_no[head->cl][head->dest] << endl;
-            _GeneratePacket(head->dest, head->src, size, reply_class, tail->atime + 1);
+            //cout << "\tLINE " << __LINE__ << " Cycle: " << GetSimTime()
+            //     << " Reply id: " << _cur_pid << " class " << reply_class 
+            //     << " packet sequence no: " << _packet_seq_no[reply_class][head->dest] 
+            //     << endl;
+            if(chain_request_class < 0) { // It is the first reply to the chain or default reply
+              //cout << "\t\tFIRST REPLY to chain or default reply" << endl;
+              _GeneratePacket(head->dest, head->src, size, reply_class, tail->atime + 1, head->chain_aux);
+            } else { // It is the latest reply in case of a chain
+              //cout << "\t\tlatest reply to chain" << endl;
+              _GeneratePacket(head->dest, head->chain_aux, size, reply_class, tail->atime + 1);
+            }
+        } else {
+            int const chain_dest = _traffic_pattern[chain_class]->chainDestination(head->src, head->dest);
+            assert(chain_dest >= 0);
+            int size = _GetNextPacketSize(chain_class);
+            _packet_seq_no[chain_class][head->dest]++;
+            //cout << "\tLINE " << __LINE__ << " Cycle: " << GetSimTime()
+            //     << " chain packet id: " << _cur_pid << " class " << chain_class 
+            //     << " destination: " << chain_dest
+            //     << " Packet sequence no: " << _packet_seq_no[chain_class][head->dest] << endl;
+            _GeneratePacket(head->dest, chain_dest, size, chain_class, tail->atime + 1, head->src);
         }
     }
 

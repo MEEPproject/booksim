@@ -78,6 +78,7 @@ namespace Booksim
       intm = 0;
       src = -1;
       dest = -1;
+      chain_aux = -1; //BSMOD: Add AcmeVectorMemoryTrafficPattern
       pri = 0;
       intm =-1;
       ph = -1;

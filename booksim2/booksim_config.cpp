@@ -193,6 +193,11 @@ namespace Booksim
       _int_map["reply_class"] = -1;
       AddStrField("reply_class", ""); // workaraound to allow for vector specification
 
+      //BSMOD: Add AcmeVectorMemoryTrafficPattern
+      //Only chains of 1 hop are supported
+      _int_map["chain_class"] = -1;
+      AddStrField("chain_class", ""); // workaraound to allow for vector specification
+
       AddStrField( "traffic", "uniform" );
 
       AddStrField( "acme_mem_location", "both"); // Mem tiles location can be: left, right, both

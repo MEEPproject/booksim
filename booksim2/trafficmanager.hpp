@@ -303,7 +303,8 @@ namespace Booksim
       
       //BSMOD: Change time to long long
       //BSMOD: Change flit and packet id to long
-      long _GeneratePacket( int source, int dest, int size, int cl, long long time );
+      //BSMOD: Add AcmeVectorMemoryTrafficPattern
+      long _GeneratePacket( int source, int dest, int size, int cl, long long time, int chain_aux = -1 );
 
       virtual void _ResetSim( );
 

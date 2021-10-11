@@ -51,6 +51,9 @@ namespace Booksim
       vector<TrafficPattern *> _traffic_pattern;
 
       vector<int> _reply_class;
+      //BSMOD: Add AcmeVectorMemoryTrafficPattern
+      vector<int> _chain_class;
+      vector<int> _chain_request_class;
       vector<int> _request_class;
 
       vector<vector<long> > _qtime;
