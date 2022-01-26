@@ -82,7 +82,11 @@ namespace Booksim
             //! Checks if there are flits inside the network
             bool CheckInFlightPackets();
             
-	    //! Checks if there are flits inside the network
+            //BSMOD: Check in flight credits
+            //! Checks if there are credits inside the network
+            bool CheckInFlightCredits();
+
+	        //! Checks if there is space in an injection queue
             int CheckInjectionQueue(int source, int cl);
 
             //! Updates the cycle counter

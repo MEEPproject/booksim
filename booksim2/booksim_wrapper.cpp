@@ -29,6 +29,7 @@
 #include "booksim_config.hpp"
 #include "globals.hpp"
 #include "trafficmanager_wrapper.hpp"
+#include "credit.hpp"
 #include <iostream>
 #include <fstream>
 #include <sstream>
@@ -183,6 +184,13 @@ namespace Booksim
     BooksimWrapper::CheckInFlightPackets()
     {
         return _traffic_manager->CheckInFlightPackets();
+    }
+
+    //BSMOD: Check in flight credits
+    bool
+    BooksimWrapper::CheckInFlightCredits()
+    {
+        return Credit::OutStanding()!=0;
     }
     
     int
