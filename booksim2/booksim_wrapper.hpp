@@ -95,11 +95,16 @@ namespace Booksim
             //evolution of a metric regards execution time.
             void UpdateSimTime(int cycles);
 
+            //BSMOD: Add statistics management
             //! Print statistics. This function updates the statistics up to this cycle and prints them.
             void PrintStats(std::ostream & os);
 
             //! Reset statistics
             void ResetStats();
+
+            //BSMOD: Add the posibility to retrieve the simulation cycle of BookSim
+            //! Get simulation time
+            long GetSimTime();
     };
 } // namespace Booksim
 #endif

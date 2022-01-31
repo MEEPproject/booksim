@@ -34,8 +34,13 @@
 #include <vector>
 #include <string>
 #include <map>
+#include <cassert>
 
 #include "../booksim2/booksim_wrapper.hpp"
+#include "../booksim2/booksim_config.hpp"
+
+#define PRIO 0
+//#define MULTI 1
 
 using namespace std;
 
@@ -47,58 +52,79 @@ struct Message {
 
 int main (int argc, char** argv)
 {
-   // local variables
-   Booksim::BooksimWrapper*   booksim_wrapper;  // Booksim library pointer
-   map<int, Message>          packets_map;      // Booksim packet ID -> Message
+   /* This test library file assumes a first config file with, at least, 8 nodes and 3 classes of traffic */
+   // Fails due to global variables:   and a second topology. if it used, with only 4 nodes */
 
-   if (argc < 2 || argc > 2) {
-      cerr << "You only need to supply a configuration file name like: 8x8_mesh_IQ.cfg" << endl;
+   // local variables
+   vector<Booksim::BooksimWrapper*>   booksim_wrapper;  // Booksim library pointer
+   map<int, map<int, Message> >       packets_map;      // Booksim packet ID -> Message
+
+   if (argc < 2 || argc > 2) {//argc > 3) {
+      cerr << "You need to supply a configuration file name like: 8x8_mesh_IQ.cfg" << endl;
       return (EXIT_FAILURE);
    }
 
    // Initialize wrapper
-   booksim_wrapper = new Booksim::BooksimWrapper(argv[1]);
+   for(int i=1; i < argc; ++i)
+      booksim_wrapper.push_back(new Booksim::BooksimWrapper(argv[i]));
+   assert(booksim_wrapper.size() == (argc-1));
 
+   // BookSim wrapper 0 - testing priorities
+   Booksim::BookSimConfig booksim_config;
+   booksim_config.ParseFile(argv[PRIO+1]);
+   // Classes checks
+   const uint8_t classes = booksim_config.GetInt("classes");
+   assert(classes >= 3);
+   int packetId;
    // Generate a packet of class 0
-   int packetId1 = booksim_wrapper->GeneratePacket(0, 7, 1, 0, 0);
-   string str1 = "From-0-to-7-Size-1-Class-0-InjLatency-0";
-   Message msg1 = {0, 7, str1.c_str()};
-   packets_map[packetId1] = msg1;
+   packetId = booksim_wrapper[PRIO]->GeneratePacket(0, 7, 1, 0, 0);
+   packets_map[PRIO][packetId] = {0, 7, "NoC0-From-0-to-7-Size-1-Class-0-InjLatency-0"};
    // packet of class 1
-   int packetId2 = booksim_wrapper->GeneratePacket(0, 7, 1, 1, 0);
-   string str2 = "From-0-to-7-Size-1-Class-1-InjLatency-0";
-   Message msg2 = {0, 7, str2.c_str()};
-   packets_map[packetId2] = msg2;
+   packetId = booksim_wrapper[PRIO]->GeneratePacket(0, 7, 1, 1, 0);
+   packets_map[PRIO][packetId] = {0, 7, "NoC0-From-0-to-7-Size-1-Class-1-InjLatency-0"};
    // packet of class 2
-   int packetId3 = booksim_wrapper->GeneratePacket(0, 7, 1, 2, 0);
-   string str3 = "From-0-to-7-Size-1-Class-2-InjLatency-0";
-   Message msg3 = {0, 7, str3.c_str()};
-   packets_map[packetId3] = msg3;
+   packetId = booksim_wrapper[PRIO]->GeneratePacket(0, 7, 1, 2, 0);
+   packets_map[PRIO][packetId] = {0, 7, "NoC0-From-0-to-7-Size-1-Class-2-InjLatency-0"};
 
-   // Run simulation until packet arrival
-   while(booksim_wrapper->CheckInFlightPackets()) {
-      Booksim::BooksimWrapper::RetiredPacket rpacket;
-      rpacket.pid = -1;
-      do {
-         booksim_wrapper->RunCycles(1);
-         rpacket = booksim_wrapper->RetirePacket();
-      } while(rpacket.pid < 0);
-      cout << "Packet with id " << rpacket.pid << " has been retired:" <<
-         "\n\t message: " << packets_map[rpacket.pid].message <<
-         "\n\t class: " << rpacket.c <<
-         "\n\t size: " << rpacket.ps <<
-         "\n\t packet latency: " << rpacket.plat <<
-         "\n\t network latency: " << rpacket.nlat <<
-         "\n\t hops: " << rpacket.hops <<
-         "\n\t smart hops: " << rpacket.shops <<
-         "\n\t bypassed routers: " << rpacket.br << endl;
-      packets_map.erase(rpacket.pid);
-   }
+   // BookSim wrapper 1 - testing multiple config files
+   /*if(argc > 2) {
+      // Generate a packet from 
+      packetId = booksim_wrapper[MULTI]->GeneratePacket(0, 3, 1, 0, 0);
+      packets_map[MULTI][packetId] = {0, 3, "NoC1-From-0-to-3-Size-1-Class-0-InjLatency-0"};
+   }*/
+
+   bool next_cycle_should_be_executed;
+   // Run simulation until there are no more packets or credits
+   do {
+      next_cycle_should_be_executed = false;
+      for(int wrap=0; wrap < argc-1; ++wrap) {
+         Booksim::BooksimWrapper::RetiredPacket rpacket;
+         rpacket.pid = -1;
+         booksim_wrapper[wrap]->RunCycles(1);
+         rpacket = booksim_wrapper[wrap]->RetirePacket();
+         if(rpacket.pid >= 0) {
+            assert(packets_map[wrap][rpacket.pid].source == rpacket.src);
+            assert(packets_map[wrap][rpacket.pid].destination == rpacket.dst);
+            cout << booksim_wrapper[wrap]->GetSimTime() << " | Packet with id " << rpacket.pid << " has been retired from NoC " << wrap << 
+            "\n\t message: " << packets_map[wrap][rpacket.pid].message <<
+            "\n\t class: " << rpacket.c <<
+            "\n\t size: " << rpacket.ps <<
+            "\n\t packet latency: " << rpacket.plat <<
+            "\n\t network latency: " << rpacket.nlat <<
+            "\n\t hops: " << rpacket.hops <<
+            "\n\t smart hops: " << rpacket.shops <<
+            "\n\t bypassed routers: " << rpacket.br << endl;
+            packets_map[wrap].erase(rpacket.pid);
+         }
+         next_cycle_should_be_executed |= booksim_wrapper[wrap]->CheckInFlightPackets() || booksim_wrapper[wrap]->CheckInFlightCredits();
+      }  
+   } while(next_cycle_should_be_executed);
 
    // Finishing
    cout << "There are no more packets in flight - Finish simulation" << endl;
 
-   delete booksim_wrapper;
+   for(int i=1; i < argc; ++i)
+      delete booksim_wrapper[i];
 
    return (EXIT_SUCCESS);
 }

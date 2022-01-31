@@ -207,6 +207,7 @@ namespace Booksim
         _traffic_manager->UpdateSimTime(cycles);
     }
 
+    //BSMOD: Add statistics management
     void
     BooksimWrapper::PrintStats(std::ostream & os)
     {
@@ -218,5 +219,12 @@ namespace Booksim
     BooksimWrapper::ResetStats()
     {
         _traffic_manager->ClearStats();
+    }
+
+    //BSMOD: Add the posibility to retrieve the simulation cycle of BookSim
+    long
+    BooksimWrapper::GetSimTime()
+    {
+        return _traffic_manager->getTime();
     }
 } // namespace Booksim
