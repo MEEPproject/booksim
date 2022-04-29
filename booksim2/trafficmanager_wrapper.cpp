@@ -143,6 +143,37 @@ namespace Booksim
         return make_pair(head, head);
     }
 
+    //BSMOD: Retire for a host
+    std::pair<Flit, Flit>
+    TrafficManagerWrapper::RetirePacket(int dst)
+    {
+        assert(dst >= 0 && dst < _nodes);
+        for (int cl=0; cl < _classes; cl++){
+            if(!_ejection_queue[cl][dst].empty()) {
+                pair<Flit,Flit> rp = _ejection_queue[cl][dst].front();
+                _ejection_queue[cl][dst].pop();
+                return rp;
+            }
+        }
+        Flit head = Flit();
+        head.pid = -1;
+        return make_pair(head, head);
+    }
+
+    std::pair<Flit, Flit>
+    TrafficManagerWrapper::NextPacket(int dst)
+    {
+        assert(dst >= 0 && dst < _nodes);
+        for (int cl=0; cl < _classes; cl++){
+            if(!_ejection_queue[cl][dst].empty()) {
+                pair<Flit,Flit> rp = _ejection_queue[cl][dst].front();
+                return rp;
+            }
+        }
+        Flit head = Flit();
+        head.pid = -1;
+        return make_pair(head, head);
+    }
 
     void
     TrafficManagerWrapper::RunCycles(int cycles)

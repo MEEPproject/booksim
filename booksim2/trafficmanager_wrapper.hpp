@@ -74,6 +74,9 @@ namespace Booksim
             // TODO: check type of returning data
             //int RetirePacket();
             pair<Flit,Flit> RetirePacket();
+            //BSMOD: Retire for a host
+            pair<Flit,Flit> RetirePacket(int destination);
+            pair<Flit,Flit> NextPacket(int destination);
             void RunCycles(int cycles);
             bool CheckInFlightPackets();
             void ClearStats();

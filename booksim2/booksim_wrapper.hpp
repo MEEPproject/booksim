@@ -79,6 +79,13 @@ namespace Booksim
             //! Get first packet in the consumption queue
             RetiredPacket RetirePacket();
 
+            //BSMOD: Retire for a host
+            //! Check if there are packets in the ejection queue for an specific destination.
+            //! Get first packet in the consumption queue for that destination
+            RetiredPacket RetirePacket(int destination);
+            //! Look up the following packet at the ejection queue for an specific destination.
+            RetiredPacket NextPacket(int destination);
+
             //! Checks if there are flits inside the network
             bool CheckInFlightPackets();
             

@@ -179,6 +179,46 @@ namespace Booksim
         return p;
     }
 
+    //BSMOD: Retire for a host
+    BooksimWrapper::RetiredPacket
+    BooksimWrapper::RetirePacket(int destination)
+    {
+
+        pair<Flit,Flit> rp = _traffic_manager->RetirePacket(destination);
+        Flit head = rp.first;
+        Flit tail = rp.second;
+        RetiredPacket p = {head.pid,
+                            head.src,
+                            head.dest,
+                            head.cl,
+                            head.packet_size,
+                            (int)(tail.atime-head.ctime),
+                            (int)(tail.atime-head.itime),
+                            head.hops,
+                            (int)head.hpc.size(),
+                            0};
+        return p;
+    }
+
+    BooksimWrapper::RetiredPacket
+    BooksimWrapper::NextPacket(int destination)
+    {
+
+        pair<Flit,Flit> rp = _traffic_manager->NextPacket(destination);
+        Flit head = rp.first;
+        Flit tail = rp.second;
+        RetiredPacket p = {head.pid,
+                            head.src,
+                            head.dest,
+                            head.cl,
+                            head.packet_size,
+                            (int)(tail.atime-head.ctime),
+                            (int)(tail.atime-head.itime),
+                            head.hops,
+                            (int)head.hpc.size(),
+                            0};
+        return p;
+    }
 
     bool
     BooksimWrapper::CheckInFlightPackets()
