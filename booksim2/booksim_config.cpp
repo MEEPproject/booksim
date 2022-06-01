@@ -110,6 +110,9 @@ namespace Booksim
       //BSMOD: Define the number of injection queues; the queue is selected based on the class field
       _int_map["injection_queues"] = 1;
 
+      //BSMOD: Add bounded ejection queue
+      _int_map["ejection_queue_size"] = 16;
+
       // Control of virtual channel speculation
       _int_map["speculative"] = 0 ;
       _int_map["spec_check_elig"] = 1 ;

@@ -41,6 +41,9 @@ namespace Booksim
         {
             _ejection_queue[cl].resize(_nodes);
         }
+        //BSMOD: Add bounded ejection queue
+        assert(_subnets == 1);
+        _ejection_queue_free_flits.resize(_nodes, config.GetInt("ejection_queue_size"));
 
         // Stats printing
         _last_print = 0;
@@ -111,6 +114,24 @@ namespace Booksim
         _ejection_queue[head->cl][head->dest].push(make_pair(*head, *tail));
     }
 
+    //BSMOD: Add bounded ejection queue
+    void 
+    TrafficManagerWrapper::_RetireFlit( Flit *f, int dest )
+    {
+        TrafficManager::_RetireFlit(f, dest);
+        // Packets are not injected at _ejection_queue until the whole packet
+        // is received. Then, to be able to send the credits one by one, we measure the
+        // queue occupancy by each received flit
+        _ejection_queue_free_flits[dest]--;
+    }
+
+    // Returns if there is space at node's ejection queue
+    bool 
+    TrafficManagerWrapper::_NodeCanConsume( int node )
+    {
+        return _ejection_queue_free_flits[node] > 0;
+    }
+
     // FIXME: check type of returning data
     // This function must be called until it returns -1;
     // XXX: I belive that the best way is to declare a hash table in the caller to
@@ -130,7 +151,10 @@ namespace Booksim
                     pair<Flit,Flit> rp = _ejection_queue[cl][dst].front();
                     //std::cout << GetSimTime() << " TrafficManagerWrapper:RetirePacket | Front pid: " << pid << std::endl;
                     _ejection_queue[cl][dst].pop();
-                    
+                    //BSMOD: Add bounded ejection queue
+                    // Increase the available size after removing a packet from the queue
+                    _ejection_queue_free_flits[dst] += rp.first.packet_size;
+
                     //Flit head = rp.first;
                     //Flit tail = rp.second;
 
@@ -152,6 +176,9 @@ namespace Booksim
             if(!_ejection_queue[cl][dst].empty()) {
                 pair<Flit,Flit> rp = _ejection_queue[cl][dst].front();
                 _ejection_queue[cl][dst].pop();
+                //BSMOD: Add bounded ejection queue
+                // Increase the available size after removing a packet from the queue
+                _ejection_queue_free_flits[dst] += rp.first.packet_size;
                 return rp;
             }
         }

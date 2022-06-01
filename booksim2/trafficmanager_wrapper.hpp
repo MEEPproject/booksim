@@ -49,6 +49,10 @@ namespace Booksim
 
         private:
             vector<vector<queue<pair<Flit,Flit>>>> _ejection_queue;
+            //BSMOD: Add bounded ejection queue
+            vector<int> _ejection_queue_free_flits;
+            virtual bool _NodeCanConsume( int node );
+            virtual void _RetireFlit( Flit *f, int dest );
 
             virtual void _RetirePacket(Flit * head, Flit * tail);
 

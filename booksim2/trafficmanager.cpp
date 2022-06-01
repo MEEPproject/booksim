@@ -226,6 +226,8 @@ namespace Booksim
         _total_in_flight_flits.resize(_classes);
         _measured_in_flight_flits.resize(_classes);
         _retired_packets.resize(_classes);
+        //BSMOD: Add bounded ejection queue
+        _consumption_queue.resize(_subnets, vector<queue<Flit *>>(_nodes, queue<Flit *>()));
 
         _hold_switch_for_packet = config.GetInt("hold_switch_for_packet");
 
@@ -1354,9 +1356,25 @@ namespace Booksim
                 map<int, Flit *>::const_iterator iter = flits[subnet].find(n);
                 if(iter != flits[subnet].end()) {
                     Flit * const f = iter->second;
-
                     f->atime = _time;
-                    if(f->watch) {
+                    //BSMOD: Add bounded ejection queue
+                    // Enqueue all received flits, the channel is managed by credits
+                    _consumption_queue[subnet][n].push(f);
+                }
+            }
+            flits[subnet].clear();
+            _net[subnet]->Evaluate( );
+            _net[subnet]->WriteOutputs( );
+        }
+
+        //BSMOD: Add bounded ejection queue
+        // Manage consumption queue: it is bounded by the _ejection_queue size and the credits sent backward
+        for(int subnet = 0; subnet < _subnets; ++subnet) {
+            for(int n = 0; n < _nodes; ++n) {
+                if(!_consumption_queue[subnet][n].empty() && _NodeCanConsume(n)) {
+                    Flit * const f = _consumption_queue[subnet][n].front();
+                     if (f->watch)
+                    {
                         *gWatchOut << GetSimTime() << " | "
                             << "node" << n << " | "
                             << "Injecting credit for VC " << f->vc 
@@ -1368,16 +1386,13 @@ namespace Booksim
                     c->vc.insert(f->vc);
                     c->id = f->id;
                     _net[subnet]->WriteCredit(c, n);
-
 #ifdef TRACK_FLOWS
                     ++_ejected_flits[f->cl][n];
 #endif
-
-                    _RetireFlit(f, n); }
+                    _RetireFlit(f, n);
+                    _consumption_queue[subnet][n].pop();
+                }
             }
-            flits[subnet].clear();
-            _net[subnet]->Evaluate( );
-            _net[subnet]->WriteOutputs( );
         }
 
         ++_time;

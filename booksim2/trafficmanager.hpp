@@ -32,6 +32,7 @@
 #include <list>
 #include <map>
 #include <set>
+#include <queue>
 
 #include "module.hpp"
 #include "config_utils.hpp"
@@ -107,6 +108,8 @@ namespace Booksim
       vector<map<long, Flit *> > _total_in_flight_flits;
       vector<map<long, Flit *> > _measured_in_flight_flits;
       vector<map<long, Flit *> > _retired_packets;
+      //BSMOD: Add bounded ejection queue
+      vector<vector<queue<Flit *> > > _consumption_queue;
 
       bool _empty_network;
 
@@ -294,6 +297,12 @@ namespace Booksim
 
       virtual void _RetireFlit( Flit *f, int dest );
       virtual void _RetirePacket( Flit * head, Flit * tail );
+
+      //BSMOD: Add bounded ejection queue
+      // In an integration with a full system simulator, this function
+      // notifies to booksim that the ejection queue of a node has space
+      // In booksim as network simulator that is always true (consumption assumption)
+      virtual bool _NodeCanConsume( int node ) { return true; };
 
       virtual void _Inject() = 0;
       

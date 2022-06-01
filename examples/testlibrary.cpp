@@ -40,7 +40,8 @@
 #include "../booksim2/booksim_config.hpp"
 
 #define PRIO 0
-//#define MULTI 1
+#define CONSUMPTION_TIME 0
+#define NEW_PACKETS 15
 
 using namespace std;
 
@@ -52,15 +53,14 @@ struct Message {
 
 int main (int argc, char** argv)
 {
-   /* This test library file assumes a first config file with, at least, 8 nodes and 3 classes of traffic */
-   // Fails due to global variables:   and a second topology. if it used, with only 4 nodes */
-
    // local variables
    vector<Booksim::BooksimWrapper*>   booksim_wrapper;  // Booksim library pointer
    map<int, map<int, Message> >       packets_map;      // Booksim packet ID -> Message
+   int pending_consumption = 0;
+   int pending_new_packets = NEW_PACKETS;
 
-   if (argc < 2 || argc > 2) {//argc > 3) {
-      cerr << "You need to supply a configuration file name like: 8x8_mesh_IQ.cfg" << endl;
+   if (argc < 2 || argc > 2) {
+      cerr << "You need to supply a configuration file name like: test.cfg" << endl;
       return (EXIT_FAILURE);
    }
 
@@ -69,40 +69,50 @@ int main (int argc, char** argv)
       booksim_wrapper.push_back(new Booksim::BooksimWrapper(argv[i]));
    assert(booksim_wrapper.size() == (argc-1));
 
-   // BookSim wrapper 0 - testing priorities
+   // BookSim wrapper 0 - testing backpressure
    Booksim::BookSimConfig booksim_config;
-   booksim_config.ParseFile(argv[PRIO+1]);
+   booksim_config.ParseFile(argv[1]);
    // Classes checks
    const uint8_t classes = booksim_config.GetInt("classes");
    assert(classes >= 3);
    int packetId;
    // Generate a packet of class 0
-   packetId = booksim_wrapper[PRIO]->GeneratePacket(0, 7, 1, 0, 0);
-   packets_map[PRIO][packetId] = {0, 7, "NoC0-From-0-to-7-Size-1-Class-0-InjLatency-0"};
+   assert(booksim_wrapper[PRIO]->CheckInjectionQueue(0, 0) > 1);
+   packetId = booksim_wrapper[PRIO]->GeneratePacket(0, 1, 1, 0, 0);
+   packets_map[PRIO][packetId] = {0, 1, "NoC0-From-0-to-1-Size-1-Class-0-InjLatency-0"};
+   cout << booksim_wrapper[PRIO]->GetSimTime() << " | Injection queue free size: " << booksim_wrapper[PRIO]->CheckInjectionQueue(0, 0) << endl;
    // packet of class 1
-   packetId = booksim_wrapper[PRIO]->GeneratePacket(0, 7, 1, 1, 0);
-   packets_map[PRIO][packetId] = {0, 7, "NoC0-From-0-to-7-Size-1-Class-1-InjLatency-0"};
+   assert(booksim_wrapper[PRIO]->CheckInjectionQueue(0, 0) > 1);
+   packetId = booksim_wrapper[PRIO]->GeneratePacket(0, 1, 1, 0, 0);
+   packets_map[PRIO][packetId] = {0, 1, "NoC0-From-0-to-1-Size-1-Class-0-InjLatency-0"};
+   cout << booksim_wrapper[PRIO]->GetSimTime() << " | Injection queue free size: " << booksim_wrapper[PRIO]->CheckInjectionQueue(0, 0) << endl;
    // packet of class 2
-   packetId = booksim_wrapper[PRIO]->GeneratePacket(0, 7, 1, 2, 0);
-   packets_map[PRIO][packetId] = {0, 7, "NoC0-From-0-to-7-Size-1-Class-2-InjLatency-0"};
+   assert(booksim_wrapper[PRIO]->CheckInjectionQueue(0, 0) >= 1);
+   packetId = booksim_wrapper[PRIO]->GeneratePacket(0, 1, 1, 0, 0);
+   packets_map[PRIO][packetId] = {0, 1, "NoC0-From-0-to-1-Size-3-Class-0-InjLatency-0"};
+   cout << booksim_wrapper[PRIO]->GetSimTime() << " | Injection queue free size: " << booksim_wrapper[PRIO]->CheckInjectionQueue(0, 0) << endl;
 
-   // BookSim wrapper 1 - testing multiple config files
-   /*if(argc > 2) {
-      // Generate a packet from 
-      packetId = booksim_wrapper[MULTI]->GeneratePacket(0, 3, 1, 0, 0);
-      packets_map[MULTI][packetId] = {0, 3, "NoC1-From-0-to-3-Size-1-Class-0-InjLatency-0"};
-   }*/
+   // full injection queue
+   assert(booksim_wrapper[PRIO]->CheckInjectionQueue(0, 0) == 0);
 
    bool next_cycle_should_be_executed;
-   // Run simulation until there are no more packets or credits
+   // Run simulation until there are no more packets nor credits
    do {
       next_cycle_should_be_executed = false;
       for(int wrap=0; wrap < argc-1; ++wrap) {
          Booksim::BooksimWrapper::RetiredPacket rpacket;
          rpacket.pid = -1;
          booksim_wrapper[wrap]->RunCycles(1);
-         rpacket = booksim_wrapper[wrap]->RetirePacket();
-         if(rpacket.pid >= 0) {
+         if (pending_consumption == 0) {
+            rpacket = booksim_wrapper[wrap]->RetirePacket();
+            cout << booksim_wrapper[wrap]->GetSimTime() << " | Trying to retire packet" << endl;
+         } else {
+            pending_consumption--;
+            cout << booksim_wrapper[wrap]->GetSimTime() << " | Consuming packet" << endl;
+         }
+         if (rpacket.pid >= 0)
+         {
+            pending_consumption = CONSUMPTION_TIME;
             assert(packets_map[wrap][rpacket.pid].source == rpacket.src);
             assert(packets_map[wrap][rpacket.pid].destination == rpacket.dst);
             cout << booksim_wrapper[wrap]->GetSimTime() << " | Packet with id " << rpacket.pid << " has been retired from NoC " << wrap << 
@@ -115,6 +125,18 @@ int main (int argc, char** argv)
             "\n\t smart hops: " << rpacket.shops <<
             "\n\t bypassed routers: " << rpacket.br << endl;
             packets_map[wrap].erase(rpacket.pid);
+         }
+         if (booksim_wrapper[wrap]->GetSimTime() > 10 && pending_new_packets > 0) {
+            cout << booksim_wrapper[wrap]->GetSimTime() << " | Injection queue free size: " << booksim_wrapper[wrap]->CheckInjectionQueue(0, 0);
+            if (booksim_wrapper[wrap]->CheckInjectionQueue(0, 0) >= 1)
+            {
+               packetId = booksim_wrapper[wrap]->GeneratePacket(0, 1, 1, 0, 0);
+               packets_map[wrap][packetId] = {0, 1, "NoC0-From-0-to-1-Size-1-Class-0-InjLatency-0"};
+               pending_new_packets--;
+               cout << " - new packet generated." << endl;
+            }
+            else
+               cout << " - it can not generate a new packet - backpressure!" << endl;
          }
          next_cycle_should_be_executed |= booksim_wrapper[wrap]->CheckInFlightPackets() || booksim_wrapper[wrap]->CheckInFlightCredits();
       }  
